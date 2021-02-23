@@ -1,0 +1,24 @@
+{
+  "name": "portfolio",
+  "version": "1.0.0",
+  "description": "Curriculum vitae",
+  "main": "index.js",
+  "scripts": {
+    "test": "tsc --watch tsconfig.json"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/deempalme/portfolio.git"
+  },
+  "keywords": [
+    "portfolio",
+    "curriculum",
+    "vitae"
+  ],
+  "author": "deempalme",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/deempalme/portfolio/issues"
+  },
+  "homepage": "https://github.com/deempalme/portfolio#readme"
+}
