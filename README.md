@@ -171,6 +171,13 @@ npm init
 tsc --init
 ```
 
+### 1.6 - jQuery
+
+Execute this commmand in the project's folder to install **jQuery**.
+```sh
+npm install --save-dev @types/jquery
+```
+
 ## 2 - Building
 
 ### 2.1 - Normal building:
