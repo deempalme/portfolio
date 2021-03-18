@@ -20,5 +20,8 @@
   "bugs": {
     "url": "https://github.com/deempalme/portfolio/issues"
   },
-  "homepage": "https://github.com/deempalme/portfolio#readme"
+  "homepage": "https://github.com/deempalme/portfolio#readme",
+  "devDependencies": {
+    "@types/jquery": "^3.5.5"
+  }
 }
