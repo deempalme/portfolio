@@ -1,0 +1,27 @@
+{
+	"version": "2.0.0",
+	"tasks": [
+		{
+			"type": "typescript",
+			"tsconfig": "tsconfig.json",
+			"option": "watch",
+			"problemMatcher": [
+				"$tsc-watch"
+			],
+			"group": "build",
+			"label": "tsc: watch - tsconfig.json"
+		},
+		{
+			"type": "process",
+			"command": "browserify",
+			"args": [
+				"build/js/home.js",
+				"-o",
+				"script/js/home.js"
+			],
+			"group": "build",
+			"label": "browserify",
+			"problemMatcher": []
+		}
+	]
+}
