@@ -1,17 +1,23 @@
 
+import { open_gl } from './gl/open_gl';
 
-class universe
+export class universe
 {
   private width  : number = 0;
   private height : number = 0;
 
   private main_object : HTMLElement | null;
+  private gl : open_gl | null = null;
 
   private resize_event : any;
   private unload_event : any;
 
   constructor(){
     this.main_object = document.getElementById('universe');
+
+    // Creating the canvas
+    if(this.main_object)
+      this.gl = new open_gl(this.main_object);
 
     // Creating a window resize event handler
     this.resize_event = this.resize.bind(this);
@@ -39,10 +45,4 @@ class universe
       this.height = this.main_object.clientWidth;
     }
   }
-}
-
-var universe_object = null;
-
-window.onload = function(){
-  universe_object = new universe;
 }
