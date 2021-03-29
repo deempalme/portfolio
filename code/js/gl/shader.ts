@@ -1,4 +1,5 @@
 
+import * as constants from './constants';
 
 export class shader
 {
@@ -37,10 +38,10 @@ export class shader
       this.gl.attachShader(this.id, vertex_id);
       this.gl.attachShader(this.id, fragment_id);
 
-      this.gl.bindAttribLocation(this.id, attributes.position, 'i_position');
-      this.gl.bindAttribLocation(this.id, attributes.uv, 'i_uv');
-      this.gl.bindAttribLocation(this.id, attributes.normal, 'i_normal');
-      this.gl.bindAttribLocation(this.id, attributes.tangent, 'i_tangent');
+      this.gl.bindAttribLocation(this.id, constants.attributes.position, 'i_position');
+      this.gl.bindAttribLocation(this.id, constants.attributes.uv, 'i_uv');
+      this.gl.bindAttribLocation(this.id, constants.attributes.normal, 'i_normal');
+      this.gl.bindAttribLocation(this.id, constants.attributes.tangent, 'i_tangent');
 
       this.gl.linkProgram(this.id);
 

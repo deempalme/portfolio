@@ -1,17 +1,14 @@
 
-import { v3 } from './v3';
-import { m4 } from './m4';
-
+import { v3 } from '../math/v3';
+import { m4 } from '../math/m4';
+import * as constants from './constants';
 
 export class open_gl
 {
-  public static degree_45 : number = Math.PI * 0.25;
-
   private width  : number = 0;
   private height : number = 0;
 
   private canvas : HTMLCanvasElement;
-  private parent : HTMLElement;
 
   private gl : WebGL2RenderingContext | null = null;
   public static extensions : EXT_texture_filter_anisotropic | null = null;
@@ -29,7 +26,7 @@ export class open_gl
 
   constructor(parent : HTMLElement){
     this.canvas = document.createElement('canvas');
-    (this.parent = parent).prepend(this.canvas);
+    parent.prepend(this.canvas);
 
     this.initialize();
     this.resize();
@@ -52,6 +49,7 @@ export class open_gl
   }
 
   public initialize() : boolean {
+    // Checking if browser accepts WebGL
     try{
       this.gl = this.canvas.getContext('webgl2', { alpha: true, antialias: true });
     }catch(e){
@@ -64,23 +62,26 @@ export class open_gl
 
     this.gl.clearColor(0.0, 0.0, 0.0, 1.0);  // Clear to black, fully opaque
     this.gl.clearDepth(1.0);                 // Clear everything
-    this.gl.enable(this.gl.DEPTH_TEST);           // Enable depth testing
-    this.gl.depthFunc(this.gl.LEQUAL);            // Near things obscure far things
-    this.gl.enable(this.gl.CULL_FACE);            // Draws only frontal faces
-    this.gl.cullFace(this.gl.BACK);
-    this.gl.enable(this.gl.BLEND);                // Enables alpha
+    this.gl.enable(this.gl.DEPTH_TEST);      // Enable depth testing
+    this.gl.depthFunc(this.gl.LEQUAL);       // Near things obscure far things
+    this.gl.enable(this.gl.CULL_FACE);       // Enables culling faces
+    this.gl.cullFace(this.gl.BACK);          // Draws only frontal faces
+    this.gl.enable(this.gl.BLEND);           // Enables alpha
     this.gl.blendFunc(this.gl.SRC_ALPHA, this.gl.ONE_MINUS_SRC_ALPHA);
 
+    // Checking for anisotropic extensions
     open_gl.extensions = (
       this.gl.getExtension("EXT_texture_filter_anisotropic") ||
       this.gl.getExtension("MOZ_EXT_texture_filter_anisotropic") ||
       this.gl.getExtension("WEBKIT_EXT_texture_filter_anisotropic")
     );
 
+    // Camera position
     this.camera.eye = v3.new(0, 2, 10);
     this.camera.center = v3.new(0, 0, 0);
     this.camera.up = v3.new(0, 1, 0);
 
+    // Light position
     this.light = v3.new(0, 0, 0);
 
     return this.ok = true;
@@ -104,7 +105,7 @@ export class open_gl
     this.canvas.height = this.height;
     this.gl?.viewport(0, 0, this.width, this.height);
 
-    this.projection = m4.perspective(open_gl.degree_45, this.width / this.height, 0.1, 1000);
+    this.projection = m4.perspective(constants.degree_45, this.width / this.height, 0.1, 1000);
     this.look_at();
 
     return true;

@@ -1,4 +1,5 @@
 
+import * as constants from './constants';
 import $ from 'jquery';
 
 
@@ -144,17 +145,17 @@ export class model_loader
     this.gl.bufferData(this.gl.ARRAY_BUFFER, all_data, this.gl.STATIC_DRAW);
 
     var offset : number = 0;
-    this.gl.vertexAttribPointer(attributes.position, 3, this.gl.FLOAT, false, 44, offset); 
-    this.gl.enableVertexAttribArray(attributes.position);
+    this.gl.vertexAttribPointer(constants.attributes.position, 3, this.gl.FLOAT, false, 44, offset); 
+    this.gl.enableVertexAttribArray(constants.attributes.position);
     offset += 12;
-    this.gl.vertexAttribPointer(attributes.uv, 2, this.gl.FLOAT, false, 44, offset);
-    this.gl.enableVertexAttribArray(attributes.uv);
+    this.gl.vertexAttribPointer(constants.attributes.uv, 2, this.gl.FLOAT, false, 44, offset);
+    this.gl.enableVertexAttribArray(constants.attributes.uv);
     offset += 8;
-    this.gl.vertexAttribPointer(attributes.normal, 3, this.gl.FLOAT, false, 44, offset);
-    this.gl.enableVertexAttribArray(attributes.normal);
+    this.gl.vertexAttribPointer(constants.attributes.normal, 3, this.gl.FLOAT, false, 44, offset);
+    this.gl.enableVertexAttribArray(constants.attributes.normal);
     offset += 12;
-    this.gl.vertexAttribPointer(attributes.tangent, 3, this.gl.FLOAT, false, 44, offset);
-    this.gl.enableVertexAttribArray(attributes.tangent);
+    this.gl.vertexAttribPointer(constants.attributes.tangent, 3, this.gl.FLOAT, false, 44, offset);
+    this.gl.enableVertexAttribArray(constants.attributes.tangent);
 
     model_loader.count();
     object.data_loaded = true;
