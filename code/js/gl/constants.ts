@@ -13,3 +13,13 @@
 
   // Attibute input IDs
   export const attributes = { position: 0, uv: 1, normal: 2, tangent: 3 };
+
+  // Texture active IDs
+  export const texture_unit = {
+    albedo: 0,
+    normal: 1,
+    lights: 2
+  };
+
+  // Time between frames in milliseconds
+  export const frame_time : number = 40;

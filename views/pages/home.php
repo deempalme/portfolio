@@ -10,7 +10,7 @@
 </head>
 
 <body>
-  <nav>
+  <nav id="navigation">
     <ul>
       <li><a href="#universe">Top</a></li>
       <li><a href="#portfolio">Portfolio</a></li>
@@ -24,6 +24,7 @@
   <main>
     <section id="universe" name="universe">
       <h1><img src="/resources/theme3.0/ramirez_rodriguez.svg" alt="RAMIREZ RODRIGUEZ"></h1>
+      <aside><a href="https://github.com/deempalme/portfolio">See &lt;the code&gt;</a></aside>
     </section>
     <section id="portfolio" name="portfolio">
       <h1><img src="/resources/theme3.0/the_portfolio.svg" alt="The PORTFOLIO"></h1>
@@ -33,6 +34,8 @@
     </section>
     <section id="about_me" name="about_me">
       <h1><img src="/resources/theme3.0/about_me.svg" alt="ABOUT ME"></h1>
+        <p><i>H</i>ello, I am a Mechatronic engineer with experience in parallel programming, CAD &amp; CAM design, expert in OpenGL and Computer Graphics. </br></br>I make things go faster with very little expenses using the powerful capabilities of GPUs and convert complex and slow algorithms into real-time processing programs.
+        </br></br>I am passionate of programming, deeply creative, brimful of ideas and a big enthusiast for electronics and robotics. I care about every tiny detail; perfectionism is my custom.</p>
     </section>
     <section id="knowledge" name="knowledge">
       <h1><img src="/resources/theme3.0/knowledge.svg" alt="KNOWLEDGE"></h1>
@@ -179,6 +182,10 @@
       <li><a href="#contact_me">Contact me</a></li>
     </ul>
   </footer>
+  <aside id="keys">
+    <h1>←↑→↓</h1>
+    <h2>Use keys to navigate</h2>
+  </aside>
 </body>
 
 </html>

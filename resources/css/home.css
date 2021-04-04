@@ -44,20 +44,25 @@ nav {
 
 nav a {
   font-weight: bold;
-  display: block;
-  padding: 0.35em 2em 0.35em 0.6em;
-  min-width: 11rem;
   position: relative;
+  display: block;
+  height: 1em;
+  padding: 0.3em 0;
 }
 
 nav a:hover, nav a:focus {
   font-family: 'Playfair Display', Georgia, 'Times New Roman', Times, serif;
   font-weight: 300;
   font-style: italic;
-  padding: 0.27em 1em 0.43em 0.6em;
+  padding: 0.22em 0 0.38em 0;
 }
 
-nav a > b { font-weight: inherit; }
+nav a > b {
+  font-weight: inherit;
+  display: inline-block;
+  padding: 0 2em 0 0.9em;
+  width: 11rem;
+}
 
 nav a > canvas {
   position: absolute;
@@ -88,6 +93,10 @@ nav ul li {
   position: relative;
 }
 
+#universe > canvas {
+  background: #515e66;
+}
+
 #universe > h1 {
   margin: 0;
   padding: 0;
@@ -98,6 +107,54 @@ nav ul li {
 
 #universe > h1 img {
   height: 15rem;
+}
+
+#universe > aside {
+  position: absolute;
+  right: 3em;
+  top: calc(100vh - 5rem);
+}
+
+#universe > aside > a, #universe > aside > a:link {
+  position: relative;
+  display: inline-block;
+  background: #0a75b8;
+  border-radius: 0.5rem;
+  padding: 0.6rem 1.2rem;
+  font-weight: bold;
+  font-family: 'Source Code Pro', 'Courier New', Courier, monospace;
+  transition: background 0.2s, box-shadow 0.2s, top 0.2s, color 0.2s;
+  -webkit-transition: background 0.2s, box-shadow 0.2s, top 0.2s, color 0.2s;
+
+  background: -webkit-linear-gradient(140deg, #00bdd6, #008ce3, #798ae2);
+  background: -moz-linear-gradient(140deg, #00bdd6, #008ce3, #798ae2);
+  background: -o-linear-gradient(140deg, #00bdd6, #008ce3, #798ae2);
+  background: linear-gradient(140deg, #00bdd6, #008ce3, #798ae2);
+  box-shadow: 0 0.3125rem 0 #0b3f73;
+  color: #fff;
+  top: 0;
+}
+
+#universe > aside > a:visited { color: #fff; }
+
+#universe > aside > a:hover, #universe > aside > a:focus {
+  background: -webkit-linear-gradient(140deg, #00edf6, #44b7ff, #7ea8e4);
+  background: -moz-linear-gradient(140deg, #00edf6, #44b7ff, #7ea8e4);
+  background: -o-linear-gradient(140deg, #00edf6, #44b7ff, #7ea8e4);
+  background: linear-gradient(140deg, #00edf6, #44b7ff, #7ea8e4);
+  box-shadow: 0 0.4375rem 0 #0d4a87;
+  top: -0.125rem;
+  color: #000;
+}
+
+#universe > aside > a:active {
+  background: -webkit-linear-gradient(140deg, #ff804f, #fe305c);
+  background: -moz-linear-gradient(140deg, #ff804f, #fe305c);
+  background: -o-linear-gradient(140deg, #ff804f, #fe305c);
+  background: linear-gradient(140deg, #ff804f, #fe305c);
+  box-shadow: 0 0.1875rem 0 #981010;
+  color: #fff;
+  top: 0.125rem;
 }
 
 /* PORTFOLIO :::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::: */
@@ -498,3 +555,53 @@ nav ul li {
   padding: 0.3em 1.5em;
 }
 #contact_me > ul > li:last-child { border-right: none; }
+
+/* KEYS ::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::: */
+
+#keys {
+  position: fixed;
+  bottom: 0.5rem;
+  left: calc(50vw - 4.67rem);
+  width: 9.34rem;
+}
+
+#keys h1 {
+  margin: 0;
+  line-height: 1em;
+  padding: 0;
+}
+
+#keys h1 > button {
+  background: url('../theme3.0/keys.svg') -0.25rem -0.25rem no-repeat;
+  background-size: 12.3125rem 9.25rem;
+  background-position-y: -3.25rem;
+  border: none;
+  width: 2.8125rem;
+  height: 2.8125rem;
+  margin: 0.15rem;
+  cursor: pointer;
+}
+
+#keys h1 > button:nth-child(1) {
+  margin: 0.15rem 3.1125rem;
+  background-position-x: -9.25rem;
+}
+#keys h1 > button:nth-child(3) { background-position-x: -3.25rem; }
+#keys h1 > button:nth-child(4) { background-position-x: -6.25rem; }
+
+#keys h1 > button.down, #keys h1 > button:active {
+  background-position-y: -6.1875rem;
+}
+
+#keys h1 > button.inactive, #keys h1 > button.inactive:active {
+  background-position-y: -0.25rem;
+  cursor: default;
+}
+
+#keys h2 {
+  font-size: 0.95rem;
+  text-align: center;
+  line-height: 1.7em;
+  margin: 0;
+  color: #d6b176;
+}
