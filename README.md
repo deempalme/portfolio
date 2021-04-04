@@ -163,7 +163,7 @@ sudo apt-get install npm
 sudo npm install -g typescript
 ```
 
-Initializing npm and typescript in case `package.json` and `tsconfig.json` are deleted:
+Initializing npm and typescript in case `package.json` and `tsconfig.json` are **deleted**:
 
 ```sh
 cd /path/to/folder/portfolio
@@ -176,11 +176,25 @@ tsc --init
 Execute this commmand in the project's folder to install **jQuery**.
 ```sh
 npm install --save-dev @types/jquery
+npm install jquery --save
+```
+
+### 1.7 - Browserify
+
+When typescript is compiled standalone the keyword `require()` is not standarized by all browsers and it will create an error indicating that _such word does not exist_ to fix this problem, it is necessary to install **browserify**:
+
+```sh
+npm install -g browserify
+# or sudo it, if there is a permission denied problem
+sudo npm install -g browserify
 ```
 
 ## 2 - Building
 
-### 2.1 - Normal building:
+### 2.1 - Normal building
+
+
+It will build all typescript files located inside `code/js/` and place the compiled files in `build/` folder:
 
 ```sh
 tsc --build tsconfig.json
@@ -189,3 +203,13 @@ tsc --build tsconfig.json
 ### 2.2 - Automatically building after saving:
 
 Execute **run build task** (<kbd>Ctrl</kbd> + <kbd>Shift</kbd> + <kbd>B</kbd>) from the global terminal and select `tsc: watch - tsconfig.json`. More info [here](https://code.visualstudio.com/docs/typescript/typescript-compiling).
+
+### 2.3 - Complete missing libraries with browserify
+
+This will re-compile the main **js** file to include all missing libraries:
+
+```sh
+browserify build/js/home.js -o script/js/home.js
+```
+
+Or execute **run build task** (<kbd>Ctrl</kbd> + <kbd>Shift</kbd> + <kbd>B</kbd>) from the global terminal and select `browserify`.
