@@ -61,3 +61,7 @@ typings/
 # dotenv environment variables file
 .env
 .env.test
+
+# blender backup files
+.blend1
+
