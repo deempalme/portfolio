@@ -3,34 +3,106 @@ import * as constants from './constants';
 import $ from 'jquery';
 
 
-export class model_loader
+export class model
 {
   private static counter : number = 0;
-  private static max_count : number = 0;
+  private static maximum_count : number = 0;
   private static loader : HTMLElement;
 
   private gl : WebGL2RenderingContext;
+  private vao : WebGLVertexArrayObject | null;
+  private finished : boolean = false;
+  private data_size : number = 0;
 
-  constructor(context : WebGL2RenderingContext, object_loader : HTMLElement, max_count : number = 1){
+  constructor(context : WebGL2RenderingContext, model_url : string){
     this.gl = context;
-    model_loader.max_count = max_count;
-    model_loader.loader = object_loader;
-  }
 
+    this.vao = this.gl.createVertexArray();
+
+    if(this.vao){
+      // Loading the 3D model object
+      var this_object = this;
+      $.ajax({
+        url: model_url,
+        beforeSend: function(xhr){ xhr.overrideMimeType( "text/plain; charset=utf-8" ); },
+        dataType: 'text'
+      }).done(function(data){ this_object.process_data(data); });
+    }
+  }
+  /**
+   * @brief Increments the counter and hides the HTMLElement stablished in set_loader()
+   * 
+   * @returns `true` if the counter reached the max_count() value
+   */
   public static count() : boolean {
-    if(++model_loader.counter >= model_loader.max_count){
-      model_loader.loader.parentElement?.removeChild(model_loader.loader);
+    if(++model.counter >= model.maximum_count){
+      $(model.loader).hide();
       return true;
     }
     return false;
   }
+  /**
+   * @brief Draws the arrays inside the model VAO
+   */
+  public draw() : void {
+    if(!this.finished) return;
 
-  public load_model(model_url : string, object : any) : void {
-    object.data_loaded = false;
-    var this_object = this;
-    $.get(model_url, function(data : string){ this_object.process_data(data, object); }, 'text');
+    this.gl.bindVertexArray(this.vao);
+    this.gl.drawArrays(this.gl.TRIANGLES, 0, this.data_size);
+    this.gl.bindVertexArray(null);
+  }
+  /**
+   * @brief Indicates if the .obj file has been loaded and processed
+   * 
+   * @returns `true` when loaded and processed
+   */
+  public loaded() : boolean {
+    return this.finished;
+  }
+  /**
+   * @brief Indicates the maximum value that the counter could reach
+   * 
+   * The HTMLElement selected in set_loader() will be hidden when the count reaches
+   * this value
+   * 
+   * @param new_maximum New maximum counter value
+   * 
+   * @returns `true` if the counter value was already reached
+   */
+  public static max_count(new_maximum : number) : boolean {
+    model.maximum_count = new_maximum;
+    if(model.counter >= model.maximum_count){
+      $(model.loader).hide();
+      return true;
+    }
+    return false;
+  }
+  /**
+   * @brief Resets the counter value
+   * 
+   * It will also show the HTMLElement selected in set_loader()
+   */
+  public static reset_count() : void {
+    model.maximum_count = 0;
+    $(model.loader).show();
+  }
+  /**
+   * @brief Sets an HTMLElement that represents the loading indicator
+   * 
+   * This HTMLElement will be hidden when the count reaches the max_count() value
+   * 
+   * @param object HTMLElement that represents the loading indicator
+   */
+  public static set_loader(object : HTMLElement) : void {
+    model.loader = object;
   }
 
+  // ::::::::::::::::::::::::::::::::::::: PRIVATE FUNCTIONS ::::::::::::::::::::::::::::::::::::::
+  /**
+   * @brief Normalizes a 3D vector
+   * 
+   * @param vector 3D vector that will be normalized
+   */
   private normalize(vector : Array<number>) : void {
     const inverse_length : number = 
       1 / Math.sqrt(vector[0] * vector[0] + vector[1] * vector[1] + vector[2] * vector[2]);
@@ -38,8 +110,12 @@ export class model_loader
     vector[1] = vector[1] * inverse_length;
     vector[2] = vector[2] * inverse_length;
   }
-
-  private process_data(data : string, object : any) : void {
+  /**
+   * @brief Processes an .obj file into a OpenGL's VAO
+   * 
+   * @param data All the .obj file's content
+   */
+  private process_data(data : string) : void {
     const lines : Array<string> = data.split("\n");
     var sections : Array<string>, face : Array<string>, index : number;
     var vertices = [], textures = [], normals = [], vector : Array<number> = [0, 0, 0];
@@ -137,10 +213,9 @@ export class model_loader
     }
 
     //this.gl.useProgram(program.id);
-    object.data_size = indices_size;
-    object.vao = this.gl.createVertexArray();
+    this.data_size = indices_size;
 
-    this.gl.bindVertexArray(object.vao);
+    this.gl.bindVertexArray(this.vao);
     this.gl.bindBuffer(this.gl.ARRAY_BUFFER, this.gl.createBuffer());
     this.gl.bufferData(this.gl.ARRAY_BUFFER, all_data, this.gl.STATIC_DRAW);
 
@@ -157,7 +232,6 @@ export class model_loader
     this.gl.vertexAttribPointer(constants.attributes.tangent, 3, this.gl.FLOAT, false, 44, offset);
     this.gl.enableVertexAttribArray(constants.attributes.tangent);
 
-    model_loader.count();
-    object.data_loaded = true;
+    this.finished = true;
   }
 }
