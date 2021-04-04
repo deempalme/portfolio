@@ -851,9 +851,9 @@
      borderopacity="1.0"
      inkscape:pageopacity="0"
      inkscape:pageshadow="2"
-     inkscape:zoom="1.606334"
-     inkscape:cx="370.57958"
-     inkscape:cy="14.536203"
+     inkscape:zoom="1"
+     inkscape:cx="200.74424"
+     inkscape:cy="-150.6495"
      inkscape:document-units="px"
      inkscape:current-layer="layer1"
      showgrid="false"
@@ -866,7 +866,9 @@
      inkscape:window-x="0"
      inkscape:window-y="27"
      inkscape:window-maximized="1"
-     inkscape:document-rotation="0" />
+     inkscape:document-rotation="0"
+     objecttolerance="4.7"
+     guidetolerance="4.9" />
   <metadata
      id="metadata7">
     <rdf:RDF>
