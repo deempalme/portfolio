@@ -66,13 +66,13 @@ typings/
 *.blend1
 .blend1
 
+fireworks/*
+fireworks/
+
 # Heavy files
 sources/*.jpg
 sources/*.tif
 sources/*.png
-
-fireworks/*
-fireworks/
 
 .confidential
 *.ini
