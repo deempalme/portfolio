@@ -89,30 +89,69 @@ nav ul li {
 #universe {
   width: 100%;
   min-height: 100vh;
-  height: 100vh;
+  height: 300vh;
   position: relative;
 }
 
+#universe::after {
+  content: "";
+  width: 100%;
+  height: 100vh;
+  position: absolute;
+  left: 0;
+  bottom: 0;
+  background: url('../theme3.0/planet.webp') center bottom no-repeat;
+  background-size: contain;
+  z-index: 11;
+}
+
 #universe > canvas {
-  background: #515e66;
+  /*background: #515e66; */
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: 10;
 }
 
 #universe > h1 {
+  background: url('../models/milky_way.jpg') center center repeat-y;
+  background-size: cover;
   margin: 0;
   padding: 0;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100vh;
+}
+
+#universe > h1::after {
+  content: "";
   position: absolute;
-  top: calc(50vh - 9.5rem);
-  left: calc(50vw - 17.72rem);
+  width: 100vw;
+  height: 100vh;
+  top: 0;
+  left: 0;/*
+  background: -webkit-radial-gradient(#fff68ee0, #fffcd655 7%, #00000000 60%);
+  background: -moz-radial-gradient(#fff68ee0, #fffcd655 7%, #00000000 60%);
+  background: -o-radial-gradient(#fff68ee0, #fffcd655 7%, #00000000 60%);*/
+  background: radial-gradient(#fff68ea2, #e0ffcb44 7%, #5fb7ff01 60%);
+  z-index: 2;
 }
 
 #universe > h1 img {
   height: 15rem;
+  position: absolute;
+  top: calc(50vh - 9.5rem);
+  left: calc(50vw - 17.72rem);
+  z-index: 5;
 }
 
 #universe > aside {
   position: absolute;
   right: 3em;
   top: calc(100vh - 5rem);
+  z-index: 15;
 }
 
 #universe > aside > a, #universe > aside > a:link {
@@ -164,6 +203,8 @@ nav ul li {
   min-height: 100vh;
   height: 100vh;
   position: relative;
+  z-index: 20;
+  background: #000;
 }
 
 #portfolio > h1 {
@@ -183,7 +224,9 @@ nav ul li {
 #projects {
   width: 100%;
   min-height: 100vh;
-  height: 100vh;
+  position: relative;
+  z-index: 30;
+  background: #000;
 }
 
 #projects > h1 {
@@ -197,6 +240,106 @@ nav ul li {
   padding: 3rem 0 2rem;
 }
 
+#projects ol {
+  margin: 1em 3em 3em;
+  padding: 0;
+  list-style: none;/*
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  align-items: stretch;
+  justify-content: center;*/
+  font-family: 'open sans', Arial, Helvetica, sans-serif;
+  column-count: 4;
+  column-gap: 0;
+  column-rule: none;
+}
+
+#projects ol > li {/*
+  flex-grow: 1;
+  width: 25%;*/
+}
+
+#projects ol > li > a, #projects ol > li > a:link {
+  display: block;
+  padding: 1.5em 2em;
+  margin: 0 1em 2em;
+  break-inside: avoid;
+  transition: background 0.5s, color 0.5s;
+  -webkit-transition: background 0.5s, color 0.5s;
+
+  background: -webkit-linear-gradient(140deg, #096a77, #09476d, #2d3a7c);
+  background: -moz-linear-gradient(140deg, #096a77, #09476d, #2d3a7c);
+  background: -o-linear-gradient(140deg, #096a77, #09476d, #2d3a7c);
+  background: linear-gradient(140deg, #096a77, #09476d, #2d3a7c);
+  color: #fff;
+}
+#projects ol > li > a:visited { color: #fff; }
+#projects ol > li > a:hover, #projects ol > li > a:focus {
+  background: -webkit-linear-gradient(140deg, #0e96a8, #008ce3, #798ae2);
+  background: -moz-linear-gradient(140deg, #0e96a8, #008ce3, #798ae2);
+  background: -o-linear-gradient(140deg, #0e96a8, #008ce3, #798ae2);
+  background: linear-gradient(140deg, #0e96a8, #008ce3, #798ae2);
+  color: #000;
+}
+#projects ol > li > a:active {
+  background: -webkit-linear-gradient(140deg, #ff804f, #fe305c);
+  background: -moz-linear-gradient(140deg, #ff804f, #fe305c);
+  background: -o-linear-gradient(140deg, #ff804f, #fe305c);
+  background: linear-gradient(140deg, #ff804f, #fe305c);
+  color: #fff;
+}
+
+#projects ol > li h1 {
+  font-size: 1.5rem;
+  line-height: 1em;
+  margin: 0;
+}
+
+#projects ol > li p {
+  line-height: 1.5em;
+  margin: 1.5em 0;
+}
+
+#projects ol > li ul, #projects ol > li dl {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+#projects ol > li dl { margin-top: 0.5rem; }
+
+#projects ol > li ul > li, #projects ol > li dl > dt {
+  margin: 0.25em 0.1em;
+  padding: 0.1em 1em 0.3em;
+  display: inline-block;
+  background: #259ae4;
+  border-radius: 1em;
+  font-size: 0.8rem;
+  color: #fff;
+  transition: background 0.5s;
+  -webkit-transition: background 0.5s;
+}
+#projects ol > li > a:hover > ul > li { background: #136192; }
+
+#projects ol > li dl > dt {
+  color: #000;
+  background: #44ffc1c0;
+}
+
+#projects ol > li > a > ul > li:first-child, #projects ol > li dl > dt:first-child {
+  margin-left: 0;
+  padding-left: 0;
+  padding-right: 0.3em;
+  color: #a3dcff;
+  background: none;
+  border-radius: 0;
+  font-weight: bold;
+  transition: color 0.5s;
+  -webkit-transition: color 0.5s;
+}
+#projects ol > li > a:hover > ul > li:first-child { color: #002e4b; }
+#projects ol > li dl > dt:first-child { color: #90ffda; }
+
 /* ABOUT ME ::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::: */
 
 #about_me {
@@ -205,6 +348,8 @@ nav ul li {
   height: 100vh;
   background: #515e66 url("../images/fabric.jpg") right center no-repeat;
   background-size: contain;
+  position: relative;
+  z-index: 40;
 }
 
 #about_me > h1 {
@@ -224,6 +369,9 @@ nav ul li {
   width: 100%;
   min-height: 100vh;
   height: 100vh;
+  position: relative;
+  z-index: 50;
+  background: #000;
 }
 
 #knowledge > h1 {
@@ -358,6 +506,9 @@ nav ul li {
 #studies {
   width: 100%;
   height: 100vh;
+  position: relative;
+  z-index: 60;
+  background: #000;
 }
 
 #studies > h1 {
@@ -471,6 +622,8 @@ nav ul li {
   background-size: cover;
   position: relative;
   font-family: 'Abril Fatface', Georgia, 'Times New Roman', Times, serif;
+  position: relative;
+  z-index: 70;
 }
 
 #contact_me > h1 {
@@ -563,6 +716,7 @@ nav ul li {
   bottom: 0.5rem;
   left: calc(50vw - 4.67rem);
   width: 9.34rem;
+  z-index: 1000;
 }
 
 #keys h1 {

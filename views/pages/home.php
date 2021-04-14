@@ -31,6 +31,324 @@
     </section>
     <section id="projects" name="projects">
       <h1><img src="/resources/theme3.0/projects.svg" alt="PROJECTS"></h1>
+      <ol>
+        <li>
+          <a href="https://github.com/deempalme/arduino_serial">
+            <h1>Arduino serial communication</h1>
+            <p>Library created to communicate between your C++ projects and arduino devices using the same functions' names and code structure.</p>
+            <ul>
+              <li>Tags:</li>
+              <li>arduino</li>
+              <li>serial-communication</li>
+              <li>UART</li>
+              <li>USB</li>
+              <li>IO</li>
+            </ul>
+            <dl>
+              <dt>Languages:</dt>
+              <dt>C++</dt>
+              <dt>CMake</dt>
+            </dl>
+          </a>
+        </li>
+        <li>
+          <a href="https://github.com/deempalme/GPS_coordinate_converter">
+            <h1>GPS coordinate converter</h1>
+            <p>GPS Coordinates converter using Azimuthal equidistant projection (Way better than Flat / Mercartor Projection).</p>
+            <ul>
+              <li>Tags:</li>
+              <li>GPS-coordinates</li>
+              <li>latitude-and-longitude</li>
+              <li>azimuthal-equidistant-projection</li>
+              <li>GPS-converter</li>
+              <li>ramrod</li>
+            </ul>
+            <dl>
+              <dt>Languages:</dt>
+              <dt>C++</dt>
+              <dt>CMake</dt>
+            </dl>
+          </a>
+        </li>
+        <li>
+          <a href="https://github.com/deempalme/visualisierung">
+            <h1>Visualisierung</h1>
+            <p>First version to visualize the Autonomous driving vehicle sensor's data and its the calculated results, featuring a 2D graphic user interface and fast calculations performed in the GPU.</p>
+            <ul>
+              <li>Tags:</li>
+              <li>autonomous-driving-vehicle</li>
+              <li>LiDar</li>
+              <li>grid-map</li>
+              <li>objects</li>
+              <li>trajectories</li>
+              <li>streets-and-signaling</li>
+              <li>camera-views</li>
+              <li>GUI</li>
+              <li>GPU-calculations</li>
+            </ul>
+            <dl>
+              <dt>Languages:</dt>
+              <dt>C++</dt>
+              <dt>GLSL</dt>
+              <dt>CMake</dt>
+            </dl>
+          </a>
+        </li>
+        <li>
+          <a href="https://github.com/deempalme/torero">
+            <h1>Torero</h1>
+            <p>Second improved version of the visualization of the Autonomous driving vehicle sensor's data and its the calculated results, featuring a 3D graphic user interface and photo-realistic rendering, with boosted GPU calculations.</p>
+            <ul>
+              <li>Tags:</li>
+              <li>autonomous-driving-vehicle</li>
+              <li>LiDar</li>
+              <li>grid-map</li>
+              <li>objects</li>
+              <li>trajectories</li>
+              <li>streets-and-signaling</li>
+              <li>camera-views</li>
+              <li>GUI</li>
+              <li>GPU-calculations</li>
+              <li>PBR</li>
+            </ul>
+            </ul>
+            <dl>
+              <dt>Languages:</dt>
+              <dt>C++</dt>
+              <dt>GLSL</dt>
+              <dt>CMake</dt>
+            </dl>
+          </a>
+        </li>
+        <li>
+          <a href="https://github.com/deempalme/network_communication">
+            <h1>Network communication</h1>
+            <p>Library for easy communication between server and client using TCP and UDP in synchronous or asynchronous modes.</p>
+            <ul>      
+              <li>Tags:</li>
+              <li>server-client-communication</li>
+              <li>socket</li>
+              <li>TCP-socket</li>
+              <li>UDP-socket</li>
+              <li>asynchronous</li>
+              <li>synchronous</li>
+            </ul>
+            <dl>
+              <dt>Languages:</dt>
+              <dt>C++</dt>
+              <dt>GLSL</dt>
+              <dt>CMake</dt>
+            </dl>
+          </a>
+        </li>
+        <li>
+          <a href="https://github.com/deempalme/gui">
+            <h1>GUI</h1>
+            <p>Graphic User Interface library with OpenGL and SDL2 as window manager.</p>
+            <ul>
+              <li>Tags:</li>
+              <li>GUI</li>
+              <li>openGL</li>
+              <li>SDL2</li>
+              <li>windows-manager</li>
+            </ul>
+            <dl>
+              <dt>Languages:</dt>
+              <dt>C++</dt>
+              <dt>GLSL</dt>
+              <dt>CMake</dt>
+            </dl>
+          </a>
+        </li>
+        <li>
+          <a href="https://github.com/deempalme/console_printer">
+            <h1>Console printer</h1>
+            <p>C++ library to create stylized console printing (with color, weight, and backgrounds)</p>
+            <ul>
+              <li>Tags:</li>
+              <li>iostream</li>
+              <li>color-format</li>
+              <li>terminal-colorized</li>
+              <li>colorized-ostream</li>
+              <li>terminal-output</li>
+              <li>colorized-terminal</li>
+            </ul>
+            <dl>
+              <dt>Languages:</dt>
+              <dt>C++</dt>
+              <dt>CMake</dt>
+            </dl>
+          </a>
+        </li>
+        <li>
+          <a href="https://github.com/deempalme/multithreading">
+            <h1>Multithreading</h1>
+            <p>Simple C++ multithreading library to run functions in different CPU threads, check and perform callbacks when they are finished.</p>
+            <ul>
+              <li>Tags:</li>
+              <li>multithreading</li>
+              <li>callback</li>
+              <li>asynchronous-callbacks</li>
+              <li>multithreading-callback</li>
+              <li>function-binding</li>
+            </ul>
+            <dl>
+              <dt>Languages:</dt>
+              <dt>C++</dt>
+              <dt>CMake</dt>
+            </dl>
+          </a>
+        </li>
+        <li>
+          <a href="https://github.com/deempalme/gamepad_reader">
+            <h1>Gamepad reader</h1>
+            <p>Gamepad reader for joysticks in windows and linux (if joystick driver is supported) </p>
+            <ul>
+              <li>Tags:</li>
+              <li>gamepad</li>
+              <li>joystick</li>
+              <li>SDL2</li>
+            </ul>
+            <dl>
+              <dt>Languages:</dt>
+              <dt>C++</dt>
+              <dt>CMake</dt>
+            </dl>
+          </a>
+        </li>
+        <li>
+          <a href="https://github.com/deempalme/eye_of_the_tiger">
+            <h1>Eye of the tiger</h1>
+            <p>Ultra fast calculation of empty space from LiDar data for autonomous driving using image proccesing with CUDA.</p>
+            <ul>
+              <li>Tags:</li>
+              <li>LiDar</li>
+              <li>image-proccesing</li>
+              <li>parallel-programming</li>
+              <li>CUDA</li>
+              <li>GPU-calculations</li>
+            </ul>
+            <dl>
+              <dt>Languages:</dt>
+              <dt>C++</dt>
+              <dt>Cuda</dt>
+              <dt>GLSL</dt>
+              <dt>CMake</dt>
+            </dl>
+          </a>
+        </li>
+        <li>
+          <a href="https://github.com/deempalme/qt_ros_debugging">
+            <h1>Qt ROS debugging</h1>
+            <p>How to debug ROS programs with Qt (and how to compile CarMaker projects using catkin).</p>
+            <ul>
+              <li>Tags:</li>
+              <li>QT</li>
+              <li>ROS</li>
+              <li>debugging</li>
+              <li>carmaker</li>
+              <li>catkin-workspace</li>
+              <li>qtcreator</li>
+              <li>catkin-ws</li>
+            </ul>
+            <dl>
+              <dt>Languages:</dt>
+              <dt>Markdown</dt>
+              <dt>C++</dt>
+              <dt>CMake</dt>
+            </dl>
+          </a>
+        </li>
+        <li>
+          <a href="https://github.com/deempalme/rocinante">
+            <h1>Rocinante</h1>
+            <p>ROS Message reader for C++</p>
+            <ul>
+              <li>Tags:</li>
+              <li>ROS</li>
+              <li>ROS-messages</li>
+              <li>torero</li>
+            </ul>
+            <dl>
+              <dt>Languages:</dt>
+              <dt>C++</dt>
+              <dt>ROS</dt>
+              <dt>CMake</dt>
+            </dl>
+          </a>
+        </li>
+        <li>
+          <a href="https://github.com/deempalme/kitti_reader">
+            <h1>KITTI reader</h1>
+            <p>C++ library to read kitti data </p>
+            <ul>
+              <li>Tags:</li>
+              <li>kitti</li>
+              <li>torero</li>
+            </ul>
+            <dl>
+              <dt>Languages:</dt>
+              <dt>C++</dt>
+              <dt>ROS</dt>
+              <dt>CMake</dt>
+            </dl>
+          </a>
+        </li>
+        <li>
+          <a href="https://github.com/deempalme/algebraica">
+            <h1>Algebraica</h1>
+            <p>Light mathematical libray for OpenGL and C++</p>
+            <ul>
+              <li>Tags:</li>
+              <li>mathematics</li>
+              <li>linear-algebra</li>
+              <li>openGL</li>
+              <li>torero</li>
+            </ul>
+            <dl>
+              <dt>Languages:</dt>
+              <dt>C++</dt>
+              <dt>CMake</dt>
+            </dl>
+          </a>
+        </li>
+        <li>
+          <a href="https://github.com/deempalme/open_gl">
+            <h1>OpenGL wrapper</h1>
+            <p>OpenGL wrapper library.</p>
+            <ul>
+              <li>Tags:</li>
+              <li>openGL</li>
+              <li>GLAD</li>
+            </ul>
+            <dl>
+              <dt>Languages:</dt>
+              <dt>C++</dt>
+              <dt>CMake</dt>
+            </dl>
+          </a>
+        </li>
+        <li>
+          <a href="https://github.com/deempalme/portfolio">
+            <h1>Portfolio</h1>
+            <p>Francisco's online portfolio source code.</p>
+            <ul>
+              <li>Tags:</li>
+              <li>curriculum-vitae</li>
+              <li>portfolio</li>
+              <li>webGL2</li>
+            </ul>
+            <dl>
+              <dt>Languages:</dt>
+              <dt>Typescript</dt>
+              <dt>Javascript</dt>
+              <dt>jQuery</dt>
+              <dt>Css3</dt>
+              <dt>HTML5</dt>
+            </dl>
+          </a>
+        </li>
+      </ol>
     </section>
     <section id="about_me" name="about_me">
       <h1><img src="/resources/theme3.0/about_me.svg" alt="ABOUT ME"></h1>
