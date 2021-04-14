@@ -6,6 +6,7 @@ export class navigation {
   // Main navigation objects
   private nav : HTMLElement;
   private links : Array<section>;
+  private active_link : number = 0;
 
   private timer : number;
 
@@ -48,11 +49,14 @@ export class navigation {
     this.mouseout_event = this.counter.bind(this);
     this.nav.addEventListener('mouseout', this.mouseout_event);
   }
+  public active() : number {
+    return this.active_link;
+  }
   /**
    * @brief Destroying all event listeners
    */
-   public destroy() : void {
-     clearTimeout(this.timer);
+  public destroy() : void {
+    clearTimeout(this.timer);
     this.nav.removeEventListener('mouseover', this.mouseover_event);
     this.nav.removeEventListener('mouseout', this.mouseout_event);
   }
@@ -85,8 +89,11 @@ export class navigation {
    */
   public scroll(page_offset : number) : void {
     // Moving the shadow for the link's canvas
-    for(var i in this.links)
+    for(var i in this.links){
       this.links[i].scroll(page_offset);
+      if(page_offset >= this.links[i].top() && page_offset < this.links[i].bottom())
+        this.active_link = parseInt(i);
+    }
   }
   /**
    * @brief Shows the navigation menu

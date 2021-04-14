@@ -12,9 +12,9 @@ export class section {
   private radius   : number = 0;
 
   // Linked object's start and end position relative to the document
-  private start   : number = 0;
-  private end     : number = 0;
-  private height  : number = 0;
+  private start : number = 0;
+  private end   : number = 0;
+  private size  : number = 0;
 
   // Indicates if the linked object is currently visible on screen
   private blacked : boolean = false;
@@ -26,15 +26,21 @@ export class section {
     this.canvas = document.createElement('canvas');
     this.context = this.canvas.getContext('2d')!;
   }
+  public bottom() : number {
+    return this.end;
+  }
+  public height() : number {
+    return this.size;
+  }
   /**
    * @brief Changing the canvas size and the linked object's start and end position
    * 
    * @param font_size Current page's main font size
    */
   public resize(font_size : number) : void {
-    this.height = $(this.object).height()!;
+    this.size = $(this.object).height()!;
     this.start = $(this.object).offset()!.top;
-    this.end = this.start + this.height;
+    this.end = this.start + this.size;
     this.canvas.width = this.canvas.height = this.diameter = font_size * 1.25;
     this.radius = this.diameter * 0.5;
 
@@ -66,7 +72,7 @@ export class section {
     }else if(page_offset >= this.start && page_offset <= this.end){
       this.blacked = this.whited = false;
 
-      const y : number = ((page_offset - this.start) / this.height - 0.1) * this.diameter * 1.3;
+      const y : number = ((page_offset - this.start) / this.size - 0.1) * this.diameter * 1.3;
 
       this.context.clearRect(0, 0, this.diameter, this.diameter);
       this.context.beginPath();
@@ -92,5 +98,8 @@ export class section {
     link.textContent = '';
     link.appendChild(this.link);
     link.appendChild(this.canvas);
+  }
+  public top() : number {
+    return this.start;
   }
 }

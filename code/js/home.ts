@@ -41,8 +41,8 @@ class home
 
     // Forcing an initial sizes' calculation
     this.resize();
-
-    this.universe.activate();
+    // Forcing the activation of scroll dependant actions
+    this.scroll();
   }
   /**
    * @brief Destroying all event listeners
@@ -73,6 +73,12 @@ class home
 
     // Moving the shadow for the link's canvas
     this.nav.scroll(page_offset);
+    // Activating/deactivating frame animation of the universe
+    if(this.nav.active() == 0)
+      this.universe.activate();
+    else
+      this.universe.deactivate();
+
     // Checking if a key should be inactive
     this.key.scroll(page_offset);
     this.universe.scroll(page_offset);
