@@ -1,5 +1,5 @@
 
-import * as constants from './constants';
+import * as k from './constants';
 import $ from 'jquery';
 
 
@@ -25,7 +25,8 @@ export class model
       $.ajax({
         url: model_url,
         beforeSend: function(xhr){ xhr.overrideMimeType( "text/plain; charset=utf-8" ); },
-        dataType: 'text'
+        dataType: 'text',
+        error: function(ts){ console.error("Model not loaded", ts.responseText, model_url); }
       }).done(function(data){ this_object.process_data(data); });
     }
   }
@@ -118,17 +119,19 @@ export class model
   private process_data(data : string) : void {
     const lines : Array<string> = data.split("\n");
     var sections : Array<string>, face : Array<string>, index : number;
-    var vertices = [], textures = [], normals = [], vector : Array<number> = [0, 0, 0];
-    var vertex_indices : Array<number> = [], normal_indices : Array<number> = [];
+    var vertices = [], textures = [], normals = [];
+    var vector : Array<number> = [0, 0, 0];
+    var vertex_indices : Array<number> = [];
+    var normal_indices : Array<number> = [];
     var texture_indices : Array<number> = [];
-    var tangent = [];
+    var tangent = [], bitangent = [];
     const size : number = lines.length;
 
-    var posIndex : number = 0, r : number = 0;
-    var deltaPos1 : Array<number> = [0, 0, 0], deltaPos2 : Array<number> = [0, 0, 0];
-    var deltaUV1 : Array<number> = [0, 0], deltaUV2  : Array<number>= [0, 0];
+    var pos_index : number = 0, r : number = 0;
+    var delta_pos_1 : Array<number> = [0, 0, 0], delta_pos_2 : Array<number> = [0, 0, 0];
+    var delta_uv_1 : Array<number> = [0, 0], delta_uv_2  : Array<number>= [0, 0];
 
-    for (var i = 0; i < size; i++) {
+    for (var i = 0; i < size; ++i) {
       sections = lines[i].split(" ");
       if (sections[0] == "v") {
         index = vertices.push(new Array(3)) - 1;
@@ -151,35 +154,57 @@ export class model
           texture_indices.push(parseInt(face[1]));
           normal_indices.push(parseInt(face[2]));
         }
-        posIndex = vertex_indices.length - 1;
+        pos_index = vertex_indices.length - 1;
 
-        deltaPos1[0] = vertices[vertex_indices[posIndex] - 1][0] - vertices[vertex_indices[posIndex - 2] - 1][0];
-        deltaPos1[1] = vertices[vertex_indices[posIndex] - 1][1] - vertices[vertex_indices[posIndex - 2] - 1][1];
-        deltaPos1[2] = vertices[vertex_indices[posIndex] - 1][2] - vertices[vertex_indices[posIndex - 2] - 1][2];
+        delta_pos_1[0] = vertices[vertex_indices[pos_index] - 1][0]
+                       - vertices[vertex_indices[pos_index - 2] - 1][0];
+        delta_pos_1[1] = vertices[vertex_indices[pos_index] - 1][1]
+                       - vertices[vertex_indices[pos_index - 2] - 1][1];
+        delta_pos_1[2] = vertices[vertex_indices[pos_index] - 1][2]
+                       - vertices[vertex_indices[pos_index - 2] - 1][2];
   
-        deltaPos2[0] = vertices[vertex_indices[posIndex - 1] - 1][0] - vertices[vertex_indices[posIndex - 2] - 1][0];
-        deltaPos2[1] = vertices[vertex_indices[posIndex - 1] - 1][1] - vertices[vertex_indices[posIndex - 2] - 1][1];
-        deltaPos2[2] = vertices[vertex_indices[posIndex - 1] - 1][2] - vertices[vertex_indices[posIndex - 2] - 1][2];
+        delta_pos_2[0] = vertices[vertex_indices[pos_index - 1] - 1][0]
+                       - vertices[vertex_indices[pos_index - 2] - 1][0];
+        delta_pos_2[1] = vertices[vertex_indices[pos_index - 1] - 1][1]
+                       - vertices[vertex_indices[pos_index - 2] - 1][1];
+        delta_pos_2[2] = vertices[vertex_indices[pos_index - 1] - 1][2]
+                       - vertices[vertex_indices[pos_index - 2] - 1][2];
 
-        if (texture_indices[posIndex] > 0 && texture_indices[posIndex - 2] > 0) {
-          deltaUV1[0] = textures[texture_indices[posIndex] - 1][0] - textures[texture_indices[posIndex - 2] - 1][0];
-          deltaUV1[1] = textures[texture_indices[posIndex] - 1][1] - textures[texture_indices[posIndex - 2] - 1][1];
+        if (texture_indices[pos_index] > 0 && texture_indices[pos_index - 2] > 0) {
+          delta_uv_1[0] = textures[texture_indices[pos_index] - 1][0]
+                        - textures[texture_indices[pos_index - 2] - 1][0];
+          delta_uv_1[1] = textures[texture_indices[pos_index] - 1][1]
+                        - textures[texture_indices[pos_index - 2] - 1][1];
 
-          deltaUV2[0] = textures[texture_indices[posIndex - 1] - 1][0] - textures[texture_indices[posIndex - 2] - 1][0];
-          deltaUV2[1] = textures[texture_indices[posIndex - 1] - 1][1] - textures[texture_indices[posIndex - 2] - 1][1];
+          delta_uv_2[0] = textures[texture_indices[pos_index - 1] - 1][0]
+                        - textures[texture_indices[pos_index - 2] - 1][0];
+          delta_uv_2[1] = textures[texture_indices[pos_index - 1] - 1][1]
+                        - textures[texture_indices[pos_index - 2] - 1][1];
         }
 
-        r = 1 / (deltaUV1[0] * deltaUV2[1] - deltaUV1[1] * deltaUV2[0]);
+        r = 1 / (delta_uv_1[0] * delta_uv_2[1] - delta_uv_1[1] * delta_uv_2[0]);
 
-        vector[0] = (deltaPos1[0] * deltaUV2[1] - deltaPos2[0] * deltaUV1[1]) * r;
-        vector[1] = (deltaPos1[1] * deltaUV2[1] - deltaPos2[1] * deltaUV1[1]) * r;
-        vector[2] = (deltaPos1[2] * deltaUV2[1] - deltaPos2[2] * deltaUV1[1]) * r;
+        // Calculating the tangents
+        vector[0] = (delta_pos_1[0] * delta_uv_2[1] - delta_pos_2[0] * delta_uv_1[1]) * r;
+        vector[1] = (delta_pos_1[1] * delta_uv_2[1] - delta_pos_2[1] * delta_uv_1[1]) * r;
+        vector[2] = (delta_pos_1[2] * delta_uv_2[1] - delta_pos_2[2] * delta_uv_1[1]) * r;
         this.normalize(vector);
 
         index = tangent.push(new Array(3)) - 1;
         tangent[index][0] = vector[0];
         tangent[index][1] = vector[1];
         tangent[index][2] = vector[2];
+
+        // Calculating the bitangents
+        vector[0] = (delta_pos_2[0] * delta_uv_1[0] - delta_pos_1[0] * delta_uv_2[0]) * r;
+        vector[1] = (delta_pos_2[1] * delta_uv_1[0] - delta_pos_1[1] * delta_uv_2[0]) * r;
+        vector[2] = (delta_pos_2[2] * delta_uv_1[0] - delta_pos_1[2] * delta_uv_2[0]) * r;
+        this.normalize(vector);
+
+        index = bitangent.push(new Array(3)) - 1;
+        bitangent[index][0] = vector[0];
+        bitangent[index][1] = vector[1];
+        bitangent[index][2] = vector[2];
       }
     }
 
@@ -189,12 +214,12 @@ export class model
 
     for (var i = 0; i < indices_size; i++) {
       i3 = Math.floor(i / 3);
-      index = i * 11;
-      //position
+      index = i * 14;
+      // position
       all_data[index] = vertices[vertex_indices[i] - 1][0];
       all_data[index + 1] = vertices[vertex_indices[i] - 1][1];
       all_data[index + 2] = vertices[vertex_indices[i] - 1][2];
-      //texture
+      // texture
       if (texture_indices[i] > 0) {
         all_data[index + 3] = textures[texture_indices[i] - 1][0];
         all_data[index + 4] = textures[texture_indices[i] - 1][1];
@@ -202,14 +227,18 @@ export class model
         all_data[index + 3] = 0;
         all_data[index + 4] = 0;
       }
-      //normal
+      // normal
       all_data[index + 5] = normals[normal_indices[i] - 1][0];
       all_data[index + 6] = normals[normal_indices[i] - 1][1];
       all_data[index + 7] = normals[normal_indices[i] - 1][2];
-      //tangent
+      // tangent
       all_data[index + 8] = tangent[i3][0];
       all_data[index + 9] = tangent[i3][1];
       all_data[index + 10] = tangent[i3][2];
+      // bitangent
+      all_data[index + 11] = bitangent[i3][0];
+      all_data[index + 12] = bitangent[i3][1];
+      all_data[index + 13] = bitangent[i3][2];
     }
 
     //this.gl.useProgram(program.id);
@@ -220,17 +249,20 @@ export class model
     this.gl.bufferData(this.gl.ARRAY_BUFFER, all_data, this.gl.STATIC_DRAW);
 
     var offset : number = 0;
-    this.gl.vertexAttribPointer(constants.attributes.position, 3, this.gl.FLOAT, false, 44, offset); 
-    this.gl.enableVertexAttribArray(constants.attributes.position);
+    this.gl.vertexAttribPointer(k.attributes.position, 3, this.gl.FLOAT, false, 56, offset); 
+    this.gl.enableVertexAttribArray(k.attributes.position);
     offset += 12;
-    this.gl.vertexAttribPointer(constants.attributes.uv, 2, this.gl.FLOAT, false, 44, offset);
-    this.gl.enableVertexAttribArray(constants.attributes.uv);
+    this.gl.vertexAttribPointer(k.attributes.uv, 2, this.gl.FLOAT, false, 56, offset);
+    this.gl.enableVertexAttribArray(k.attributes.uv);
     offset += 8;
-    this.gl.vertexAttribPointer(constants.attributes.normal, 3, this.gl.FLOAT, false, 44, offset);
-    this.gl.enableVertexAttribArray(constants.attributes.normal);
+    this.gl.vertexAttribPointer(k.attributes.normal, 3, this.gl.FLOAT, false, 56, offset);
+    this.gl.enableVertexAttribArray(k.attributes.normal);
     offset += 12;
-    this.gl.vertexAttribPointer(constants.attributes.tangent, 3, this.gl.FLOAT, false, 44, offset);
-    this.gl.enableVertexAttribArray(constants.attributes.tangent);
+    this.gl.vertexAttribPointer(k.attributes.tangent, 3, this.gl.FLOAT, false, 56, offset);
+    this.gl.enableVertexAttribArray(k.attributes.tangent);
+    offset += 12;
+    this.gl.vertexAttribPointer(k.attributes.bitangent, 3, this.gl.FLOAT, false, 56, offset);
+    this.gl.enableVertexAttribArray(k.attributes.bitangent);
 
     this.finished = true;
   }
