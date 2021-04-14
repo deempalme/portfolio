@@ -64,13 +64,16 @@ typings/
 
 # blender backup files
 *.blend1
+.blend1
 
 # Heavy files
 sources/*.jpg
 sources/*.tif
 sources/*.png
 
+fireworks/*
 fireworks/
 
 .confidential
 *.ini
+.ini
