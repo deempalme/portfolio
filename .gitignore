@@ -63,9 +63,14 @@ typings/
 .env.test
 
 # blender backup files
-.blend1
+*.blend1
 
 # Heavy files
 sources/*.jpg
 sources/*.tif
 sources/*.png
+
+fireworks/
+
+.confidential
+*.ini
