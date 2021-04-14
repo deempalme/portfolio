@@ -65,3 +65,7 @@ typings/
 # blender backup files
 .blend1
 
+# Heavy files
+sources/*.jpg
+sources/*.tif
+sources/*.png
