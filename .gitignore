@@ -78,4 +78,4 @@ sources/*.png
 *.ini
 .ini
 
-.lib
+lib/
