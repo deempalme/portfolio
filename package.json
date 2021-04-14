@@ -2,10 +2,7 @@
   "name": "portfolio",
   "version": "1.0.0",
   "description": "Curriculum vitae",
-  "main": "index.js",
-  "scripts": {
-    "test": "tsc --watch tsconfig.json"
-  },
+  "main": "index.php",
   "repository": {
     "type": "git",
     "url": "git+https://github.com/deempalme/portfolio.git"
@@ -20,5 +17,11 @@
   "bugs": {
     "url": "https://github.com/deempalme/portfolio/issues"
   },
-  "homepage": "https://github.com/deempalme/portfolio#readme"
+  "homepage": "https://github.com/deempalme/portfolio#readme",
+  "devDependencies": {
+    "@types/jquery": "^3.5.5"
+  },
+  "dependencies": {
+    "jquery": "^3.6.0"
+  }
 }
