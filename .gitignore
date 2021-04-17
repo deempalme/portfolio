@@ -79,3 +79,7 @@ sources/*.png
 .ini
 
 lib/
+
+# Backup files
+*.back
+
