@@ -8,8 +8,8 @@ import { planet, planet_info } from './planet';
 import { shader } from './gl/shader';
 import { planets_shader } from './shaders/planets_shader_normal';
 import { texture } from './gl/texture';
-import { postprocessing } from './postprocessing';
 import { error_gl } from './gl/error';
+import $ from 'jquery';
 
 
 export class universe
@@ -18,12 +18,17 @@ export class universe
   private height : number = 0;
 
   private main_object : HTMLElement;
+  private start : number = 0;
+  private end   : number = 0;
+  private size  : number = 0;
+  private last_scroll : number = 0;
+  private initial_angle : number = 0;
+
   private gl : open_gl;
   private sphere : model;
   private ring : model;
   private timer : number = 0;
   private active : boolean = false;
-  private post : postprocessing;
 
   private lines_shader  : shader;
   private planet_shader : shader;
@@ -35,8 +40,8 @@ export class universe
   private interval_binder : any;
   private paint_binder : any;
   private last_timestamp : number = 0;
-  private resize_timer : number = 0;
-  private resize_binder : any;
+  private speed_binder : any;
+  private scroll_timer : number = 0;
 
 
   constructor(object : string){
@@ -179,13 +184,13 @@ export class universe
       new planet(this.planet_shader, this.ring, albedoes[9], normal_center, null, null, planets[5], true)
     ];
 
-    this.post = new postprocessing(this.gl);
-
     // Binding the paint to an interval event
     this.interval_binder = this.request_animation.bind(this);
     this.paint_binder = this.paint.bind(this);
-    this.resize_binder = this.resize_frame.bind(this);
+    this.speed_binder = this.normal_speed.bind(this);
 
+    this.last_scroll = window.pageYOffset;
+    this.initial_angle = this.gl.angle_x();
     this.resize();
   }
   /**
@@ -227,23 +232,15 @@ export class universe
     if(timestamp == this.last_timestamp) return;
 
     this.last_timestamp = timestamp;
-    // Activating framebuffer
-    //this.post.activate();
-    //this.gl.clear();
 
     // Painting the plantes and sun
     this.planet_shader.use();
-    for(var i in this.planets){
+    for(var i in this.planets)
       this.planets[i].paint();
-    }
 
     // Painting the translation lines
     this.lines_shader.use();
     this.circles.paint();
-
-    // Deactivating framebuffer
-    //this.post.deactivate();
-    //this.post.paint();
 
     //let error : GLenum = this.gl.context()!.getError();
     //if(error != 0) console.log(error_gl.message(error));
@@ -262,23 +259,65 @@ export class universe
     this.width = this.main_object.clientWidth;
     this.height = window.innerHeight;
 
-    this.gl.resize(this.width, this.height);
+    this.start = $(this.main_object).offset()!.top;
+    this.size = $(this.main_object).height()!;
+    this.end = this.start + this.size;
 
-    clearTimeout(this.resize_timer);
-    this.resize_timer = setTimeout(this.resize_binder, 500);
+    this.gl.resize(this.width, this.height);
   }
   /**
    * @brief Scrolling event handler
    */
   public scroll(page_offset : number) : void {
-    if(!this.active) return;
+    if(!this.active){
+      this.last_scroll = page_offset;
+      return;
+    }
 
-    
+    // Linear interpolation:
+    // y = y0 + (x - x0) * ((y1 - y0) / (x1 - x0));
+    // Knowing that x0 = 0 then
+    // y = y0 + x * ((y1 - y0) / x1);
+    let y : number, x : number;
+    let y0 : number = this.initial_angle;
+    const y1 : number = constants.target_angle;
+    const x1 : number = this.end;
+
+    // Recalculating initial angle
+    if(this.gl.moved()){
+      y = this.gl.angle_x();
+      x = this.last_scroll;
+      // Solving for y0
+      // y0 = (y1 * x - y * x1) / (x - x1)
+      y0 = (y1 * x - y * x1) / (x - x1);
+      this.initial_angle = y0;
+    }
+
+    if(this.last_scroll < this.end){
+      x = page_offset;
+      y = y0 + x * ((y1 - y0) / x1);
+
+      // Calculating the rotation in X axis
+      let current_angle : number = this.gl.angle_x();
+      //if(current_angle > constants.target_angle) current_angle -= constants.degree_180;
+      let new_angle = current_angle + (page_offset - this.last_scroll)
+                      * ((constants.target_angle - current_angle) / (this.end - this.last_scroll));
+      let delta_angle : number = new_angle - current_angle;
+      this.gl.rotate_x(delta_angle);  
+    }
+
+    // Changing the speed for rotation in the Z axis
+    let direction : number = page_offset - this.last_scroll;
+    this.last_scroll = page_offset;
+    planet.speed(1.0 * direction);
+
+    clearTimeout(this.scroll_timer);
+    this.scroll_timer = setTimeout(this.speed_binder, 100);
   }
 
   // ::::::::::::::::::::::::::::::::::::: PRIVATE FUNCTIONS ::::::::::::::::::::::::::::::::::::::
 
-  private resize_frame() : void {
-    this.post.resize(this.width, this.height);
+  private normal_speed() : void {
+    planet.speed(1.0);
   }
 };
