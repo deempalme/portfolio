@@ -1,7 +1,6 @@
 
 import * as constants from "./gl/constants";
 import { model } from "./gl/model";
-import { open_gl } from "./gl/open_gl";
 import { shader } from "./gl/shader";
 import { texture } from "./gl/texture";
 import { m4 } from "./math/m4";
@@ -36,6 +35,7 @@ export class planet
   private shader : shader;
   private u_position     : WebGLUniformLocation | null;
   private u_model        : WebGLUniformLocation | null;
+  private u_normal_mat   : WebGLUniformLocation | null;
   private u_is_sun       : WebGLUniformLocation | null;
   private u_use_lights   : WebGLUniformLocation | null;
   private u_use_specular : WebGLUniformLocation | null;
@@ -49,6 +49,7 @@ export class planet
   // Planet properties: radius, distance to star, translation, and rotation
   private properties : Float32List;
   private model : Float32Array = new Float32Array(0);
+  private normal_matrix : Float32Array = new Float32Array(0);
 
   constructor(shader : shader, model : model, albedo : texture,
               normal : texture, lights : texture | null, specular : texture | null,
@@ -80,6 +81,7 @@ export class planet
 
     this.u_position     = shader.uniform_location('u_position');
     this.u_model        = shader.uniform_location('u_model');
+    this.u_normal_mat   = shader.uniform_location('u_normal_matrix');
     this.u_is_sun       = shader.uniform_location('u_is_sun');
     this.u_use_lights   = shader.uniform_location('u_use_lights');
     this.u_use_specular = shader.uniform_location('u_use_specular');
@@ -94,6 +96,7 @@ export class planet
     // Setting the planet's position
     this.shader.uniform4fv(this.u_position, this.properties);
     this.shader.matrix4f(this.u_model, this.model);
+    this.shader.matrix3f(this.u_normal_mat, this.normal_matrix);
 
     this.albedo.activate();
     this.albedo.bind();
@@ -149,5 +152,6 @@ export class planet
     );
     this.model = m4.rotate_z(this.model, this.properties[3] * constants.degree_360);
     this.model = m4.scale_all(this.model, this.properties[0]);
+    this.normal_matrix = m4.normal_matrix(this.model);
   }
 };

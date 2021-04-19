@@ -6,7 +6,7 @@ import { model } from './gl/model';
 import { open_gl } from './gl/open_gl';
 import { planet, planet_info } from './planet';
 import { shader } from './gl/shader';
-import { planets_shader } from './shaders/planets_shader_normal';
+import { planets_shader } from './shaders/planets_shader';
 import { texture } from './gl/texture';
 import { error_gl } from './gl/error';
 import $ from 'jquery';
@@ -149,6 +149,8 @@ export class universe
                                    constants.texture_unit.albedo);
     var earth_normal = new texture(context, '/resources/models/earth/normal.jpg',
                                    constants.texture_unit.normal);
+    var earth_bump = new texture(context, '/resources/models/earth/bump.jpg',
+                                 constants.texture_unit.normal);
     var earth_specular = new texture(context, '/resources/models/earth/specular.jpg',
                                      constants.texture_unit.specular);
     var earth_lights = new texture(context, '/resources/models/earth/albedo_night.jpg',
@@ -169,17 +171,17 @@ export class universe
     ];
 
     this.planets = [
-      new planet(this.planet_shader, this.sphere, albedoes[0], normal, null, null, planets[0]),
-      new planet(this.planet_shader, this.sphere, albedoes[1], normal, null, null, planets[1]),
-      new planet(this.planet_shader, this.sphere, earth_albedo, earth_normal, earth_lights,
+      new planet(this.planet_shader, this.sphere, albedoes[0], earth_bump, null, null, planets[0]),
+      new planet(this.planet_shader, this.sphere, albedoes[1], earth_bump, null, null, planets[1]),
+      new planet(this.planet_shader, this.sphere, earth_albedo, earth_bump, earth_lights,
                  earth_specular, planets[2]),
-      new planet(this.planet_shader, this.sphere, albedoes[2], normal, null, null, planets[3]),
-      new planet(this.planet_shader, this.sphere, albedoes[3], normal, null, null, planets[4]),
-      new planet(this.planet_shader, this.sphere, albedoes[4], normal, null, null, planets[5]),
-      new planet(this.planet_shader, this.sphere, albedoes[5], normal, null, null, planets[6]),
-      new planet(this.planet_shader, this.sphere, albedoes[6], normal, null, null, planets[7]),
-      new planet(this.planet_shader, this.sphere, albedoes[7], normal, null, null, planets[8]),
-      new planet(this.planet_shader, this.sphere, albedoes[8], normal, null, null, planets[9],
+      new planet(this.planet_shader, this.sphere, albedoes[2], earth_bump, null, null, planets[3]),
+      new planet(this.planet_shader, this.sphere, albedoes[3], earth_bump, null, null, planets[4]),
+      new planet(this.planet_shader, this.sphere, albedoes[4], earth_bump, null, null, planets[5]),
+      new planet(this.planet_shader, this.sphere, albedoes[5], earth_bump, null, null, planets[6]),
+      new planet(this.planet_shader, this.sphere, albedoes[6], earth_bump, null, null, planets[7]),
+      new planet(this.planet_shader, this.sphere, albedoes[7], earth_bump, null, null, planets[8]),
+      new planet(this.planet_shader, this.sphere, albedoes[8], earth_bump, null, null, planets[9],
                  true),
       new planet(this.planet_shader, this.ring, albedoes[9], normal_center, null, null, planets[5], true)
     ];
@@ -286,6 +288,7 @@ export class universe
     // Recalculating initial angle
     if(this.gl.moved()){
       y = this.gl.angle_x();
+      if(y > constants.target_angle) y -= constants.degree_180;
       x = this.last_scroll;
       // Solving for y0
       // y0 = (y1 * x - y * x1) / (x - x1)
@@ -294,15 +297,14 @@ export class universe
     }
 
     if(this.last_scroll < this.end){
+      // Getting the angle interpolation
       x = page_offset;
       y = y0 + x * ((y1 - y0) / x1);
 
-      // Calculating the rotation in X axis
+      // Calculating the rotation differential in X axis respecting vertical page offset
       let current_angle : number = this.gl.angle_x();
-      //if(current_angle > constants.target_angle) current_angle -= constants.degree_180;
-      let new_angle = current_angle + (page_offset - this.last_scroll)
-                      * ((constants.target_angle - current_angle) / (this.end - this.last_scroll));
-      let delta_angle : number = new_angle - current_angle;
+      if(current_angle > constants.target_angle) current_angle -= constants.degree_180;
+      let delta_angle : number = y - current_angle;
       this.gl.rotate_x(delta_angle);  
     }
 
