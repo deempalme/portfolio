@@ -35,25 +35,27 @@ export class planet
   private shader : shader;
   private u_position     : WebGLUniformLocation | null;
   private u_model        : WebGLUniformLocation | null;
-  private u_normal_mat   : WebGLUniformLocation | null;
   private u_is_sun       : WebGLUniformLocation | null;
   private u_use_lights   : WebGLUniformLocation | null;
   private u_use_specular : WebGLUniformLocation | null;
+  private u_fresnel      : WebGLUniformLocation | null;
 
   // Indicates the how much change in angles should happend every paint() call
   private rotation_change : number;
   private translation_change : number;
   // This multiplies the before mentioned changes
   private static movement_speed : number = 1.0;
+  private fresnel_color : Float32Array;
 
   // Planet properties: radius, distance to star, translation, and rotation
   private properties : Float32List;
   private model : Float32Array = new Float32Array(0);
-  private normal_matrix : Float32Array = new Float32Array(0);
+
 
   constructor(shader : shader, model : model, albedo : texture,
               normal : texture, lights : texture | null, specular : texture | null,
-              planet_properties : planet_info, sun : boolean = false){
+              fresnel_color : Float32Array, planet_properties : planet_info,
+              sun : boolean = false){
     this.sphere = model;
 
     this.albedo = albedo;
@@ -61,6 +63,7 @@ export class planet
     this.lights = lights;
     this.specular = specular;
     this.is_sun = sun;
+    this.fresnel_color = fresnel_color;
 
     this.properties = new Float32Array(4);
     // Planet's radius
@@ -81,8 +84,8 @@ export class planet
 
     this.u_position     = shader.uniform_location('u_position');
     this.u_model        = shader.uniform_location('u_model');
-    this.u_normal_mat   = shader.uniform_location('u_normal_matrix');
     this.u_is_sun       = shader.uniform_location('u_is_sun');
+    this.u_fresnel      = shader.uniform_location('u_fresnel_color');
     this.u_use_lights   = shader.uniform_location('u_use_lights');
     this.u_use_specular = shader.uniform_location('u_use_specular');
     this.shader = shader;
@@ -96,7 +99,6 @@ export class planet
     // Setting the planet's position
     this.shader.uniform4fv(this.u_position, this.properties);
     this.shader.matrix4f(this.u_model, this.model);
-    this.shader.matrix3f(this.u_normal_mat, this.normal_matrix);
 
     this.albedo.activate();
     this.albedo.bind();
@@ -104,6 +106,7 @@ export class planet
     this.normal.bind();
 
     this.shader.uniform1f(this.u_is_sun, this.is_sun ? 1.0 : 0.0);
+    this.shader.uniform3fv(this.u_fresnel, this.fresnel_color);
 
     if(this.specular !== null){
       this.specular.activate();
@@ -152,6 +155,5 @@ export class planet
     );
     this.model = m4.rotate_z(this.model, this.properties[3] * constants.degree_360);
     this.model = m4.scale_all(this.model, this.properties[0]);
-    this.normal_matrix = m4.normal_matrix(this.model);
   }
 };
