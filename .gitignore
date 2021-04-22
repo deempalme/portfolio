@@ -87,6 +87,12 @@ lib/
 resources/web/*
 resources/logotypes/*
 resources/js/*
+resources/theme/*
+
+bio.php
+code.php
+code2.php
+portfolio.php
 
 # Backup files
 *.back
