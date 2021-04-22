@@ -83,6 +83,11 @@ sources/*.png
 
 lib/
 
+# Not part of main portfolio
+resources/web/*
+resources/logotypes/*
+resources/js/*
+
 # Backup files
 *.back
 
