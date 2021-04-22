@@ -26,10 +26,10 @@ export class m4
   }
 
   /**
-   * Set a mat4 to the identity matrix
+   * Set a m4 to the identity matrix
    *
-   * @param {mat4} m the receiving matrix
-   * @returns {mat4} out
+   * @param {m4} m the receiving matrix
+   * @returns {m4} out
    */
   public static to_identity(m : Float32Array) : Float32Array {
     m[0] = 1, m[1] = 0, m[2] = 0, m[3] = 0,
@@ -41,9 +41,9 @@ export class m4
   }
 
   /**
-   * Calculates the determinant of a mat4
+   * Calculates the determinant of a m4
    *
-   * @param {mat4} a the source matrix
+   * @param {m4} a the source matrix
    * @returns {Number} determinant of a
    */
   public static determinant(a : Float32Array) : number {
@@ -70,11 +70,11 @@ export class m4
   }
 
   /**
-   * Multiplies two mat4's explicitly
+   * Multiplies two m4's explicitly
    *
-   * @param {mat4} a the first operand
-   * @param {mat4} b the second operand
-   * @returns {mat4} out
+   * @param {m4} a the first operand
+   * @param {m4} b the second operand
+   * @returns {m4} out
    */
   public static multiply(a : Float32Array, b : Float32Array) : Float32Array {
     var out = m4.identity();
@@ -113,11 +113,11 @@ export class m4
   }
 
   /**
-   * Translate a mat4 by the given vector not using SIMD
+   * Translate a m4 by the given vector not using SIMD
    *
-   * @param {mat4} a the matrix to translate
-   * @param {vec3} v vector to translate by
-   * @returns {mat4} out
+   * @param {m4} a the matrix to translate
+   * @param {v3} v vector to translate by
+   * @returns {m4} out
    */
   public static translate(a : Float32Array, v : Float32Array) : Float32Array {
     var out = m4.identity();
@@ -144,12 +144,12 @@ export class m4
   }
 
   /**
-   * Rotates a mat4 by the given angle around the given axis
+   * Rotates a m4 by the given angle around the given axis
    *
-   * @param {mat4} a the matrix to rotate
+   * @param {m4} a the matrix to rotate
    * @param {Number} rad the angle to rotate the matrix by
-   * @param {vec3} axis the axis to rotate around
-   * @returns {mat4} out
+   * @param {v3} axis the axis to rotate around
+   * @returns {m4} out
    */
   public static rotate(a : Float32Array, rad : number, axis : Float32Array) : Float32Array {
     var out = m4.identity();
@@ -210,9 +210,9 @@ export class m4
   /**
    * Rotates a matrix by the given angle around the X axis not using SIMD
    *
-   * @param {mat4} a the matrix to rotate
+   * @param {m4} a the matrix to rotate
    * @param {Number} rad the angle to rotate the matrix by
-   * @returns {mat4} out
+   * @returns {m4} out
    */
   public static rotate_x(a : Float32Array, rad : number) : Float32Array {
     var out = m4.identity();
@@ -253,9 +253,9 @@ export class m4
   /**
    * Rotates a matrix by the given angle around the Y axis not using SIMD
    *
-   * @param {mat4} a the matrix to rotate
+   * @param {m4} a the matrix to rotate
    * @param {Number} rad the angle to rotate the matrix by
-   * @returns {mat4} out
+   * @returns {m4} out
    */
   public static rotate_y(a : Float32Array, rad : number) : Float32Array {
     var out = m4.identity();
@@ -296,9 +296,9 @@ export class m4
   /**
    * Rotates a matrix by the given angle around the Z axis not using SIMD
    *
-   * @param {mat4} a the matrix to rotate
+   * @param {m4} a the matrix to rotate
    * @param {Number} rad the angle to rotate the matrix by
-   * @returns {mat4} out
+   * @returns {m4} out
    */
   public static rotate_z(a : Float32Array, rad : number) : Float32Array {
     var out = m4.identity();
@@ -337,11 +337,11 @@ export class m4
   }
 
   /**
-   * Scales the mat4 by the dimensions in the given vec3 not using vectorization
+   * Scales the m4 by the dimensions in the given v3 not using vectorization
    *
-   * @param {mat4} a the matrix to scale
-   * @param {vec3} v the vec3 to scale the matrix by
-   * @returns {mat4} out
+   * @param {m4} a the matrix to scale
+   * @param {v3} v the v3 to scale the matrix by
+   * @returns {m4} out
    **/
    public static scale(a : Float32Array, v : Float32Array) : Float32Array {
     var out = m4.identity();
@@ -367,11 +367,11 @@ export class m4
   }
 
     /**
-   * Scales the mat4 by the dimensions in the given number not using vectorization
+   * Scales the m4 by the dimensions in the given number not using vectorization
    *
-   * @param {mat4} a the matrix to scale
+   * @param {m4} a the matrix to scale
    * @param {number} n the value to scale the matrix by
-   * @returns {mat4} out
+   * @returns {m4} out
    **/
     public static scale_all(a : Float32Array, n : number) : Float32Array {
       var out = m4.identity();
@@ -402,7 +402,7 @@ export class m4
    * @param {number} aspect Aspect ratio. typically viewport width/height
    * @param {number} near Near bound of the frustum
    * @param {number} far Far bound of the frustum
-   * @returns {mat4} out
+   * @returns {m4} out
    */
   public static perspective(fovy : number, aspect : number, near : number, far : number) : Float32Array {
     var out = m4.identity();
@@ -430,10 +430,10 @@ export class m4
   /**
    * Generates a look-at matrix with the given eye position, focal point, and up axis
    *
-   * @param {vec3} eye Position of the viewer
-   * @param {vec3} center Point the viewer is looking at
-   * @param {vec3} up vec3 pointing up
-   * @returns {mat4} out
+   * @param {v3} eye Position of the viewer
+   * @param {v3} center Point the viewer is looking at
+   * @param {v3} up v3 pointing up
+   * @returns {m4} out
    */
   public static look_at(eye : Float32Array, center : Float32Array, up : Float32Array) : Float32Array {
     var out = m4.identity();
@@ -517,9 +517,9 @@ export class m4
   /**
    * Multiply each element of the matrix by a scalar.
    *
-   * @param {mat4} a the matrix to scale
+   * @param {m4} a the matrix to scale
    * @param {Number} b amount to scale the matrix's elements by
-   * @returns {mat4} out
+   * @returns {m4} out
    */
   public static multiply_scalar(a : Float32Array, b : number) : Float32Array {
     var out = m4.identity();
@@ -540,5 +540,31 @@ export class m4
     out[14] = a[14] * b;
     out[15] = a[15] * b;
     return out;
+  }
+
+  /**
+   * Calculates the normal matrix from a matrix 4x4
+   * 
+   * @param {m4} a Input matrix 4x4
+   * @returns {m3} A normal matrix 3x3
+   */
+  public static normal_matrix(a : Float32Array) : Float32Array {
+    const determinant : number = 
+      + a[0] * (a[5] * a[10] - a[6] * a[9])
+      - a[1] * (a[4] * a[10] - a[6] * a[8])
+      + a[2] * (a[4] * a[9]  - a[5] * a[8]);
+
+    var inverse : Float32Array = new Float32Array(9);
+    inverse[0] =  (a[5] * a[10] - a[9] * a[6]) / determinant;
+    inverse[1] = -(a[4] * a[10] - a[8] * a[6]) / determinant;
+    inverse[2] =  (a[4] * a[9]  - a[8] * a[5]) / determinant;
+    inverse[3] = -(a[1] * a[10] - a[9] * a[2]) / determinant;
+    inverse[4] =  (a[0] * a[10] - a[8] * a[2]) / determinant;
+    inverse[5] = -(a[0] * a[9]  - a[8] * a[1]) / determinant;
+    inverse[6] =  (a[1] * a[6]  - a[5] * a[2]) / determinant;
+    inverse[7] = -(a[0] * a[6]  - a[4] * a[2]) / determinant;
+    inverse[8] =  (a[0] * a[5]  - a[4] * a[1]) / determinant;
+
+    return inverse;
   }
 };

@@ -60,7 +60,7 @@ export class planets_shader {
 
     "uniform float u_use_specular;\n"+
     "uniform float u_use_lights;\n"+
-    "uniform vec3  u_fresnel_color;\n"+
+    "uniform float u_is_sun;\n"+
 
     "layout (location = 0) out vec4 o_color;\n"+
 
@@ -117,14 +117,14 @@ export class planets_shader {
        // Diffuse lighting
     "  float f_to_light_angle = dot(n_normal, n_light) * 0.5 + 0.5;\n"+
     "  float diffuse = smoothstep(0.1, 0.5, f_to_light_angle * u_diffuse_strength);\n"+
-    "  float diffuse_bump = min(diffuse + dot(bump_norm, n_light), 1.1);\n"+
+    "  float diffuse_bump = min(diffuse + dot(normal, n_light), 1.1);\n"+
 
        // Specular lighting
-    "  vec3 v_reflect = reflect(-n_light, n_normal);\n"+
+    "  vec3 v_reflect = reflect(-n_light, normal);\n"+
     "  float specular = pow(clamp(dot(v_reflect, n_camera), 0.0, 1.0), u_specular_shininess) * u_specular_strength;\n"+
 
        // Final color
-    "  o_color = vec4(color * u_light_color * (u_ambient_strength + diffuse_bump + specular), 1.0);\n"+
+    "  o_color = vec4(color * (u_ambient_strength + diffuse_bump + specular), 1.0);\n"+
 
        // Mix night lights
     "  vec4 night = texture(u_lights, f_uv);\n"+
