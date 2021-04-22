@@ -1,46 +1,24 @@
 
 import * as k from './constants';
-import $ from 'jquery';
+import { loader } from '../loader';
 
 
 export class model
 {
-  private static counter : number = 0;
-  private static maximum_count : number = 0;
-  private static loader : HTMLElement;
-
   private gl : WebGL2RenderingContext;
   private vao : WebGLVertexArrayObject | null;
   private finished : boolean = false;
   private data_size : number = 0;
+
 
   constructor(context : WebGL2RenderingContext, model_url : string){
     this.gl = context;
 
     this.vao = this.gl.createVertexArray();
 
-    if(this.vao){
+    if(this.vao)
       // Loading the 3D model object
-      var this_object = this;
-      $.ajax({
-        url: model_url,
-        beforeSend: function(xhr){ xhr.overrideMimeType( "text/plain; charset=utf-8" ); },
-        dataType: 'text',
-        error: function(ts){ console.error("Model not loaded", ts.responseText, model_url); }
-      }).done(function(data){ this_object.process_data(data); });
-    }
-  }
-  /**
-   * @brief Increments the counter and hides the HTMLElement stablished in set_loader()
-   * 
-   * @returns `true` if the counter reached the max_count() value
-   */
-  public static count() : boolean {
-    if(++model.counter >= model.maximum_count){
-      $(model.loader).hide();
-      return true;
-    }
-    return false;
+      loader.load_data(model_url, this.process_data.bind(this));
   }
   /**
    * @brief Draws the arrays inside the model VAO
@@ -59,43 +37,6 @@ export class model
    */
   public loaded() : boolean {
     return this.finished;
-  }
-  /**
-   * @brief Indicates the maximum value that the counter could reach
-   * 
-   * The HTMLElement selected in set_loader() will be hidden when the count reaches
-   * this value
-   * 
-   * @param new_maximum New maximum counter value
-   * 
-   * @returns `true` if the counter value was already reached
-   */
-  public static max_count(new_maximum : number) : boolean {
-    model.maximum_count = new_maximum;
-    if(model.counter >= model.maximum_count){
-      $(model.loader).hide();
-      return true;
-    }
-    return false;
-  }
-  /**
-   * @brief Resets the counter value
-   * 
-   * It will also show the HTMLElement selected in set_loader()
-   */
-  public static reset_count() : void {
-    model.maximum_count = 0;
-    $(model.loader).show();
-  }
-  /**
-   * @brief Sets an HTMLElement that represents the loading indicator
-   * 
-   * This HTMLElement will be hidden when the count reaches the max_count() value
-   * 
-   * @param object HTMLElement that represents the loading indicator
-   */
-  public static set_loader(object : HTMLElement) : void {
-    model.loader = object;
   }
 
   // ::::::::::::::::::::::::::::::::::::: PRIVATE FUNCTIONS ::::::::::::::::::::::::::::::::::::::
