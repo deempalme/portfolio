@@ -74,6 +74,9 @@ sources/*.jpg
 sources/*.tif
 sources/*.png
 
+# Gimp files
+*.xcf
+
 .confidential
 *.ini
 .ini
