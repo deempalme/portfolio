@@ -74,8 +74,26 @@ sources/*.jpg
 sources/*.tif
 sources/*.png
 
+# Gimp files
+*.xcf
+
 .confidential
 *.ini
 .ini
 
 lib/
+
+# Not part of main portfolio
+resources/web/*
+resources/logotypes/*
+resources/js/*
+resources/theme/*
+
+bio.php
+code.php
+code2.php
+portfolio.php
+
+# Backup files
+*.back
+

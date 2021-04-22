@@ -25,16 +25,10 @@ export class lines_shader {
     "precision mediump float;\n"+
 
     "layout (location = 0) out vec4 o_color;\n"+
-    "layout (location = 1) out vec4 o_bloom;\n"+
 
     //////////////////////////////////////////////////////
     
     "void main(void){\n"+
-    "  o_color = vec4(1.0, 1.0, 1.0, 0.65);\n"+
-      // Paints the bloom lights to create the effect
-    "  float brightness = o_color.r * 0.2126 + o_color.g * 0.7152 + o_color.b * 0.0722;\n"+
-      // Multiply a few times for brightness to get a steper color
-    "  o_bloom = o_color * brightness;\n"+
-    //"  o_bloom = vec4(0.0);\n"+
+    "  o_color = vec4(1.0, 1.0, 1.0, 0.4);\n"+
     "}\n";
 };

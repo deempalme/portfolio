@@ -1,4 +1,5 @@
 
+import { loader } from '../loader';
 import { open_gl } from './open_gl';
 
 export class texture
@@ -20,10 +21,8 @@ export class texture
     if(image_url === null){
       this.image = null;
     }else{
-      var this_class = this;
       this.image = new Image();
-      this.image.onload = function(){ this_class.initialize(flip_y, channels); };
-      this.image.src = image_url;
+      loader.load_image(image_url, this.image, this.initialize.bind(this, flip_y, channels));
     }
   }
   /**

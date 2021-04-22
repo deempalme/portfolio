@@ -1,35 +1,77 @@
 
+import { about_me } from './about_me';
+import { contact_me } from './contact_me';
 import { keys } from './keys';
+import { loader } from './loader';
 import { navigation } from './navigation';
+import { portfolio } from './portfolio';
+import { section } from './section';
 import { universe } from './universe';
 
 class home
 {
+  private html : HTMLElement;
   private width  : number = 0;
   private height : number = 0;
+  private scroll_width : number = 0;
 
   private font_size : number = 16;
 
   // Main navigation objects
-  private nav : navigation;
+  private nav_ : navigation;
   // Navigation keyboard
-  private key : keys;
-
-  private universe : universe;
+  private key_ : keys;
+  // Modules
+  private universe_ : universe;
+  private portfolio_ : portfolio;
+  private about_me_ : about_me;
+  private contact_me_ : contact_me;
   
   // Event binders
   private resize_event : any;
   private scroll_event : any;
   private unload_event : any;
+  private resize_binder : any;
+  private resize_timer : number = 0;
 
   constructor(){
-    this.nav = new navigation();
-    this.key = new keys('keys');
-    this.universe = new universe('universe');
+    this.html = document.documentElement;
+
+    // Add temporary box to wrapper
+    let scrollbox = document.createElement('div');
+    // Make box scrollable
+    scrollbox.style.overflow = 'scroll';
+    // Append box to document
+    document.body.appendChild(scrollbox);
+    // Measure inner width of box
+    this.scroll_width = scrollbox.offsetWidth - scrollbox.clientWidth;
+    // Remove box
+    document.body.removeChild(scrollbox);
+
+    // Setting the loader display
+    let loader_element : HTMLElement = document.getElementById('loader')!;
+    loader.set_loader(loader_element, loader_element.children.item(0) as HTMLElement);
+
+    this.nav_ = new navigation();
+    this.universe_ = new universe('universe');
+    this.portfolio_ = new portfolio('portfolio');
+    this.about_me_ = new about_me('about_me');
+    this.key_ = new keys('keys', this.nav_, this.portfolio_);
+    this.contact_me_ = new contact_me('contact_me');
+
+    section.set_keys(this.key_);
+
+    this.about_me_.add_image('/resources/images/right_side.jpg');
+    this.about_me_.add_image('/resources/images/plane.jpg');
+    this.about_me_.add_image('/resources/images/pem_module.jpg');
+    this.about_me_.add_image('/resources/images/fixture.jpg');
+    this.about_me_.add_image('/resources/images/kfs.jpg');
+    this.about_me_.add_image('/resources/images/mover.jpg');
 
     // Creating a window resize event handler
     this.resize_event = this.resize.bind(this);
-    window.addEventListener('resize', this.resize_event);
+    this.resize_binder = this.resize_call.bind(this);
+    window.addEventListener('resize', this.resize_binder);
 
     // Creating a window unload event handler
     this.scroll_event = this.scroll.bind(this);
@@ -52,7 +94,7 @@ class home
     window.removeEventListener('scroll', this.scroll_event);
     window.removeEventListener('unload', this.unload_event);
 
-    this.universe.destroy();
+    this.universe_.destroy();
   }
   /**
    * @brief Resizing event handler
@@ -60,10 +102,13 @@ class home
   public resize() : void {
     this.width = window.innerWidth;
     this.height = window.innerHeight;
+    this.html.style.width = (this.width - this.scroll_width) + 'px';
 
     // Gettting the start and ending offset for all html sections
-    this.nav.resize(this.font_size);
-    this.universe.resize();
+    this.nav_.resize(this.font_size);
+    this.portfolio_.resize(this.width - this.scroll_width);
+    this.universe_.resize();
+    this.contact_me_.resize();
   }
   /**
    * @brief Scroll event handler
@@ -72,16 +117,35 @@ class home
     const page_offset : number = window.pageYOffset;
 
     // Moving the shadow for the link's canvas
-    this.nav.scroll(page_offset);
+    this.nav_.scroll(page_offset);
     // Activating/deactivating frame animation of the universe
-    if(this.nav.active() == 0)
-      this.universe.activate();
+    if(this.nav_.active() == 0)
+      this.universe_.activate();
     else
-      this.universe.deactivate();
+      this.universe_.deactivate();
 
     // Checking if a key should be inactive
-    this.key.scroll(page_offset);
-    this.universe.scroll(page_offset);
+    this.key_.scroll(page_offset);
+    this.universe_.scroll(page_offset);
+    this.contact_me_.scroll(page_offset);
+  }
+  /**
+   * @brief Getting the width of the scrollbar
+   * 
+   * @returns Width in pixels of the scrollbar
+   */
+  public scroll_size() : number {
+    return this.scroll_width;
+  }
+
+  // ::::::::::::::::::::::::::::::::::::: PRIVATE FUNCTIONS ::::::::::::::::::::::::::::::::::::::
+
+  private resize_call() : void {
+    // Returning if the window size is the same
+    if(this.width === window.innerWidth && this.height === window.innerHeight) return;
+
+    clearTimeout(this.resize_timer);
+    this.resize_timer = setTimeout(this.resize_event, 100);
   }
 };
 

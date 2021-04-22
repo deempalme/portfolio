@@ -14,8 +14,8 @@ export class planets_shader {
 
     // uniforms
     "uniform mat4 u_pv;\n"+ // Projection and view matrix
+    "uniform vec3 u_camera_position;\n"+ // Camera position
     "uniform mat4 u_model;\n"+ // model matrix
-    "uniform vec3 u_camera_position;\n"+
 
     // data for fragment shader
     "out vec2 f_uv;\n"+
@@ -63,10 +63,10 @@ export class planets_shader {
 
     "uniform float u_use_specular;\n"+
     "uniform float u_use_lights;\n"+
+    "uniform vec3  u_fresnel_color;\n"+
     "uniform float u_is_sun;\n"+
 
     "layout (location = 0) out vec4 o_color;\n"+
-    "layout (location = 1) out vec4 o_bloom;\n"+
 
     //////////////////////////////////////////////////////
 
@@ -90,21 +90,20 @@ export class planets_shader {
     "    vec3 diffuse = diff * color.rgb;\n"+
          // specular
     "    vec3 view_dir = normalize(f_tangent_view - f_tangent_position);\n"+
-    "    vec3 reflect_dir = reflect(-light_dir, normal);\n"+
     "    vec3 halfway_dir = normalize(light_dir + view_dir);\n"+  
-    //"    float spec = pow(max(dot(view_dir, reflect_dir), 0.0), 32.0);\n"+
     "    float spec = pow(max(dot(normal, halfway_dir), 0.0), 32.0);\n"+
 
     "    ambient = mix(night, ambient, clamp(diffuse.r + diffuse.g + diffuse.b, 0.0, 1.0));\n"+
     "    vec3 final = ambient + diffuse + spec * vec3(mix(0.1, 0.5 * specular, u_use_specular));\n"+
+
+         // Calculates the fresnel light
+    "    float fresnel = pow(1.0 - dot(view_dir, normal), 3.0);\n"+
+
          // Paints the output colors
     "    o_color = vec4(final, 1.0);\n"+
+    "    o_color.rgb += u_fresnel_color * fresnel * smoothstep(0.0, 0.3, diff);\n"+
     "  }else{\n"+
     "    o_color = vec4(color.rgb * 2.0, color.a);\n"+
     "  }\n"+
-      // Paints the bloom lights to create the effect
-    "  float brightness = dot(o_color.rgb, vec3(0.2126, 0.7152, 0.0722));\n"+
-      // Multiply a few times for brightness to get a steper color
-    "  o_bloom = brightness > 0.6 ? o_color : vec4(0.0);\n"+
     "}";
 };

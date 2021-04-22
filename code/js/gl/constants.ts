@@ -34,3 +34,6 @@
   
   // Time between frames in milliseconds
   export const frame_time : number = 40;
+
+  export const target_angle : number = 3.1432;
+  export const background_height : number = 2048;
