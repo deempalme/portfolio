@@ -49,6 +49,11 @@ export class navigation {
     this.mouseout_event = this.counter.bind(this);
     this.nav.addEventListener('mouseout', this.mouseout_event);
   }
+  /**
+   * @brief Indicates which navigation's menu element is active (visible)
+   * 
+   * @returns Array index of the active link (visible)
+   */
   public active() : number {
     return this.active_link;
   }
@@ -73,6 +78,30 @@ export class navigation {
     $('nav li > a > b').hide(500);
   }
   /**
+   * @brief Getting the scroll's top offset of the next page section
+   * 
+   * @returns Scroll's top offset of the next section (of the visible section)
+   */
+  public next() : number {
+    let next_link : number = this.active_link + 1;
+    if(next_link >= this.links.length)
+      return this.links[this.active_link].top();
+    
+    return this.links[next_link].top();
+  }
+  /**
+   * @brief Getting the scroll's top offset of the previous page section
+   * 
+   * @returns Scroll's top offset of the previous section (of the visible section)
+   */
+  public previous() : number {
+    let prev_link : number = this.active_link - 1;
+    if(prev_link < 0)
+      return 0;
+    
+    return this.links[prev_link].top();
+  }
+  /**
    * @brief Changing the canvas size and the linked object's start and end position
    * 
    * @param font_size Current page's main font size
@@ -91,7 +120,7 @@ export class navigation {
     // Moving the shadow for the link's canvas
     for(var i in this.links){
       this.links[i].scroll(page_offset);
-      if(page_offset >= this.links[i].top() && page_offset < this.links[i].bottom())
+      if(page_offset >= (this.links[i].top() - 50) && page_offset < this.links[i].bottom())
         this.active_link = parseInt(i);
     }
   }

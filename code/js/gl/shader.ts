@@ -61,12 +61,22 @@ export class shader
     return this.finished;
   }
   /**
+   * @brief Sets an uniform 3D floating matrix value
+   * 
+   * @param uniform_id Uniform location where the data would be uploaded
+   * @param matrix Array of 9 floating values that will be uploaded
+   */
+   public matrix3f(uniform_id : WebGLUniformLocation | null, matrix : Float32List) : void {
+    if(this.id)
+      this.gl.uniformMatrix3fv(uniform_id, false, matrix);
+  }
+  /**
    * @brief Sets an uniform 4D floating matrix value
    * 
    * @param uniform_id Uniform location where the data would be uploaded
    * @param matrix Array of 16 floating values that will be uploaded
    */
-  public matrix4f(uniform_id : WebGLUniformLocation | null, matrix : Float32List) : void {
+   public matrix4f(uniform_id : WebGLUniformLocation | null, matrix : Float32List) : void {
     if(this.id)
       this.gl.uniformMatrix4fv(uniform_id, false, matrix);
   }
