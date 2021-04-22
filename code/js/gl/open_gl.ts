@@ -8,6 +8,7 @@ import { shader } from './shader';
 export interface shader_info {
   shader : shader;
   u_pv : WebGLUniformLocation | null;
+  u_camera : WebGLUniformLocation | null;
 }
 
 export class open_gl
@@ -43,6 +44,7 @@ export class open_gl
   private phi   : number = 0;
   private increase_w : number = 1;
   private increase_h : number = 1;
+  private moved_ : boolean = false;
 
   private parent : HTMLElement;
 
@@ -82,7 +84,8 @@ export class open_gl
   public add_shader(shader : shader) : void {
     this.shaders[this.shaders.length] = {
       shader: shader,
-      u_pv: shader.uniform_location('u_pv')
+      u_pv: shader.uniform_location('u_pv'),
+      u_camera: shader.uniform_location('u_camera_position')
     };
   }
   /**
@@ -216,8 +219,12 @@ export class open_gl
 
       if(this.shaders[i].u_pv == null)
         this.shaders[i].u_pv = this.shaders[i].shader.uniform_location('u_pv');
+      if(this.shaders[i].u_camera == null)
+        this.shaders[i].u_camera = this.shaders[i].shader.uniform_location('u_camera_position');
 
       this.shaders[i].shader.matrix4f(this.shaders[i].u_pv, this.pv);
+      this.shaders[i].shader.uniform3fv(this.shaders[i].u_camera,
+                                        v3.subtract(this.camera.eye, this.camera.center));
     }
   }
   /**
@@ -227,6 +234,16 @@ export class open_gl
    */
   public static max_anisotropy() : number {
     return open_gl.max_text_anisotropy;
+  }
+  /**
+   * @brief Indicates if the camera view has been moved with the mouse
+   *
+   * @returns `true` if the camera has been rotated with the mouse events
+   */
+  public moved() : boolean {
+    const moved : boolean = this.moved_;
+    this.moved_ = false;
+    return moved;
   }
   /**
    * @brief Resizing event handler
@@ -250,15 +267,15 @@ export class open_gl
   /**
    * @brief Rotates the camera throught the X axis
    * 
-   * @param delta An angle that will be added to the current X angle (in degrees)
+   * @param delta An angle that will be added to the current X angle (in radians)
    */
   public rotate_x(delta : number) : void {
-    let angle : number = this.phi + delta * constants.to_radian;
+    let angle : number = this.phi + delta;
     // Converting to relative angle
     angle /= constants.degree_360;
     // Normalizing
-    if(angle >= constants.degree_360) angle -= Math.floor(angle);
-    else if(angle < 0) angle += Math.ceil(angle);
+    if(angle >= 1.0) angle -= Math.floor(angle);
+    else if(angle < 0) angle -= Math.ceil(angle);
     // Reconverting to radians
     angle *= constants.degree_360;
 
@@ -268,15 +285,15 @@ export class open_gl
   /**
    * @brief Rotates the camera throught the Z axis
    * 
-   * @param delta An angle that will be added to the current Z angle (in degrees)
+   * @param delta An angle that will be added to the current Z angle (in radians)
    */
   public rotate_z(delta : number) : void {
-    let angle : number = this.theta + delta * constants.to_radian;
+    let angle : number = this.theta + delta;
     // Converting to relative angle
     angle /= constants.degree_360;
     // Normalizing
-    if(angle >= constants.degree_360) angle -= Math.floor(angle);
-    else if(angle < 0) angle += Math.ceil(angle);
+    if(angle >= 1.0) angle -= Math.floor(angle);
+    else if(angle < 0) angle -= Math.ceil(angle);
     // Reconverting to radians
     angle *= constants.degree_360;
 
@@ -324,6 +341,8 @@ export class open_gl
     let x = -event.movementX;
     let y = event.movementY;
 
+    if(x === 0 && y === 0) return false;
+
     this.theta += x * this.increase_w;
     this.phi += y * this.increase_h;
 
@@ -337,6 +356,7 @@ export class open_gl
     else if (this.theta < 0)
       this.theta += constants.degree_360;
 
+    this.moved_ = true;
     this.look_at();
 
     event.preventDefault();
