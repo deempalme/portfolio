@@ -703,15 +703,15 @@
     <h1><img src="/resources/theme3.0/contact_me.svg" alt="CONTACT ME"></h1>
     <section>
       <small>Email</small>
-      <p><b>f.j.r.r@ramrod.tech</b></p>
+      <p><b>use front view to see info</b></p>
     </section>
     <section>
       <small>Whatsapp</small>
-      <p><b>+52 622 125 3017</b></p>
+      <p><b>use front view to see info</b></p>
     </section>
     <section>
       <small>Signal</small>
-      <p><b>+49 575 145 6778</b></p>
+      <p><b>use front view to see info</b></p>
     </section>
     <ul>
       <li><a href="#top">Top</a></li>

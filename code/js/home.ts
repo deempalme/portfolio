@@ -1,5 +1,6 @@
 
 import { about_me } from './about_me';
+import { contact_me } from './contact_me';
 import { keys } from './keys';
 import { loader } from './loader';
 import { navigation } from './navigation';
@@ -17,13 +18,14 @@ class home
   private font_size : number = 16;
 
   // Main navigation objects
-  private nav : navigation;
+  private nav_ : navigation;
   // Navigation keyboard
-  private key : keys;
-
-  private universe : universe;
-  private portfolio : portfolio;
-  private about_me : about_me;
+  private key_ : keys;
+  // Modules
+  private universe_ : universe;
+  private portfolio_ : portfolio;
+  private about_me_ : about_me;
+  private contact_me_ : contact_me;
   
   // Event binders
   private resize_event : any;
@@ -50,20 +52,21 @@ class home
     let loader_element : HTMLElement = document.getElementById('loader')!;
     loader.set_loader(loader_element, loader_element.children.item(0) as HTMLElement);
 
-    this.nav = new navigation();
-    this.universe = new universe('universe');
-    this.portfolio = new portfolio('portfolio');
-    this.about_me = new about_me('about_me');
-    this.key = new keys('keys', this.nav, this.portfolio);
+    this.nav_ = new navigation();
+    this.universe_ = new universe('universe');
+    this.portfolio_ = new portfolio('portfolio');
+    this.about_me_ = new about_me('about_me');
+    this.key_ = new keys('keys', this.nav_, this.portfolio_);
+    this.contact_me_ = new contact_me('contact_me');
 
-    section.set_keys(this.key);
+    section.set_keys(this.key_);
 
-    this.about_me.add_image('/resources/images/right_side.jpg');
-    this.about_me.add_image('/resources/images/plane.jpg');
-    this.about_me.add_image('/resources/images/pem_module.jpg');
-    this.about_me.add_image('/resources/images/fixture.jpg');
-    this.about_me.add_image('/resources/images/kfs.jpg');
-    this.about_me.add_image('/resources/images/mover.jpg');
+    this.about_me_.add_image('/resources/images/right_side.jpg');
+    this.about_me_.add_image('/resources/images/plane.jpg');
+    this.about_me_.add_image('/resources/images/pem_module.jpg');
+    this.about_me_.add_image('/resources/images/fixture.jpg');
+    this.about_me_.add_image('/resources/images/kfs.jpg');
+    this.about_me_.add_image('/resources/images/mover.jpg');
 
     // Creating a window resize event handler
     this.resize_event = this.resize.bind(this);
@@ -91,7 +94,7 @@ class home
     window.removeEventListener('scroll', this.scroll_event);
     window.removeEventListener('unload', this.unload_event);
 
-    this.universe.destroy();
+    this.universe_.destroy();
   }
   /**
    * @brief Resizing event handler
@@ -102,9 +105,10 @@ class home
     this.html.style.width = (this.width - this.scroll_width) + 'px';
 
     // Gettting the start and ending offset for all html sections
-    this.nav.resize(this.font_size);
-    this.portfolio.resize(this.width - this.scroll_width);
-    this.universe.resize();
+    this.nav_.resize(this.font_size);
+    this.portfolio_.resize(this.width - this.scroll_width);
+    this.universe_.resize();
+    this.contact_me_.resize();
   }
   /**
    * @brief Scroll event handler
@@ -113,16 +117,17 @@ class home
     const page_offset : number = window.pageYOffset;
 
     // Moving the shadow for the link's canvas
-    this.nav.scroll(page_offset);
+    this.nav_.scroll(page_offset);
     // Activating/deactivating frame animation of the universe
-    if(this.nav.active() == 0)
-      this.universe.activate();
+    if(this.nav_.active() == 0)
+      this.universe_.activate();
     else
-      this.universe.deactivate();
+      this.universe_.deactivate();
 
     // Checking if a key should be inactive
-    this.key.scroll(page_offset);
-    this.universe.scroll(page_offset);
+    this.key_.scroll(page_offset);
+    this.universe_.scroll(page_offset);
+    this.contact_me_.scroll(page_offset);
   }
   /**
    * @brief Getting the width of the scrollbar
