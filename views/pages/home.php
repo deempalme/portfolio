@@ -6,7 +6,6 @@
 <title><?= $controller->page_title(); ?></title>
 <link rel="icon" type="image/png" href="/resources/theme/icon.png" />
 <link href="/resources/css/home.css" rel="stylesheet" />
-<script language="javascript" src="/script/js/home.js" type="text/javascript"></script>
 </head>
 
 <body>
@@ -24,6 +23,7 @@
   <main>
     <section id="universe" name="universe">
       <h1 id="uni_back"><img src="/resources/theme3.0/ramirez_rodriguez.svg" alt="RAMIREZ RODRIGUEZ"></h1>
+      <div class="rotieren first"></div>
       <aside><a href="https://github.com/deempalme/portfolio">See &lt;the code&gt;</a></aside>
     </section>
     <section id="portfolio" name="portfolio">
@@ -95,6 +95,8 @@
             </ul>
           </div>
         </section>
+        <aside class="rotieren"></aside>
+        <aside class="bewegun"></aside>
         <aside>CLOSE</aside>
       </article>
       <article id="a_mixing_chamber">
@@ -699,29 +701,31 @@
       </ul>
     </section>
   </main>
-  <footer id="contact_me" name="contact_me">
-    <h1><img src="/resources/theme3.0/contact_me.svg" alt="CONTACT ME"></h1>
-    <section>
-      <small>Email</small>
-      <p><b>use front view to see info</b></p>
+  <footer>
+    <section id="contact_me" name="contact_me">
+      <h1><img src="/resources/theme3.0/contact_me.svg" alt="CONTACT ME"></h1>
+      <section>
+        <small>Email</small>
+        <p><b>use front view to see info</b></p>
+      </section>
+      <section>
+        <small>Whatsapp</small>
+        <p><b>use front view to see info</b></p>
+      </section>
+      <section>
+        <small>Signal</small>
+        <p><b>use front view to see info</b></p>
+      </section>
+      <ul>
+        <li><a href="#top">Top</a></li>
+        <li><a href="#portfolio">Portfolio</a></li>
+        <li><a href="#projects">Projects</a></li>
+        <li><a href="#about_me">About me</a></li>
+        <li><a href="#knowledge">Knowledge</a></li>
+        <li><a href="#studies">Studies</a></li>
+        <li><a href="#contact_me">Contact me</a></li>
+      </ul>
     </section>
-    <section>
-      <small>Whatsapp</small>
-      <p><b>use front view to see info</b></p>
-    </section>
-    <section>
-      <small>Signal</small>
-      <p><b>use front view to see info</b></p>
-    </section>
-    <ul>
-      <li><a href="#top">Top</a></li>
-      <li><a href="#portfolio">Portfolio</a></li>
-      <li><a href="#projects">Projects</a></li>
-      <li><a href="#about_me">About me</a></li>
-      <li><a href="#knowledge">Knowledge</a></li>
-      <li><a href="#studies">Studies</a></li>
-      <li><a href="#contact_me">Contact me</a></li>
-    </ul>
   </footer>
   <aside id="keys">
     <h1>←↑→↓</h1>
@@ -730,6 +734,7 @@
   <aside id="loader">
     Loading: <b>0</b><i>%</i>
   </aside>
+  <script language="javascript" src="/script/js/home.js" type="text/javascript"></script>
 </body>
 
 </html>
