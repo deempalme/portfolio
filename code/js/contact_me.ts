@@ -1,13 +1,11 @@
 
-import $ from 'jquery';
+import { loader } from './loader';
 
 
 export class contact_me
 {
   private object_ : HTMLElement;
-  private size_  : number = 0;
-  private start_ : number = 0;
-  private end_   : number = 0;
+  private planet_ : HTMLElement;
 
   private text_object_1_ : Element;
   private text_object_2_ : Element;
@@ -43,16 +41,30 @@ export class contact_me
     this.t_ = this.t2_ = this.t6_ = null;
     this.s_ = this.s5_ = this.s8_ = null;
 
-    this.resize();
+    let parent : Element = this.object_.parentElement!;
+    this.planet_ = document.createElement('aside');
+    parent.prepend(this.planet_);
+
+    var moonshine : HTMLImageElement = new Image();
+    loader.load_image('/resources/images/moonshine.jpg', moonshine, 
+                      this.background.bind(this, moonshine));
   }
   /**
-   * @brief Changing the linked object's start and end position
+   * @brief Setting the background image to show as the moving planet
+   * 
+   * @param image_url URL of the planet's image
    */
-   public resize() : void {
-    this.size_ = $(this.object_).outerHeight()!;
-    this.start_ = $(this.object_).offset()!.top;
-    this.end_ = this.start_ + this.size_;
+  public set_background(image_url : string) : void {
+    this.planet_.style.backgroundImage = 'url(' + image_url + ')';
   }
 
-  public scroll(page_offset : number) : void {}
+  // ::::::::::::::::::::::::::::::::::::: PRIVATE FUNCTIONS ::::::::::::::::::::::::::::::::::::::
+  /**
+   * @brief Setting the main backgroun image (moon and stars)
+   * 
+   * @param image URL of the background image
+   */
+  private background(image : HTMLImageElement) : void {
+    this.object_.parentElement!.style.backgroundImage = 'url(' + image.src + ')';
+  }
 }

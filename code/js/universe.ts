@@ -11,6 +11,7 @@ import { texture } from './gl/texture';
 import $ from 'jquery';
 import { v3 } from './math/v3';
 import { loader } from './loader';
+import { contact_me } from './contact_me';
 
 
 export class universe
@@ -24,6 +25,7 @@ export class universe
   private size  : number = 0;
   private last_scroll : number = 0;
   private initial_angle : number = 0;
+  private contact_me_ : contact_me | null;
 
   private gl : open_gl;
   private sphere : model;
@@ -50,7 +52,7 @@ export class universe
   private scroll_timer : number = 0;
 
 
-  constructor(object : string){
+  constructor(object : string, contact_me : contact_me){
     this.main_object = document.getElementById(object)!;
     this.background = (this.main_object.children.item(0) as HTMLElement);
     this.planet = document.createElement('figure');
@@ -206,6 +208,7 @@ export class universe
                  v3.new(0.878, 0.556, 0), planets[5], true)
     ];
 
+    this.contact_me_ = contact_me;
     // Loading the big sized background images
     var half_planet : HTMLImageElement = new Image();
     loader.load_image('/resources/theme3.0/planet.webp', half_planet,
@@ -232,6 +235,7 @@ export class universe
     this.main_object.addEventListener('mouseout', this.mouse_up.bind(this));
 
     this.resize();
+    this.scroll(window.pageYOffset);
   }
   /**
    * @brief Resumes painting the universe gl context
@@ -269,7 +273,7 @@ export class universe
    * @param timestamp The timestamp when this function is requested
    */
   public paint(timestamp : number) : void {
-    if(timestamp == this.last_timestamp) return;
+    if(timestamp <= this.last_timestamp) return;
 
     this.last_timestamp = timestamp;
 
@@ -373,6 +377,8 @@ export class universe
     switch(i){
       case 0:
         this.moon.style.backgroundImage = 'url(' + image.src + ')';
+        this.contact_me_!.set_background(image.src);
+        this.contact_me_ = null;
       break;
       case 1:
         $('#universe > h1').css('background-image', 'url(' + image.src + ')');

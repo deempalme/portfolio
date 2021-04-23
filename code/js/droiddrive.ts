@@ -6,6 +6,9 @@ import { model } from "./gl/model";
 import { open_gl } from "./gl/open_gl";
 import { shader } from "./gl/shader";
 import { texture } from "./gl/texture";
+import { ground_shader } from './shaders/ground_shader';
+import { lidar_shader } from './shaders/lidar_shader';
+import { model_shader } from './shaders/model_shader';
 
 
 interface model_3d {
@@ -78,6 +81,28 @@ export class droiddrive
 
     // Creating the ground lines
     this.ground_ = new ground(gl, 20.0);
+
+    // Loading the ground's shader
+    this.ground_shader_ = new shader(gl, ground_shader.vertex!, ground_shader.fragment!);
+    // Freing memory of unused variables
+    ground_shader.vertex = null;
+    ground_shader.fragment = null;
+
+    // Loading the lidar's shader
+    this.lidar_shader_ = new shader(gl, lidar_shader.vertex!, lidar_shader.fragment!);
+    // Freing memory of unused variables
+    lidar_shader.vertex = null;
+    lidar_shader.fragment = null;
+
+    // Loading the models' shader
+    this.model_shader_ = new shader(gl, model_shader.vertex!, model_shader.fragment!);
+    // Freing memory of unused variables
+    model_shader.vertex = null;
+    model_shader.fragment = null;
+
+    this.gl_.add_shader(this.ground_shader_);
+    this.gl_.add_shader(this.lidar_shader_);
+    this.gl_.add_shader(this.model_shader_);
 
     // Binding the paint to an interval event
     this.interval_binder_ = this.request_animation.bind(this);
