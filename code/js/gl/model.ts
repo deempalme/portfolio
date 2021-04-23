@@ -5,30 +5,30 @@ import { loader } from '../loader';
 
 export class model
 {
-  private gl : WebGL2RenderingContext;
-  private vao : WebGLVertexArrayObject | null;
-  private finished : boolean = false;
-  private data_size : number = 0;
+  private gl_ : WebGL2RenderingContext;
+  private vao_ : WebGLVertexArrayObject | null;
+  private finished_ : boolean = false;
+  private data_size_ : number = 0;
 
 
   constructor(context : WebGL2RenderingContext, model_url : string){
-    this.gl = context;
+    this.gl_ = context;
 
-    this.vao = this.gl.createVertexArray();
+    this.vao_ = this.gl_.createVertexArray();
 
-    if(this.vao)
+    if(this.vao_ !== null)
       // Loading the 3D model object
       loader.load_data(model_url, this.process_data.bind(this));
   }
   /**
-   * @brief Draws the arrays inside the model VAO
+   * @brief Draws the 3D model
    */
   public draw() : void {
-    if(!this.finished) return;
+    if(!this.finished_) return;
 
-    this.gl.bindVertexArray(this.vao);
-    this.gl.drawArrays(this.gl.TRIANGLES, 0, this.data_size);
-    this.gl.bindVertexArray(null);
+    this.gl_.bindVertexArray(this.vao_);
+    this.gl_.drawArrays(this.gl_.TRIANGLES, 0, this.data_size_);
+    this.gl_.bindVertexArray(null);
   }
   /**
    * @brief Indicates if the .obj file has been loaded and processed
@@ -36,7 +36,7 @@ export class model
    * @returns `true` when loaded and processed
    */
   public loaded() : boolean {
-    return this.finished;
+    return this.finished_;
   }
 
   // ::::::::::::::::::::::::::::::::::::: PRIVATE FUNCTIONS ::::::::::::::::::::::::::::::::::::::
@@ -182,29 +182,29 @@ export class model
       all_data[index + 13] = bitangent[i3][2];
     }
 
-    //this.gl.useProgram(program.id);
-    this.data_size = indices_size;
+    //this.gl_.useProgram(program.id);
+    this.data_size_ = indices_size;
 
-    this.gl.bindVertexArray(this.vao);
-    this.gl.bindBuffer(this.gl.ARRAY_BUFFER, this.gl.createBuffer());
-    this.gl.bufferData(this.gl.ARRAY_BUFFER, all_data, this.gl.STATIC_DRAW);
+    this.gl_.bindVertexArray(this.vao_);
+    this.gl_.bindBuffer(this.gl_.ARRAY_BUFFER, this.gl_.createBuffer());
+    this.gl_.bufferData(this.gl_.ARRAY_BUFFER, all_data, this.gl_.STATIC_DRAW);
 
     var offset : number = 0;
-    this.gl.vertexAttribPointer(k.attributes.position, 3, this.gl.FLOAT, false, 56, offset); 
-    this.gl.enableVertexAttribArray(k.attributes.position);
+    this.gl_.vertexAttribPointer(k.attributes.position, 3, this.gl_.FLOAT, false, 56, offset); 
+    this.gl_.enableVertexAttribArray(k.attributes.position);
     offset += 12;
-    this.gl.vertexAttribPointer(k.attributes.uv, 2, this.gl.FLOAT, false, 56, offset);
-    this.gl.enableVertexAttribArray(k.attributes.uv);
+    this.gl_.vertexAttribPointer(k.attributes.uv, 2, this.gl_.FLOAT, false, 56, offset);
+    this.gl_.enableVertexAttribArray(k.attributes.uv);
     offset += 8;
-    this.gl.vertexAttribPointer(k.attributes.normal, 3, this.gl.FLOAT, false, 56, offset);
-    this.gl.enableVertexAttribArray(k.attributes.normal);
+    this.gl_.vertexAttribPointer(k.attributes.normal, 3, this.gl_.FLOAT, false, 56, offset);
+    this.gl_.enableVertexAttribArray(k.attributes.normal);
     offset += 12;
-    this.gl.vertexAttribPointer(k.attributes.tangent, 3, this.gl.FLOAT, false, 56, offset);
-    this.gl.enableVertexAttribArray(k.attributes.tangent);
+    this.gl_.vertexAttribPointer(k.attributes.tangent, 3, this.gl_.FLOAT, false, 56, offset);
+    this.gl_.enableVertexAttribArray(k.attributes.tangent);
     offset += 12;
-    this.gl.vertexAttribPointer(k.attributes.bitangent, 3, this.gl.FLOAT, false, 56, offset);
-    this.gl.enableVertexAttribArray(k.attributes.bitangent);
+    this.gl_.vertexAttribPointer(k.attributes.bitangent, 3, this.gl_.FLOAT, false, 56, offset);
+    this.gl_.enableVertexAttribArray(k.attributes.bitangent);
 
-    this.finished = true;
+    this.finished_ = true;
   }
 }
