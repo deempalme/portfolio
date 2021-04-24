@@ -5,8 +5,8 @@
 <meta charset="UTF-8">
 <title><?= $controller->page_title(); ?></title>
 <link rel="icon" type="image/png" href="/resources/theme/icon.png" />
+<link href="/resources/css/fonts3.0.css" rel="stylesheet" />
 <link href="/resources/css/home.css" rel="stylesheet" />
-<script language="javascript" src="/script/js/home.js" type="text/javascript"></script>
 </head>
 
 <body>
@@ -24,6 +24,7 @@
   <main>
     <section id="universe" name="universe">
       <h1 id="uni_back"><img src="/resources/theme3.0/ramirez_rodriguez.svg" alt="RAMIREZ RODRIGUEZ"></h1>
+      <div class="rotieren first"><img src="/resources/theme3.0/rotate.svg" alt="Rotate"> Rotate</div>
       <aside><a href="https://github.com/deempalme/portfolio">See &lt;the code&gt;</a></aside>
     </section>
     <section id="portfolio" name="portfolio">
@@ -55,7 +56,7 @@
         </figure>
       </section>
       <article id="a_autonomous">
-        <video src="/resources/movies/highres/autonomous.mp4" loop muted disablePictureInPicture="true" preload="none"></video>
+        <video src="/resources/movies/highres/illusion.mp4" loop muted disablePictureInPicture="true" preload="none"></video>
         <section>
           <h1>Autonomous driving vehicle</h1>
           <div>
@@ -95,6 +96,39 @@
             </ul>
           </div>
         </section>
+        <figure class="rotieren"><img src="/resources/theme3.0/rotate.svg" alt="Rotate"> Rotate</figure>
+        <aside class="next">NEXT</aside>
+        <aside class="play">PAUSE</aside>
+        <aside>CLOSE</aside>
+      </article>
+      <article id="a_drone">
+        <video src="/resources/movies/highres/nabucodonosor_2.mp4" loop muted disablePictureInPicture="true" preload="none"></video>
+        <video src="/resources/movies/highres/nabucodonosor.mp4" loop muted disablePictureInPicture="true" preload="none"></video>
+        <div>
+          <h1>Fully electric autonomous drone</h1>
+          <h2>Project proposal to design and develop an autonomous drone</h2>
+          <p>Currently there are already several drones but most of them have quite few disadvantages; they rely on fuel and a person that is remotely controlling them. The former contrains how long reamins flying and how far distances it will reach, the latest forces to always have a competenly trained person in good physical and mental state to properly operate it.</p>
+          <p>I wanted to design an improved drone to remove such limitations, with a body made of carbon fiber that will give it a super strong and light material, so it will require less strength and therefore it will last flying for longer. Such replacement was good but not enough to consider it a proper advancement, and for this reason solar cells, batteries, and low power electric motor were implemented.</p>
+          <p>The solar cells will be giving power to the motor to keep flying during the day and also charging a battery station to store energy that will be used during the night.</p>
+          <p>The drone will have a powerfull computer to process the sensors' data (LiDar and camera), precise GPS for geolocalization, and programs to fully operate autonomously.</p>
+          <ul>
+            <li>Company:
+              <ul>
+              <li><img src="/resources/theme3.0/pem.svg" alt="PEM der RWTH" title="PEM der RWTH" height="48"></li>
+                <li><img src="/resources/theme3.0/wzl.svg" alt="Werkzeugmaschinenlabor RWTH" title="Werkzeugmaschinenlabor RWTH" height="48"></li>
+              </ul>
+            </li>
+            <li>Technologies:
+              <ul>
+                <li><b>Software to create the video:</b> Solidworks and Blender (for animation)</li>
+                <li><b>Hardware for autonomous drive:</b> LiDar, several cameras, GPS, radio communication and a central computer for processing</li>
+                <li><b>Specialized hardware:</b> Industrial oven to curate the carbon fibers</li>
+              </ul>
+            </li>
+          </ul>
+        </div>
+        <aside class="next">NEXT</aside>
+        <aside class="play">PAUSE</aside>
         <aside>CLOSE</aside>
       </article>
       <article id="a_mixing_chamber">
@@ -212,36 +246,6 @@
             </ul>
           </div>
         </section>
-        <aside class="play">PAUSE</aside>
-        <aside>CLOSE</aside>
-      </article>
-      <article id="a_drone">
-        <video src="/resources/movies/highres/nabucodonosor_2.mp4" loop muted disablePictureInPicture="true" preload="none"></video>
-        <video src="/resources/movies/highres/nabucodonosor.mp4" loop muted disablePictureInPicture="true" preload="none"></video>
-        <div>
-          <h1>Fully electric autonomous drone</h1>
-          <h2>Project proposal to design and develop an autonomous drone</h2>
-          <p>Currently there are already several drones but most of them have quite few disadvantages; they rely on fuel and a person that is remotely controlling them. The former contrains how long reamins flying and how far distances it will reach, the latest forces to always have a competenly trained person in good physical and mental state to properly operate it.</p>
-          <p>I wanted to design an improved drone to remove such limitations, with a body made of carbon fiber that will give it a super strong and light material, so it will require less strength and therefore it will last flying for longer. Such replacement was good but not enough to consider it a proper advancement, and for this reason solar cells, batteries, and low power electric motor were implemented.</p>
-          <p>The solar cells will be giving power to the motor to keep flying during the day and also charging a battery station to store energy that will be used during the night.</p>
-          <p>The drone will have a powerfull computer to process the sensors' data (LiDar and camera), precise GPS for geolocalization, and programs to fully operate autonomously.</p>
-          <ul>
-            <li>Company:
-              <ul>
-              <li><img src="/resources/theme3.0/pem.svg" alt="PEM der RWTH" title="PEM der RWTH" height="48"></li>
-                <li><img src="/resources/theme3.0/wzl.svg" alt="Werkzeugmaschinenlabor RWTH" title="Werkzeugmaschinenlabor RWTH" height="48"></li>
-              </ul>
-            </li>
-            <li>Technologies:
-              <ul>
-                <li><b>Software to create the video:</b> Solidworks and Blender (for animation)</li>
-                <li><b>Hardware for autonomous drive:</b> LiDar, several cameras, GPS, radio communication and a central computer for processing</li>
-                <li><b>Specialized hardware:</b> Industrial oven to curate the carbon fibers</li>
-              </ul>
-            </li>
-          </ul>
-        </div>
-        <aside class="next">NEXT</aside>
         <aside class="play">PAUSE</aside>
         <aside>CLOSE</aside>
       </article>
@@ -699,29 +703,31 @@
       </ul>
     </section>
   </main>
-  <footer id="contact_me" name="contact_me">
-    <h1><img src="/resources/theme3.0/contact_me.svg" alt="CONTACT ME"></h1>
-    <section>
-      <small>Email</small>
-      <p><b>use front view to see info</b></p>
+  <footer>
+    <section id="contact_me" name="contact_me">
+      <h1><img src="/resources/theme3.0/contact_me.svg" alt="CONTACT ME"></h1>
+      <section>
+        <small>Email</small>
+        <p><b>use front view to see info</b></p>
+      </section>
+      <section>
+        <small>Whatsapp</small>
+        <p><b>use front view to see info</b></p>
+      </section>
+      <section>
+        <small>Signal</small>
+        <p><b>use front view to see info</b></p>
+      </section>
+      <ul>
+        <li><a href="#top">Top</a></li>
+        <li><a href="#portfolio">Portfolio</a></li>
+        <li><a href="#projects">Projects</a></li>
+        <li><a href="#about_me">About me</a></li>
+        <li><a href="#knowledge">Knowledge</a></li>
+        <li><a href="#studies">Studies</a></li>
+        <li><a href="#contact_me">Contact me</a></li>
+      </ul>
     </section>
-    <section>
-      <small>Whatsapp</small>
-      <p><b>use front view to see info</b></p>
-    </section>
-    <section>
-      <small>Signal</small>
-      <p><b>use front view to see info</b></p>
-    </section>
-    <ul>
-      <li><a href="#top">Top</a></li>
-      <li><a href="#portfolio">Portfolio</a></li>
-      <li><a href="#projects">Projects</a></li>
-      <li><a href="#about_me">About me</a></li>
-      <li><a href="#knowledge">Knowledge</a></li>
-      <li><a href="#studies">Studies</a></li>
-      <li><a href="#contact_me">Contact me</a></li>
-    </ul>
   </footer>
   <aside id="keys">
     <h1>←↑→↓</h1>
@@ -730,6 +736,7 @@
   <aside id="loader">
     Loading: <b>0</b><i>%</i>
   </aside>
+  <script language="javascript" src="/script/js/home.js" type="text/javascript"></script>
 </body>
 
 </html>

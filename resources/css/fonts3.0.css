@@ -1,0 +1,80 @@
+@font-face {
+  font-family: 'abril_fatface';
+  src: local('Abril fatface'), local('AbrilFatface-Regular'),
+  url('../fonts/abrilfatface-regular-webfont.woff') format('woff'),
+  url('../fonts/abrilfatface-regular-webfont.woff2') format('woff2');
+  font-weight: normal;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: 'montserrat_';
+  src: local('Montserrat Regular'), local('Montserrat-Regular'),
+  url('../fonts/montserrat-regular-webfont.woff') format('woff'),
+  url('../fonts/montserrat-regular-webfont.woff2') format('woff2');
+  font-weight: normal;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: 'montserrat_';
+  src: local('Montserrat Semibold'), local('Montserrat-Semibold'),
+  url('../fonts/montserrat-semibold-webfont.woff') format('woff'),
+  url('../fonts/montserrat-semibold-webfont.woff2') format('woff2');
+  font-weight: 600;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: 'montserrat_';
+  src: local('Montserrat Italic'), local('Montserrat-Italic'),
+  url('../fonts/montserrat-italic-webfont.woff') format('woff'),
+  url('../fonts/montserrat-italic-webfont.woff2') format('woff2');
+  font-weight: normal;
+  font-style: italic;
+}
+
+@font-face {
+  font-family: 'montserrat_';
+  src: local('Montserrat Bold'), local('Montserrat-Bold'),
+  url('../fonts/montserrat-bold-webfont.woff') format('woff'),
+  url('../fonts/montserrat-bold-webfont.woff2') format('woff2');
+  font-weight: bold;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: 'roboto_';
+  src: local('Roboto Bold'), local('Roboto-Bold'),
+  url('../fonts/roboto-bold-webfont.woff') format('woff'),
+  url('../fonts/roboto-bold-webfont.woff2') format('woff2');
+  font-weight: bold;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: 'playfair_display';
+  src: local('Playfair Display Regular'), local('PlayfairDisplay-Regular'),
+  url('../fonts/playfairdisplay-regular-webfont.woff') format('woff'),
+  url('../fonts/playfairdisplay-regular-webfont.woff2') format('woff2');
+  font-weight: normal;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: 'playfair_display';
+  src: local('Playfair Display Italic'), local('PlayfairDisplay-Italic'),
+  url('../fonts/playfairdisplay-italic-webfont.woff') format('woff'),
+  url('../fonts/playfairdisplay-italic-webfont.woff2') format('woff2');
+  font-weight: normal;
+  font-style: italic;
+}
+
+@font-face {
+  font-family: 'playfair_display';
+  src: local('Playfair Display Bold'), local('PlayfairDisplay-Bold'),
+  url('../fonts/playfairdisplay-bold-webfont.woff') format('woff'),
+  url('../fonts/playfairdisplay-bold-webfont.woff2') format('woff2');
+  font-weight: bold;
+  font-style: normal;
+}
