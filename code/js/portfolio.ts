@@ -1,5 +1,6 @@
 
 import $ from 'jquery';
+import { droiddrive } from './droiddrive';
 import { loader } from './loader';
 
 
@@ -13,7 +14,7 @@ interface article_item {
   object : HTMLElement;
   video : HTMLMediaElement;
   secondary_video : HTMLMediaElement | null;
-  play : HTMLElement | null;
+  play : HTMLElement;
   playing : boolean;
   next : HTMLElement | null;
   nexted : boolean;
@@ -26,6 +27,9 @@ export class portfolio
   private menu_ : Array<menu_item>;
   private articles_ : Array<article_item>;
   private active_ : boolean = false;
+  private canvas_ : droiddrive;
+  private last_   : number = 0;
+  private paused_ : boolean = true;
 
 
   constructor(portfolio_id : string){
@@ -53,22 +57,23 @@ export class portfolio
     for(var i = 0; i < articles.length; ++i){
       let article : HTMLElement = (articles[i] as HTMLElement);
       let id : string = article.id.substring(1);
-      const is_media : boolean = id !== '_autonomous';
       const is_drone : boolean = id === '_drone';
+      const is_auto : boolean = id === '_autonomous';
 
       this.articles_[i] = {
         object: article, id: id,
         video: (article.children.item(0) as HTMLMediaElement),
         secondary_video: is_drone ? (article.children.item(1) as HTMLMediaElement) : null,
-        play: is_media ? (article.children.item(article.children.length - 2) as HTMLElement) : null,
+        play: article.children.item(article.children.length - 2) as HTMLElement,
         playing: true,
-        next: is_drone ? (article.children.item(article.children.length - 3) as HTMLElement) : null,
+        next: is_drone || is_auto ? (article.children.item(article.children.length - 3) as HTMLElement) : null,
         nexted: false,
         close: (article.children.item(article.children.length - 1) as HTMLElement)
       };
 
-      if(is_media) this.articles_[i].play?.addEventListener('mouseup', this.toggle.bind(this, i));
-      if(is_drone) this.articles_[i].next?.addEventListener('mouseup', this.next.bind(this, i));
+      this.articles_[i].play.addEventListener('mouseup', this.toggle.bind(this, i));
+      if(is_drone || is_auto)
+        this.articles_[i].next?.addEventListener('mouseup', this.next.bind(this, i));
       this.articles_[i].close.addEventListener('mouseup', this.hide.bind(this, i));
 
       // Loading posters
@@ -77,6 +82,11 @@ export class portfolio
       loader.load_image(image_url.substring(0, image_url.length - 3) + 'jpg', image,
                         this.show_poster.bind(this, i, image));
     }
+
+    this.canvas_ = new droiddrive('a_autonomous');
+    this.canvas_.set_pause_callback(this.activate_pause.bind(this));
+
+    window.addEventListener('keydown', this.key_down.bind(this));
   }
   /**
    * @brief Indicates if one of portfolio's articles is displayed
@@ -87,13 +97,32 @@ export class portfolio
     return this.active_;
   }
   /**
+   * @brief Activates the pause button in the portfolio's autonomous article
+   */
+  public activate_pause() : void {
+    if(this.paused_) return;
+    this.paused_ = true;
+
+    for(var i in this.articles_){
+      if(this.articles_[i].id !== '_autonomous') continue;
+      this.articles_[i].play!.className = 'play pause';
+      this.articles_[i].play!.innerText = 'PLAY';
+      this.articles_[i].playing = false;
+    }
+  }
+  /**
    * @brief Resizes the video (in the background)
    * 
    * @param width New video's width
+   * @param scroll_width Width in pixels of the scrollbar
    */
-  public resize(width : number) : void {
-    for(var i in this.articles_)
+  public resize(width : number, scroll_width : number) : void {
+    for(var i in this.articles_){
       this.articles_[i].video.style.width = width + 'px';
+      if(this.articles_[i].secondary_video !== null)
+        this.articles_[i].secondary_video!.style.width = width + 'px';
+    }
+    this.canvas_.resize(width, scroll_width);
   }
 
   // ::::::::::::::::::::::::::::::::::::: PRIVATE FUNCTIONS ::::::::::::::::::::::::::::::::::::::
@@ -106,20 +135,85 @@ export class portfolio
     this.articles_[i].object.style.display = 'none';
     this.articles_[i].video.pause();
     this.articles_[i].video.currentTime = 0;
-    if(this.articles_[i].play !== null){
-      this.articles_[i].playing = true;
-      this.articles_[i].play!.className = 'play';
-      this.articles_[i].play!.innerText = 'PAUSE';
-    }
+
+    this.articles_[i].playing = true;
+    this.articles_[i].play.className = 'play';
+    this.articles_[i].play.innerText = 'PAUSE';
+
     if(this.articles_[i].next !== null){
       this.articles_[i].nexted = false;
-      this.articles_[i].secondary_video!.pause();
-      this.articles_[i].secondary_video!.currentTime = 0;
-      this.articles_[i].secondary_video!.style.display = 'none';
+      if(this.articles_[i].secondary_video !== null){
+        this.articles_[i].secondary_video!.pause();
+        this.articles_[i].secondary_video!.currentTime = 0;
+        this.articles_[i].secondary_video!.style.display = 'none';
+      }else{
+        if(this.articles_[i].id === '_autonomous'){
+          this.articles_[i].video.style.display = 'none';
+          this.canvas_.show();
+        }
+      }
     }
+    this.canvas_.deactivate();
     $('html, body').removeClass('avoid_scroll');
     $('nav, #keys').show();
     this.active_ = false;
+  }
+  /**
+   * @brief Closes the active portfolio article
+   * 
+   * @param event Keyboard event
+   */
+  private key_down(event : KeyboardEvent) : boolean {
+    if(!this.active_) return true;
+
+    if(event.code === 'Escape'){
+      this.hide(this.last_);
+      event.preventDefault();
+      return false;
+    }
+    return true;
+  }
+  /**
+   * @brief Showing the next video (in case there are two in one portfolio's article)
+   * 
+   * @param i Array index of the portfolio's articles
+   */
+  private next(i : number) : void {
+    // Restoring the play button state
+    this.articles_[i].play.className = 'play';
+    this.articles_[i].play.innerText = 'PAUSE';
+    this.articles_[i].playing = true;
+    const is_auto : boolean = this.articles_[i].id === '_autonomous';
+
+    // Changing the videos (stoping the hidden one)
+    if((this.articles_[i].nexted = !this.articles_[i].nexted)){
+      if(is_auto){
+        this.canvas_.hide();
+        this.paused_ = true;
+        this.canvas_.deactivate();
+        this.articles_[i].video.style.display = 'block';
+        this.articles_[i].video.play();
+      }else{
+        this.articles_[i].video.pause();
+        this.articles_[i].video.currentTime = 0;
+        this.articles_[i].secondary_video!.style.display = 'block';
+        this.articles_[i].secondary_video!.play();
+      }
+    }else{
+      if(is_auto){
+        this.canvas_.show();
+        this.paused_ = false;
+        this.canvas_.activate();
+        this.articles_[i].video.style.display = 'none';
+        this.articles_[i].video.pause();
+        this.articles_[i].video.currentTime = 0;
+      }else{
+        this.articles_[i].secondary_video!.style.display = 'none';
+        this.articles_[i].secondary_video!.pause();
+        this.articles_[i].secondary_video!.currentTime = 0;
+        this.articles_[i].video.play();
+      }
+    }
   }
   /**
    * @brief Pauses the portfolio's menu video
@@ -148,10 +242,15 @@ export class portfolio
     $('html, body').stop(true, false).addClass('avoid_scroll');
     $('nav, #keys').hide();
 
-    for(var ix in this.articles_)
+    for(var ix = 0; ix < this.articles_.length; ++ix)
       if(this.articles_[ix].id === id){
-        this.articles_[ix].video.play();
+        if(id === '_autonomous'){
+          this.canvas_.activate();
+          this.paused_ = false;
+        }else
+          this.articles_[ix].video.play();
         this.articles_[ix].object.style.display = 'block';
+        this.last_ = ix;
       }
     this.active_ = true;
   }
@@ -175,43 +274,38 @@ export class portfolio
    * @param i Array index of the portfolio's articles
    */
   private toggle(i : number) : void {
+    const is_auto : boolean = this.articles_[i].id === '_autonomous';
+
     if((this.articles_[i].playing = !this.articles_[i].playing)){
-      this.articles_[i].play!.className = 'play';
-      this.articles_[i].play!.innerText = 'PAUSE';
-      if(this.articles_[i].nexted)
-        this.articles_[i].secondary_video!.play();
-      else
-        this.articles_[i].video.play();
+      this.articles_[i].play.className = 'play';
+      this.articles_[i].play.innerText = 'PAUSE';
+      if(this.articles_[i].nexted){
+        if(is_auto)
+          this.articles_[i].video.play();
+        else
+          this.articles_[i].secondary_video!.play();
+      }else{
+        if(is_auto){
+          this.canvas_.play();
+          this.paused_ = false;
+        }else
+          this.articles_[i].video.play();
+      }
     }else{
       this.articles_[i].play!.className = 'play pause';
       this.articles_[i].play!.innerText = 'PLAY';
-      if(this.articles_[i].nexted)
-        this.articles_[i].secondary_video!.pause();
-      else
-        this.articles_[i].video.pause();
-    }
-  }
-  /**
-   * @brief Showing the next video (in case there are two in one portfolio's article)
-   * 
-   * @param i Array index of the portfolio's articles
-   */
-  private next(i : number) : void {
-    // Restoring the play button state
-    this.articles_[i].play!.className = 'play';
-    this.articles_[i].play!.innerText = 'PAUSE';
-    this.articles_[i].playing = true;
-    // Changing the videos (stoping the hidden one)
-    if((this.articles_[i].nexted = !this.articles_[i].nexted)){
-      this.articles_[i].video.pause();
-      this.articles_[i].video.currentTime = 0;
-      this.articles_[i].secondary_video!.style.display = 'block';
-      this.articles_[i].secondary_video!.play();
-    }else{
-      this.articles_[i].secondary_video!.pause();
-      this.articles_[i].secondary_video!.currentTime = 0;
-      this.articles_[i].secondary_video!.style.display = 'none';
-      this.articles_[i].video.play();
+      if(this.articles_[i].nexted){
+        if(is_auto)
+          this.articles_[i].video.pause();
+        else
+          this.articles_[i].secondary_video!.pause();
+      }else{
+        if(is_auto){
+          this.canvas_.pause();
+          this.paused_ = true;
+        }else
+          this.articles_[i].video.pause();
+      }
     }
   }
 }
