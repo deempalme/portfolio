@@ -32,7 +32,7 @@ export class ground_shader {
 
     "layout (location = 0) out vec4 o_color;\n"+
 
-    "const float fog_density = 0.1;\n"+
+    "const float fog_density = 0.3;\n"+
 
     "float fog_factor(vec3 position){\n"+
     "  float dist = 0.0;\n"+

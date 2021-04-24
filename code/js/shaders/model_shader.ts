@@ -73,7 +73,7 @@ export class model_shader {
     "  vec3 normal = normalize(texture(u_normal, f_uv).rgb * 2.0 - 1.0);\n"+
 
        // ambient
-    "  vec3 ambient = 0.05 * color.rgb;\n"+
+    "  vec3 ambient = 0.2 * color.rgb;\n"+
        // diffuse
     "  vec3 light_dir = normalize(f_tangent_light - f_tangent_position);\n"+
     "  float diff = max(dot(light_dir, normal), 0.0);\n"+
@@ -83,12 +83,9 @@ export class model_shader {
     "  vec3 halfway_dir = normalize(light_dir + view_dir);\n"+  
     "  float spec = pow(max(dot(normal, halfway_dir), 0.0), 32.0);\n"+
 
-    "  vec3 final = ambient + diffuse + spec * 0.1;\n"+
+    "  vec3 final = ambient + diffuse + spec * 0.2;\n"+
 
        // Paints the output colors
     "  o_color = vec4(final, 1.0);\n"+
-       // Calculates the fresnel light
-    "  float fresnel = pow(1.0 - dot(view_dir, normal), 3.0);\n"+
-    "  o_color.rgb += vec3(1.0) * fresnel * smoothstep(0.0, 0.3, diff);\n"+
     "}";
 };
