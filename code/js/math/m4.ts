@@ -4,24 +4,26 @@ export class m4
 {
   private static EPSILON : number = 0.000001;
 
+  public static new(m00 : number, m01 : number, m02 : number, m03 : number,
+                    m10 : number, m11 : number, m12 : number, m13 : number,
+                    m20 : number, m21 : number, m22 : number, m23 : number,
+                    m30 : number, m31 : number, m32 : number, m33 : number) : Float32Array {
+    var out = new Float32Array([
+      m00, m01, m02, m03,
+      m10, m11, m12, m13,
+      m20, m21, m22, m23,
+      m30, m31, m32, m33
+    ]);
+    return out;
+  }
+
   public static identity() : Float32Array {
-    var out = new Float32Array(16);
-    out[0] = 1;
-    out[1] = 0;
-    out[2] = 0;
-    out[3] = 0;
-    out[4] = 0;
-    out[5] = 1;
-    out[6] = 0;
-    out[7] = 0;
-    out[8] = 0;
-    out[9] = 0;
-    out[10] = 1;
-    out[11] = 0;
-    out[12] = 0;
-    out[13] = 0;
-    out[14] = 0;
-    out[15] = 1;
+    var out = new Float32Array([
+      1, 0, 0, 0,
+      0, 1, 0, 0,
+      0, 0, 1, 0,
+      0, 0, 0, 1
+    ]);
     return out;
   }
 
