@@ -106,7 +106,7 @@ class home
 
     // Gettting the start and ending offset for all html sections
     this.nav_.resize(this.font_size_);
-    this.portfolio_.resize(this.width_ - this.scroll_width_);
+    this.portfolio_.resize(this.width_ - this.scroll_width_, this.scroll_width_);
     this.universe_.resize();
     this.key_.resize();
   }
