@@ -54,18 +54,22 @@ export class open_gl
   private down_binder_ : any;
   private move_binder_ : any;
   private up_binder_   : any;
+  private no_prevent_  : boolean;
 
   /**
    * @brief Creating a new WebGL2 context (canvas) and prepend it inside the parent element
    * 
    * @param parent Parent HTMLElement where the HTMLCanvasElement will be prepend
    * @param alpha  Indicates if the WebGL2 context should have an alpha channel (transparency)
+   * @param prevent_default Indicates if the events mouse: down, move, and up 
+   *                        should prevent default events
    */
-  constructor(parent : HTMLElement, alpha : boolean = true){
+  constructor(parent : HTMLElement, alpha : boolean = true, prevent_default : boolean = true){
     this.shaders_ = new Array<shader_info>(0);
     this.canvas_ = document.createElement('canvas');
     parent.prepend(this.canvas_);
 
+    this.no_prevent_ = !prevent_default;
     this.initialize(alpha);
 
     this.parent = parent;
@@ -75,7 +79,8 @@ export class open_gl
     this.parent.addEventListener('mousedown', this.down_binder_);
     this.up_binder_ = this.mouse_up.bind(this);
     this.parent.addEventListener('mouseup', this.up_binder_);
-    this.parent.addEventListener('mouseout', this.up_binder_);
+    if(!this.no_prevent_)
+      this.parent.addEventListener('mouseout', this.up_binder_);
   }
   /**
    * @brief Activating the camera's rotation
@@ -121,6 +126,13 @@ export class open_gl
    */
   public static anisotropy() : number {
     return open_gl.anisotropic_ext_;
+  }
+  /**
+   * @breif Getting the canvas container of the WebGL2 context
+   * @returns 
+   */
+  public canvas() : HTMLElement {
+    return this.canvas_;
   }
   /**
    * @brief Clearing the OpenGL viewport
@@ -307,6 +319,7 @@ export class open_gl
    * @brief Rotates the camera throught the X axis a certain angle
    * 
    * @param delta An angle that will be added to the current X angle (in radians)
+   * @param force Indicates if the look at matrix should be calculated
    */
   public rotate_x(delta : number) : void {
     let angle : number = this.phi_ + delta;
@@ -325,8 +338,9 @@ export class open_gl
    * @brief Rotates the camera throught the X axis UNTIL a target angle
    * 
    * @param target_angle The target angle to rotate the X axis
+   * @param force Indicates if the look at matrix should be calculated
    */
-  public rotate_x_to(target_angle : number) : void {
+  public rotate_x_to(target_angle : number, force : boolean = true) : void {
     // Converting to relative angle
     target_angle /= constants.degree_360;
     // Normalizing
@@ -336,7 +350,7 @@ export class open_gl
     target_angle *= constants.degree_360;
 
     this.phi_ = target_angle;
-    this.look_at();
+    if(force) this.look_at();
   }
   /**
    * @brief Rotates the camera throught the Z axis
@@ -360,8 +374,9 @@ export class open_gl
    * @brief Rotates the camera throught the Z axis UNTIL a target angle
    * 
    * @param target_angle The target angle to rotate the Z axis
+   * @param force Indicates if the look at matrix should be calculated
    */
-  public rotate_z_to(target_angle : number) : void {
+  public rotate_z_to(target_angle : number, force : boolean = true) : void {
     // Converting to relative angle
     target_angle /= constants.degree_360;
     // Normalizing
@@ -371,7 +386,7 @@ export class open_gl
     target_angle *= constants.degree_360;
 
     this.theta_ = target_angle;
-    this.look_at();
+    if(force) this.look_at();
   }
   /**
    * @brief Changes the viewport size
@@ -389,6 +404,8 @@ export class open_gl
    * @brief Zooms in/out
    * 
    * @param zooming_in Indicates if it should zoom in, or `false` to zoom out
+   * 
+   * @returns `false` if you already reached the maximum/minimum available zoom level
    */
   public zoom(zooming_in : boolean) : boolean {
     let new_zoom : number;
@@ -402,6 +419,7 @@ export class open_gl
     }
 
     this.zoom_ = new_zoom;
+    this.moved_ = true;
     this.look_at();
 
     return true;
@@ -410,8 +428,11 @@ export class open_gl
    * @brief Zooms to a target level
    * 
    * @param level New zooming level; minimum = 0.001, default = 1, maximum = 20
+   * @param force Indicates if the look at matrix should be calculated
+   * 
+   * @returns `false` if you are outside the zoom minimum and maximum range
    */
-  public zoom_to(level : number = 1) : boolean {
+  public zoom_to(level : number = 1, force : boolean = true) : boolean {
     let ok : boolean = true;
     if(level < 0.001){
       level = 0.001;
@@ -425,7 +446,7 @@ export class open_gl
     if(this.zoom_ === new_zoom) return ok;
 
     this.zoom_ = new_zoom;
-    this.look_at();
+    if(force) this.look_at();
 
     return ok;
   }
@@ -440,10 +461,10 @@ export class open_gl
    * @returns `false` to cancel default events
    */
   private mouse_down(event : MouseEvent) : boolean {
-    if(!this.active_) return false;
+    if(!this.active_) return this.no_prevent_;
     this.dragging_ = true;
-    event.preventDefault();
-    return false;
+    if(!this.no_prevent_) event.preventDefault();
+    return this.no_prevent_;
   }
   /**
    * @brief Rotates the camera using the mouse
@@ -453,12 +474,12 @@ export class open_gl
    * @returns `false` to cancel default events
    */
   private mouse_move(event : MouseEvent) : boolean {
-    if(!this.dragging_ || !this.active_) return false;
+    if(!this.dragging_ || !this.active_) return this.no_prevent_;
 
     let x = -event.movementX;
     let y = event.movementY;
 
-    if(x === 0 && y === 0) return false;
+    if(x === 0 && y === 0) return this.no_prevent_;
 
     this.theta_ += x * this.increase_w_;
     this.phi_ += y * this.increase_h_;
@@ -476,8 +497,8 @@ export class open_gl
     this.moved_ = true;
     this.look_at();
 
-    event.preventDefault();
-    return false;
+    if(!this.no_prevent_) event.preventDefault();
+    return this.no_prevent_;
   }
   /**
    * @brief Deactivates the mouse drag event that rotates the camera
@@ -487,9 +508,9 @@ export class open_gl
    * @returns `false` to cancel default events
    */
   private mouse_up(event : MouseEvent) : boolean {
-    if(!this.active_) return false;
+    if(!this.active_) return this.no_prevent_;
     this.dragging_ = false;
-    event.preventDefault();
-   return false;
+    if(!this.no_prevent_) event.preventDefault();
+    return this.no_prevent_;
   }
 }
