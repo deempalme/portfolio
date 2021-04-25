@@ -111,6 +111,21 @@ export class portfolio
     }
   }
   /**
+   * @brief Changes the video's property from preload="none" to preload=""
+   */
+  public preload() : void {
+    // Preloading the videos inside the portfolio'Ss menu
+    for(var i in this.menu_)
+      this.menu_[i].video.preload = 'auto';
+
+    // Preloading the videos inside the portfolio's articles
+    for(var i in this.articles_){
+      this.articles_[i].video.preload = 'auto;'
+      if(this.articles_[i].secondary_video !== null)
+        this.articles_[i].secondary_video!.preload = 'auto';
+    }
+  }
+  /**
    * @brief Resizes the video (in the background)
    * 
    * @param width New video's width
