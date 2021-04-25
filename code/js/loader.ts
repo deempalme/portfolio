@@ -10,20 +10,23 @@ export class loader
   private static hidden_ : boolean = false;
   private static loader_ : HTMLElement | null = null;
   private static loader_text_ : HTMLElement | null = null;
+  private static callback_ : any = null;
 
 
   constructor(){}
   /**
    * @brief Increments the counter
    * 
-   * It will also hide the HTMLElement stablished in set_loader() when is fully loaded
-   * and update the percentage value inside percentage_string's HTMLElement
+   * It will also hide the HTMLElement established in set_loader() and execute
+   * the callback function set in set_onload_callback() when is fully loaded,
+   * and update the percentage value inside percentage_string's HTMLElement.
    * 
    * @returns `true` if the counter reached 100%
    */
   public static count() : boolean {
     if(++this.counter_ >= this.maximum_count_){
       this.hide();
+      this.callback_();
       return true;
     }
     this.update();
@@ -158,23 +161,41 @@ export class loader
     this.loader_ = object;
     this.loader_text_ = percentage_string;
   }
+  /**
+   * @brief Setting the function that will be called in the onload event (all data is loaded)
+   * 
+   * @param function_callback Function to execute
+   * 
+   * @returns `false` if function_callback is null
+   */
+  public static set_onload_callback(function_callback : any) : boolean {
+    if(function_callback === null) return false;
+    this.callback_ = function_callback;
+    return true;
+  }
 
   // ::::::::::::::::::::::::::::::::::::: PRIVATE FUNCTIONS ::::::::::::::::::::::::::::::::::::::
-
+  /**
+   * @brief Hides the object set in set_loader() 
+   */
   private static hide() : void {
     if(this.loader_ === null) return;
     this.loader_.style.display = 'none';
     $(this.loader_).addClass('ready');
     this.hidden_ = true;
   }
-
+  /**
+   * @brief Shows the object set in set_loader() 
+   */
   private static show() : void {
     if(this.loader_ === null) return;
     this.loader_.style.display = 'block';
     $(this.loader_).removeClass('ready');
     this.hidden_ = false;
   }
-
+  /**
+   * @brief Changes the percentage text of the precentage_string set in set_loader()
+   */
   private static update() : void {
     if(this.hidden_) this.show();
     if(this.loader_text_ === null) return;

@@ -16,6 +16,7 @@ class home
   private scroll_width_ : number = 0;
 
   private font_size_ : number = 16;
+  private resize_factor_ : number = 1;
 
   // Main navigation objects
   private nav_ : navigation;
@@ -59,6 +60,8 @@ class home
     this.about_me_ = new about_me('about_me');
     this.key_ = new keys('keys', this.nav_, this.portfolio_);
 
+    loader.set_onload_callback(this.portfolio_.preload.bind(this.portfolio_));
+
     section.set_keys(this.key_);
 
     this.about_me_.add_image('/resources/images/right_side.jpg');
@@ -80,6 +83,8 @@ class home
     // Creating a window unload event handler
     this.unload_event_ = this.destroy.bind(this);
     window.addEventListener('unload', this.unload_event_);
+
+    this.resize_factor_ = 1920 / 16;
 
     // Forcing an initial sizes' calculation
     this.resize();
@@ -103,6 +108,14 @@ class home
     this.width_ = window.innerWidth;
     this.height_ = window.innerHeight;
     this.html_.style.width = (this.width_ - this.scroll_width_) + 'px';
+
+    // Changing the 'root em' (REM) size
+    const new_font_size : number = Math.round(this.width_ / this.resize_factor_ * 1000) / 1000;
+    if(new_font_size !== this.font_size_){
+      document.documentElement.style.fontSize = new_font_size + 'px';
+      document.body.style.fontSize = '1em';
+      this.font_size_ = new_font_size;
+    }
 
     // Gettting the start and ending offset for all html sections
     this.nav_.resize(this.font_size_);

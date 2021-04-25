@@ -470,6 +470,7 @@ main {
   margin-left: 1em;
   background: url('../theme3.0/buttons.svg') left top no-repeat;
   background-position: -4rem 0;
+  background-size: 10rem 6rem;
 }
 #portfolio > article > aside.play::after { background-position-x: -2rem; }
 #portfolio > article > aside.play.pause::after { background-position-x: 0rem; }
@@ -999,6 +1000,8 @@ main {
 #studies ul > li:nth-child(2) > small { width: 22.5rem; }
 #studies ul > li:nth-child(3) > small { width: 27.5rem; }
 
+#studies ul > li:nth-child(1) img { width: 18.3125rem; }
+#studies ul > li:nth-child(2) img { width: 22.5rem; }
 #studies ul > li:nth-child(3) img { width: 27.5rem; }
 
 #studies ul > li > small > i {
@@ -1007,6 +1010,7 @@ main {
   font-size: 1.2em;
   display: inline-block;
   background: #000 url('../theme3.0/studies_tag.png') no-repeat center center;
+  background-size: 10rem 2rem;
   padding: 0.26em 1em;
   color: #000;
   width: 9rem;
