@@ -56,7 +56,7 @@
         </figure>
       </section>
       <article id="a_autonomous">
-        <video src="/resources/movies/highres/illusion.mp4" loop muted disablePictureInPicture="true" preload="none"></video>
+        <video src="/resources/movies/highres/autonomous.mp4" loop muted disablePictureInPicture="true" preload="none"></video>
         <section>
           <h1>Autonomous driving vehicle</h1>
           <div>
@@ -97,6 +97,7 @@
           </div>
         </section>
         <figure class="rotieren"><img src="/resources/theme3.0/rotate.svg" alt="Rotate"> Rotate</figure>
+        <figure class="hide auto"></figure>
         <aside class="next">NEXT</aside>
         <aside class="play">PAUSE</aside>
         <aside>CLOSE</aside>
@@ -127,6 +128,7 @@
             </li>
           </ul>
         </div>
+        <figure class="hide"></figure>
         <aside class="next">NEXT</aside>
         <aside class="play">PAUSE</aside>
         <aside>CLOSE</aside>
@@ -151,6 +153,7 @@
             </li>
           </ul>
         </div>
+        <figure class="hide"></figure>
         <aside class="play">PAUSE</aside>
         <aside>CLOSE</aside>
       </article>
@@ -176,6 +179,7 @@
             </li>
           </ul>
         </div>
+        <figure class="hide"></figure>
         <aside class="play">PAUSE</aside>
         <aside>CLOSE</aside>
       </article>
@@ -200,6 +204,7 @@
             </li>
           </ul>
         </div>
+        <figure class="hide"></figure>
         <aside class="play">PAUSE</aside>
         <aside>CLOSE</aside>
       </article>
@@ -246,6 +251,7 @@
             </ul>
           </div>
         </section>
+        <figure class="hide auto"></figure>
         <aside class="play">PAUSE</aside>
         <aside>CLOSE</aside>
       </article>
@@ -709,6 +715,10 @@
       <section>
         <small>Email</small>
         <p><b>use front view to see info</b></p>
+      </section>
+      <section>
+        <small>Location</small>
+        <p><b>Sonora, Mexico</b></p>
       </section>
       <section>
         <small>Whatsapp</small>

@@ -5,13 +5,16 @@
    xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
    xmlns:svg="http://www.w3.org/2000/svg"
    xmlns="http://www.w3.org/2000/svg"
-   width="160"
+   width="224"
    height="96"
-   viewBox="0 0 42.333333 25.400001"
+   viewBox="0 0 59.266667 25.400001"
    version="1.1"
    id="svg8">
   <defs
-     id="defs2" />
+     id="defs2">
+    <style
+       id="style1892">.cls-1{fill:none;stroke:#000;stroke-linecap:round;stroke-linejoin:round;stroke-width:2px;}</style>
+  </defs>
   <metadata
      id="metadata5">
     <rdf:RDF>
@@ -206,5 +209,131 @@
        cx="38.100002"
        cy="21.166668"
        r="2.3812501" />
+    <g
+       id="chevron-left"
+       transform="matrix(0.26458334,0,0,0.26458334,42.465626,0)"
+       style="fill:none;fill-opacity:1;stroke:#74d4ff;stroke-opacity:1">
+      <line
+         class="cls-1"
+         x1="11"
+         x2="20"
+         y1="16"
+         y2="7"
+         id="line1898"
+         style="fill:none;fill-opacity:1;stroke:#74d4ff;stroke-opacity:1" />
+      <line
+         class="cls-1"
+         x1="20"
+         x2="11"
+         y1="25"
+         y2="16"
+         id="line1900"
+         style="fill:none;fill-opacity:1;stroke:#74d4ff;stroke-opacity:1" />
+    </g>
+    <g
+       id="chevron-left-3"
+       transform="matrix(0.26458334,0,0,0.26458334,42.465626,8.4666668)"
+       style="fill:none;fill-opacity:1;stroke:#e4f7ff;stroke-opacity:1">
+      <line
+         class="cls-1"
+         x1="11"
+         x2="20"
+         y1="16"
+         y2="7"
+         id="line1898-5"
+         style="fill:none;fill-opacity:1;stroke:#e4f7ff;stroke-opacity:1" />
+      <line
+         class="cls-1"
+         x1="20"
+         x2="11"
+         y1="25"
+         y2="16"
+         id="line1900-1"
+         style="fill:none;fill-opacity:1;stroke:#e4f7ff;stroke-opacity:1" />
+    </g>
+    <g
+       id="chevron-left-3-7"
+       transform="matrix(0.26458334,0,0,0.26458334,42.465626,16.933334)"
+       style="fill:none;fill-opacity:1;stroke:#e9d6b7;stroke-opacity:1">
+      <line
+         class="cls-1"
+         x1="11"
+         x2="20"
+         y1="16"
+         y2="7"
+         id="line1898-5-4"
+         style="fill:none;fill-opacity:1;stroke:#e9d6b7;stroke-opacity:1" />
+      <line
+         class="cls-1"
+         x1="20"
+         x2="11"
+         y1="25"
+         y2="16"
+         id="line1900-1-3"
+         style="fill:none;fill-opacity:1;stroke:#e9d6b7;stroke-opacity:1" />
+    </g>
+    <g
+       id="chevron-left-1"
+       transform="matrix(-0.26458334,0,0,0.26458334,59.134377,0)"
+       style="fill:none;fill-opacity:1;stroke:#74d4ff;stroke-opacity:1">
+      <line
+         class="cls-1"
+         x1="11"
+         x2="20"
+         y1="16"
+         y2="7"
+         id="line1898-4"
+         style="fill:none;fill-opacity:1;stroke:#74d4ff;stroke-opacity:1" />
+      <line
+         class="cls-1"
+         x1="20"
+         x2="11"
+         y1="25"
+         y2="16"
+         id="line1900-6"
+         style="fill:none;fill-opacity:1;stroke:#74d4ff;stroke-opacity:1" />
+    </g>
+    <g
+       id="chevron-left-3-9"
+       transform="matrix(-0.26458334,0,0,0.26458334,59.134377,8.4666668)"
+       style="fill:none;fill-opacity:1;stroke:#e4f7ff;stroke-opacity:1">
+      <line
+         class="cls-1"
+         x1="11"
+         x2="20"
+         y1="16"
+         y2="7"
+         id="line1898-5-42"
+         style="fill:none;fill-opacity:1;stroke:#e4f7ff;stroke-opacity:1" />
+      <line
+         class="cls-1"
+         x1="20"
+         x2="11"
+         y1="25"
+         y2="16"
+         id="line1900-1-2"
+         style="fill:none;fill-opacity:1;stroke:#e4f7ff;stroke-opacity:1" />
+    </g>
+    <g
+       id="chevron-left-3-7-6"
+       transform="matrix(-0.26458334,0,0,0.26458334,59.134377,16.933334)"
+       style="fill:none;fill-opacity:1;stroke:#e9d6b7;stroke-opacity:1">
+      <line
+         class="cls-1"
+         x1="11"
+         x2="20"
+         y1="16"
+         y2="7"
+         id="line1898-5-4-4"
+         style="fill:none;fill-opacity:1;stroke:#e9d6b7;stroke-opacity:1" />
+      <line
+         class="cls-1"
+         x1="20"
+         x2="11"
+         y1="25"
+         y2="16"
+         id="line1900-1-3-1"
+         style="fill:none;fill-opacity:1;stroke:#e9d6b7;stroke-opacity:1" />
+    </g>
   </g>
 </svg>
