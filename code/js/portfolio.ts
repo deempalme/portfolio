@@ -16,6 +16,8 @@ interface article_item {
   secondary_video : HTMLMediaElement | null;
   play : HTMLElement;
   playing : boolean;
+  hide : HTMLElement;
+  hidden : boolean;
   next : HTMLElement | null;
   nexted : boolean;
   close : HTMLElement;
@@ -66,6 +68,9 @@ export class portfolio
         secondary_video: is_drone ? (article.children.item(1) as HTMLMediaElement) : null,
         play: article.children.item(article.children.length - 2) as HTMLElement,
         playing: true,
+        hide: (is_drone || is_auto ? article.children.item(article.children.length - 4) 
+              : article.children.item(article.children.length - 3)) as HTMLElement,
+        hidden: false,
         next: is_drone || is_auto ? (article.children.item(article.children.length - 3) as HTMLElement) : null,
         nexted: false,
         close: (article.children.item(article.children.length - 1) as HTMLElement)
@@ -75,6 +80,7 @@ export class portfolio
       if(is_drone || is_auto)
         this.articles_[i].next?.addEventListener('mouseup', this.next.bind(this, i));
       this.articles_[i].close.addEventListener('mouseup', this.hide.bind(this, i));
+      this.articles_[i].hide.addEventListener('mouseup', this.toggle_text.bind(this, i));
 
       // Loading posters
       const image_url : string = this.articles_[i].video.currentSrc;
@@ -321,6 +327,23 @@ export class portfolio
         }else
           this.articles_[i].video.pause();
       }
+    }
+  }
+  /**
+   * @brief Toggles the visibility of the portfolio articles' text
+   * 
+   * @param i Array index of the portfolio's articles
+   */
+  private toggle_text(i : number) : void {
+    if(this.articles_[i].hidden){
+      $(this.articles_[i].object).children('div').css('display', 'inline-block');
+      $(this.articles_[i].object).children('section').css('display', 'flex');
+      $(this.articles_[i].hide).removeClass('show');
+      this.articles_[i].hidden = false;
+    }else{
+      $(this.articles_[i].object).children('section, div').css('display', 'none');
+      $(this.articles_[i].hide).addClass('show');
+      this.articles_[i].hidden = true;
     }
   }
 }

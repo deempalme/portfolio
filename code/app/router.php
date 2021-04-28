@@ -90,7 +90,7 @@ class router
     }
 
     if(empty($most_likely)){
-      return 'code/controller/not_found.php';
+      return 'code/controller/home.php';
     }else{
       return 'code/'.$most_likely.'.php';
     }

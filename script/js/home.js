@@ -72,13 +72,13 @@ class contact_me {
         this.t_ = ' 3017';
         this.t2_ = ' 622';
         this.t6_ = ' 125';
-        this.s_ = ' 6778';
-        this.s5_ = ' 575';
-        this.s8_ = ' 145';
+        this.s_ = ' 2331';
+        this.s5_ = ' 1762';
+        this.s8_ = ' 103';
         this.object_ = document.getElementById(object);
         this.text_object_1_ = this.object_.children.item(1).children.item(1).children.item(0);
-        this.text_object_2_ = this.object_.children.item(2).children.item(1).children.item(0);
-        this.text_object_3_ = this.object_.children.item(3).children.item(1).children.item(0);
+        this.text_object_2_ = this.object_.children.item(3).children.item(1).children.item(0);
+        this.text_object_3_ = this.object_.children.item(4).children.item(1).children.item(0);
         this.text_object_1_.textContent = this.e_ + this.e8_ + this.e4_ + this.e3_;
         this.text_object_2_.textContent = '+52' + this.t2_ + this.t6_ + this.t_;
         this.text_object_3_.textContent = '+49' + this.s5_ + this.s8_ + this.s_;
@@ -300,13 +300,13 @@ class droiddrive {
     transparent(hide) {
         if (hide) {
             if (!this.is_transparent_) {
-                jquery_1.default('#a_autonomous > section').addClass('transparent');
+                jquery_1.default('#a_autonomous > section, #a_autonomous figure.hide').addClass('transparent');
                 this.is_transparent_ = true;
             }
         }
         else {
             if (this.is_transparent_) {
-                jquery_1.default('#a_autonomous > section').removeClass('transparent');
+                jquery_1.default('#a_autonomous > section, #a_autonomous figure.hide').removeClass('transparent');
                 this.is_transparent_ = false;
             }
         }
@@ -2333,6 +2333,9 @@ class portfolio {
                 secondary_video: is_drone ? article.children.item(1) : null,
                 play: article.children.item(article.children.length - 2),
                 playing: true,
+                hide: (is_drone || is_auto ? article.children.item(article.children.length - 4)
+                    : article.children.item(article.children.length - 3)),
+                hidden: false,
                 next: is_drone || is_auto ? article.children.item(article.children.length - 3) : null,
                 nexted: false,
                 close: article.children.item(article.children.length - 1)
@@ -2341,6 +2344,7 @@ class portfolio {
             if (is_drone || is_auto)
                 (_a = this.articles_[i].next) === null || _a === void 0 ? void 0 : _a.addEventListener('mouseup', this.next.bind(this, i));
             this.articles_[i].close.addEventListener('mouseup', this.hide.bind(this, i));
+            this.articles_[i].hide.addEventListener('mouseup', this.toggle_text.bind(this, i));
             const image_url = this.articles_[i].video.currentSrc;
             var image = new Image();
             loader_1.loader.load_image(image_url.substring(0, image_url.length - 3) + 'jpg', image, this.show_poster.bind(this, i, image));
@@ -2522,6 +2526,19 @@ class portfolio {
                 else
                     this.articles_[i].video.pause();
             }
+        }
+    }
+    toggle_text(i) {
+        if (this.articles_[i].hidden) {
+            jquery_1.default(this.articles_[i].object).children('div').css('display', 'inline-block');
+            jquery_1.default(this.articles_[i].object).children('section').css('display', 'flex');
+            jquery_1.default(this.articles_[i].hide).removeClass('show');
+            this.articles_[i].hidden = false;
+        }
+        else {
+            jquery_1.default(this.articles_[i].object).children('section, div').css('display', 'none');
+            jquery_1.default(this.articles_[i].hide).addClass('show');
+            this.articles_[i].hidden = true;
         }
     }
 }

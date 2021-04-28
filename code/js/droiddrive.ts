@@ -314,12 +314,12 @@ export class droiddrive
   public transparent(hide : boolean) : void {
     if(hide){
       if(!this.is_transparent_){
-        $('#a_autonomous > section').addClass('transparent');
+        $('#a_autonomous > section, #a_autonomous figure.hide').addClass('transparent');
         this.is_transparent_ = true;
       }
     }else{
       if(this.is_transparent_){
-        $('#a_autonomous > section').removeClass('transparent');
+        $('#a_autonomous > section, #a_autonomous figure.hide').removeClass('transparent');
         this.is_transparent_ = false;
       }
     }

@@ -355,6 +355,37 @@ main {
   display: inline-block;
 }
 
+#portfolio > article > figure.hide {
+  position: fixed;
+  left: 40rem;
+  top: calc(50vh - 4rem);
+  width: 4rem;
+  height: 8rem;
+  display: block;
+  background: #00000055;
+  z-index: 1014;
+  cursor: pointer;
+}
+#portfolio > article > figure.hide::after {
+  content: '';
+  display: block;
+  width: 4rem;
+  height: 4rem;
+  margin-top: 2rem;
+  background: url('../theme3.0/buttons.svg') -20rem -8rem no-repeat;
+  background-size: 28rem 12rem;
+}
+#portfolio > article > figure.hide:hover { background-color: #000; }
+#portfolio > article > figure.hide:hover::after { background-position-y: 0rem; }
+#portfolio > article > figure.hide:active { background-color: #c75c5c; }
+#portfolio > article > figure.hide:active::after { background-position-y: -4rem; }
+
+#portfolio > article > figure.hide.show, #portfolio > article > figure.hide.auto.show {
+  left: 0rem;
+}
+#portfolio > article > figure.hide.show::after { background-position-x: -24rem; }
+#portfolio > article > figure.hide.auto { left: 75rem; }
+
 #portfolio > article > section {
   position: relative;
   z-index: 1013;
@@ -470,7 +501,7 @@ main {
   margin-left: 1em;
   background: url('../theme3.0/buttons.svg') left top no-repeat;
   background-position: -4rem 0;
-  background-size: 10rem 6rem;
+  background-size: 14rem 6rem;
 }
 #portfolio > article > aside.play::after { background-position-x: -2rem; }
 #portfolio > article > aside.play.pause::after { background-position-x: 0rem; }
@@ -588,7 +619,7 @@ main {
   0% { opacity: 1.0; }
   100% { opacity: 0.2; }
 }
-#portfolio > article section.transparent {
+#portfolio > article section.transparent, #portfolio > article > figure.hide.transparent {
   animation: transparenting 0.5s linear 0s 1;
   opacity: 0.2;
   -moz-user-select: none;
@@ -596,6 +627,15 @@ main {
   -o-user-select: none;
   -ms-user-select: none;
   user-select: none;
+}
+#portfolio > article > figure.hide.auto.show.transparent {
+  animation: none;
+  opacity: 1.0;
+  -moz-user-select: unset;
+  -webkit-user-select : unset;
+  -o-user-select: unset;
+  -ms-user-select: unset;
+  user-select: unset;
 }
 
 /* PROJECTS ::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::: */
@@ -787,7 +827,7 @@ main {
   font-size: 0.8rem;
   background: url('../theme3.0/buttons.svg') 0 0 no-repeat;
   background-position-x: -8em;
-  background-size: 10em 6em;
+  background-size: 14em 6em;
   width: 2em;
   height: 2em;
   margin: 0;
@@ -1102,16 +1142,22 @@ footer > aside {
 #contact_me > section:nth-of-type(1) {
   position: absolute;
   left: calc(50vw - 52rem);
-  top: calc(50vh - 4rem);
+  top: calc(50vh - 10rem);
   font-size: 3.3rem;
 }
 #contact_me > section:nth-of-type(2) {
+  position: absolute;
+  left: calc(50vw - 39rem);
+  top: calc(50vh + 6rem);
+  font-size: 2.6rem;
+}
+#contact_me > section:nth-of-type(3) {
   position: absolute;
   right: calc(50vw - 41rem);
   top: calc(50vh - 10rem);
   font-size: 2.6rem;
 }
-#contact_me > section:nth-of-type(3) {
+#contact_me > section:nth-of-type(4) {
   position: absolute;
   right: calc(50vw - 41rem);
   top: calc(50vh + 6rem);
