@@ -72,7 +72,7 @@ fireworks/
 sources/*.jpg
 sources/*.tif
 sources/*.png
-resources/movies/autonomous.mp4
+resources/movies/highres/autonomous.mp4
 
 # Gimp files
 *.xcf
