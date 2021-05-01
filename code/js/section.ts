@@ -2,6 +2,7 @@
 import $ from 'jquery';
 import { keys } from './keys';
 
+
 export class section {
   private object_    : HTMLElement;
   private link_      : HTMLElement | null;
@@ -26,7 +27,11 @@ export class section {
 
   private mouse_binder_ : any;
 
-
+  /**
+   * @brief This creates the white circles inside the main navigation menu and animates its shadow
+   * 
+   * @param object Id of a single navigation menu's link
+   */
   constructor(object : string){
     this.link_ = null;
     this.link_text_ = document.createElement('b');

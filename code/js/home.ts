@@ -1,5 +1,6 @@
 
 import { about_me } from './about_me';
+import { code_view } from './code_view';
 import { contact_me } from './contact_me';
 import { keys } from './keys';
 import { loader } from './loader';
@@ -8,14 +9,15 @@ import { portfolio } from './portfolio';
 import { section } from './section';
 import { universe } from './universe';
 
+
 class home
 {
-  private html_ : HTMLElement;
+  private html_   : HTMLElement;
   private width_  : number = 0;
   private height_ : number = 0;
   private scroll_width_ : number = 0;
 
-  private font_size_ : number = 16;
+  private font_size_     : number = 16;
   private resize_factor_ : number = 1;
 
   // Main navigation objects
@@ -23,18 +25,22 @@ class home
   // Navigation keyboard
   private key_ : keys;
   // Modules
-  private universe_ : universe;
-  private portfolio_ : portfolio;
-  private about_me_ : about_me;
-  private contact_me_ : contact_me;
+  private universe_    : universe;
+  private portfolio_   : portfolio;
+  private about_me_    : about_me;
+  private contact_me_  : contact_me;
+  private code_viewer_ : code_view;
   
   // Event binders
-  private resize_event_ : any;
-  private scroll_event_ : any;
-  private unload_event_ : any;
+  private resize_event_  : any;
+  private scroll_event_  : any;
+  private unload_event_  : any;
   private resize_binder_ : any;
-  private resize_timer_ : number = 0;
+  private resize_timer_  : number = 0;
 
+  /**
+   * @brief Creates all the UI functionality: Milky way simulation, autonomous car simulation, etc.
+   */
   constructor(){
     this.html_ = document.documentElement;
 
@@ -70,6 +76,8 @@ class home
     this.about_me_.add_image('/resources/images/fixture.jpg');
     this.about_me_.add_image('/resources/images/kfs.jpg');
     this.about_me_.add_image('/resources/images/mover.jpg');
+
+    this.code_viewer_ = new code_view('code_view', 'show_code', this.universe_);
 
     // Creating a window resize event handler
     this.resize_event_ = this.resize.bind(this);

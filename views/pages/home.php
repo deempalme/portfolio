@@ -7,6 +7,7 @@
 <link rel="icon" type="image/png" href="/resources/theme/icon.png" />
 <link href="/resources/css/fonts3.0.css" rel="stylesheet" />
 <link href="/resources/css/home.css" rel="stylesheet" />
+<link href="/resources/highlight/vs2015.css" rel="stylesheet">
 </head>
 
 <body>
@@ -25,7 +26,7 @@
     <section id="universe" name="universe">
       <h1 id="uni_back"><img src="/resources/theme3.0/ramirez_rodriguez.svg" alt="RAMIREZ RODRIGUEZ"></h1>
       <div class="rotieren first"><img src="/resources/theme3.0/rotate.svg" alt="Rotate"> Rotate</div>
-      <aside><a href="https://github.com/deempalme/portfolio">See &lt;the code&gt;</a></aside>
+      <aside id="show_code">See &lt;the code&gt;</aside>
     </section>
     <section id="portfolio" name="portfolio">
       <div><h1><img src="/resources/theme3.0/the_portfolio.svg" alt="The PORTFOLIO"></h1></div>
@@ -718,7 +719,7 @@
       </section>
       <section>
         <small>Location</small>
-        <p><b>Sonora, Mexico</b></p>
+        <p><b>Sonora, México (UTC -7h)</b></p>
       </section>
       <section>
         <small>Whatsapp</small>
@@ -745,6 +746,10 @@
   </aside>
   <aside id="loader">
     Loading: <b>0</b><i>%</i>
+  </aside>
+  <aside id="code_view">
+    <div class="close">CLOSE</div>
+    <div class="button"><a href="https://github.com/deempalme/portfolio">See &lt;the code&gt; in github</a></div>
   </aside>
   <script language="javascript" src="/script/js/home.js" type="text/javascript"></script>
 </body>

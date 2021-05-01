@@ -1,5 +1,5 @@
-import { loader } from "./loader";
 
+import { loader } from "./loader";
 
 interface about_image {
   src    : string;
@@ -12,19 +12,23 @@ interface about_image {
 
 export class about_me
 {
-  private object : HTMLElement;
-  private menu : HTMLElement;
+  private object_ : HTMLElement;
+  private menu_   : HTMLElement;
 
-  private images : Array<about_image>
-  private last   : number = 0;
-  private timer  : number = 0;
+  private images_ : Array<about_image>
+  private last_   : number = 0;
+  private timer_  : number = 0;
 
-
+  /**
+   * @brief Loads the background images that will be show in the About me's section
+   * 
+   * @param object Id of the about me's section
+   */
   constructor(object : string){
-    this.object = document.getElementById(object)!.children.item(0) as HTMLElement;
-    this.menu = document.createElement('aside');
-    this.object.appendChild(this.menu);
-    this.images = new Array<about_image>(0);
+    this.object_ = document.getElementById(object)!.children.item(0) as HTMLElement;
+    this.menu_ = document.createElement('aside');
+    this.object_.appendChild(this.menu_);
+    this.images_ = new Array<about_image>(0);
   }
   /**
    * @brief Adding a new image to show in the background
@@ -33,7 +37,7 @@ export class about_me
    */
   public add_image(image_url : string) : void {
     var image : HTMLImageElement = new Image();
-    const i : number = this.images.push({ 
+    const i : number = this.images_.push({ 
       src: image_url, width: 0, height: 0, 
       button: document.createElement('div'), loaded: false
     }) - 1;
@@ -47,18 +51,18 @@ export class about_me
    * @returns `false` if the index doesn't exist
    */
   public change(i : number) : boolean {
-    if(i >= this.images.length) return false;
-    clearInterval(this.timer);
+    if(i >= this.images_.length) return false;
+    clearInterval(this.timer_);
 
-    this.images[this.last].button.className = '';
-    this.images[i].button.className = 'active';
+    this.images_[this.last_].button.className = '';
+    this.images_[i].button.className = 'active';
 
-    this.last = i;
+    this.last_ = i;
 
-    if(!this.images[i].loaded) return false;
-    this.object.style.backgroundImage = 'url(' + this.images[i].src + ')';
+    if(!this.images_[i].loaded) return false;
+    this.object_.style.backgroundImage = 'url(' + this.images_[i].src + ')';
 
-    this.timer = setInterval(this.update.bind(this), 5000);
+    this.timer_ = setInterval(this.update.bind(this), 5000);
     return true;
   }
 
@@ -67,30 +71,30 @@ export class about_me
    * @brief Changes to the next background image in the queue
    */
   private update() : void {
-    this.images[this.last].button.className = '';
+    this.images_[this.last_].button.className = '';
 
-    ++this.last;
-    if(this.last >= this.images.length) this.last = 0;
+    ++this.last_;
+    if(this.last_ >= this.images_.length) this.last_ = 0;
 
-    this.images[this.last].button.className = 'active';
-    if(!this.images[this.last].loaded){
-      clearInterval(this.timer);
+    this.images_[this.last_].button.className = 'active';
+    if(!this.images_[this.last_].loaded){
+      clearInterval(this.timer_);
       return;
     }
 
-    this.object.style.backgroundImage = 'url(' + this.images[this.last].src + ')';
+    this.object_.style.backgroundImage = 'url(' + this.images_[this.last_].src + ')';
   }
   /**
    * @brief Loading image's onload callback
    */
   private finished(image : HTMLImageElement, i : number) : void {
-    //this.images[i].src    = image.currentSrc;
-    this.images[i].width  = image.naturalWidth;
-    this.images[i].height = image.naturalHeight;
-    this.images[i].loaded = true;
+    //this.images_[i].src    = image.currentSrc;
+    this.images_[i].width  = image.naturalWidth;
+    this.images_[i].height = image.naturalHeight;
+    this.images_[i].loaded = true;
 
-    this.menu.appendChild(this.images[i].button);
-    this.images[i].button.addEventListener('mouseup', this.change.bind(this, i));
-    if(this.last === i) this.change(i);
+    this.menu_.appendChild(this.images_[i].button);
+    this.images_[i].button.addEventListener('mouseup', this.change.bind(this, i));
+    if(this.last_ === i) this.change(i);
   }
 };

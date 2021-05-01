@@ -2,7 +2,7 @@
 
 export class ground
 {
-  private gl_ : WebGL2RenderingContext;
+  private gl_  : WebGL2RenderingContext;
   private vao_ : WebGLVertexArrayObject | null = null;
   private data_size_ : number = 0;
 

@@ -1,13 +1,12 @@
 
 import * as constants from './constants';
-import $ from 'jquery';
 
 
 export class shader
 {
-  private id : WebGLProgram | null = null;
-  private gl : WebGL2RenderingContext;
-  public finished : boolean = false;
+  private id_ : WebGLProgram | null = null;
+  private gl_ : WebGL2RenderingContext;
+  public finished_ : boolean = false;
 
   /**
    * @brief Creates the shader object
@@ -17,8 +16,8 @@ export class shader
    * @param fragment The fragment text data
    */
   constructor(context : WebGL2RenderingContext, vertex : string, fragment : string){
-    this.gl = context;
-    this.id = this.gl.createProgram();
+    this.gl_ = context;
+    this.id_ = this.gl_.createProgram();
 
     this.process_program(vertex, fragment);
   }
@@ -30,8 +29,8 @@ export class shader
    * @returns If found returns the ID number or -1 if program is not yet created
    */
   public attr_location(name : string) : number {
-    if(this.id)
-      return this.gl.getAttribLocation(this.id, name);
+    if(this.id_)
+      return this.gl_.getAttribLocation(this.id_, name);
     return -1;
   }
   /**
@@ -40,7 +39,7 @@ export class shader
    * @returns The shader program's WebGL context
    */
   public context() : WebGL2RenderingContext {
-    return this.gl;
+    return this.gl_;
   }
   /**
    * @brief Sets an uniform 1D integer value
@@ -49,8 +48,8 @@ export class shader
    * @param value Numeric integer data that will be uploaded
    */
   public integer(uniform_id : WebGLUniformLocation | null, value : number) : void {
-    if(this.id)
-      this.gl.uniform1i(uniform_id, value);
+    if(this.id_)
+      this.gl_.uniform1i(uniform_id, value);
   }
   /**
    * @brief Indicates if the Shading program was loaded and compiled
@@ -58,7 +57,7 @@ export class shader
    * @returns `true` whan vertex and fragment data have been loaded and properly compiled
    */
   public loaded() : boolean {
-    return this.finished;
+    return this.finished_;
   }
   /**
    * @brief Sets an uniform 3D floating matrix value
@@ -67,8 +66,8 @@ export class shader
    * @param matrix Array of 9 floating values that will be uploaded
    */
    public matrix3f(uniform_id : WebGLUniformLocation | null, matrix : Float32List) : void {
-    if(this.id)
-      this.gl.uniformMatrix3fv(uniform_id, false, matrix);
+    if(this.id_)
+      this.gl_.uniformMatrix3fv(uniform_id, false, matrix);
   }
   /**
    * @brief Sets an uniform 4D floating matrix value
@@ -77,8 +76,8 @@ export class shader
    * @param matrix Array of 16 floating values that will be uploaded
    */
    public matrix4f(uniform_id : WebGLUniformLocation | null, matrix : Float32List) : void {
-    if(this.id)
-      this.gl.uniformMatrix4fv(uniform_id, false, matrix);
+    if(this.id_)
+      this.gl_.uniformMatrix4fv(uniform_id, false, matrix);
   }
   /**
    * @brief Sets an uniform 1D floating value
@@ -87,8 +86,8 @@ export class shader
    * @param value Numeric floating data that will be uploaded
    */
   public uniform1f(uniform_id : WebGLUniformLocation | null, value : number) : void {
-    if(this.id)
-      this.gl.uniform1f(uniform_id, value);
+    if(this.id_)
+      this.gl_.uniform1f(uniform_id, value);
   }
   /**
    * @brief Sets an uniform 2D floating vector value
@@ -97,8 +96,8 @@ export class shader
    * @param vector Array of 2 floating values that will be uploaded
    */
   public uniform2fv(uniform_id : WebGLUniformLocation | null, vector : Float32List) : void {
-    if(this.id)
-      this.gl.uniform2fv(uniform_id, vector);
+    if(this.id_)
+      this.gl_.uniform2fv(uniform_id, vector);
   }
   /**
    * @brief Sets an uniform 3D floating vector value
@@ -107,8 +106,8 @@ export class shader
    * @param vector Array of 3 floating values that will be uploaded
    */
   public uniform3fv(uniform_id : WebGLUniformLocation | null, vector : Float32List) : void {
-    if(this.id)
-      this.gl.uniform3fv(uniform_id, vector);
+    if(this.id_)
+      this.gl_.uniform3fv(uniform_id, vector);
   }
   /**
    * @brief Sets an uniform 4D floating vector value
@@ -117,8 +116,8 @@ export class shader
    * @param vector Array of 4 floating values that will be uploaded
    */
   public uniform4fv(uniform_id : WebGLUniformLocation | null, vector : Float32List) : void {
-    if(this.id)
-      this.gl.uniform4fv(uniform_id, vector);
+    if(this.id_)
+      this.gl_.uniform4fv(uniform_id, vector);
   }
   /**
    * @brief Getting the uniform location of a named variable
@@ -128,16 +127,16 @@ export class shader
    * @returns If found returns the WebGLUniformLocation
    */
   public uniform_location(name : string) : WebGLUniformLocation | null {
-    if(this.id)
-      return this.gl.getUniformLocation(this.id, name);
+    if(this.id_)
+      return this.gl_.getUniformLocation(this.id_, name);
     return null;
   }
   /**
    * @brief Activates this shader program
    */
   public use() : void {
-    if(this.id)
-      this.gl.useProgram(this.id);
+    if(this.id_)
+      this.gl_.useProgram(this.id_);
   }
 
   // ::::::::::::::::::::::::::::::::::::: PRIVATE FUNCTIONS ::::::::::::::::::::::::::::::::::::::
@@ -145,52 +144,52 @@ export class shader
    * Frees unused memory
    */
   private destroy(){
-    this.id = null;
+    this.id_ = null;
   }
 
   private process_program(vertex : string | null, fragment : string | null) : void {
     // Creating the shding program only if the vertex and fragment data was loaded
     if(vertex != null && fragment != null){
-      const vertex_id = this.gl.createShader(this.gl.VERTEX_SHADER);
-      const fragment_id = this.gl.createShader(this.gl.FRAGMENT_SHADER);
+      const vertex_id = this.gl_.createShader(this.gl_.VERTEX_SHADER);
+      const fragment_id = this.gl_.createShader(this.gl_.FRAGMENT_SHADER);
 
-      if(this.id && vertex_id && fragment_id){
-        this.gl.shaderSource(vertex_id, vertex);
-        this.gl.compileShader(vertex_id);
+      if(this.id_ && vertex_id && fragment_id){
+        this.gl_.shaderSource(vertex_id, vertex);
+        this.gl_.compileShader(vertex_id);
 
-        if(!this.gl.getShaderParameter(vertex_id, this.gl.COMPILE_STATUS)){
+        if(!this.gl_.getShaderParameter(vertex_id, this.gl_.COMPILE_STATUS)){
           this.destroy();
           console.error("An error occurred compiling the vertex shader:\n" 
-                        + this.gl.getShaderInfoLog(vertex_id) + " id:" + vertex_id);
+                        + this.gl_.getShaderInfoLog(vertex_id) + " id:" + vertex_id);
           return;
         }
 
-        this.gl.shaderSource(fragment_id, fragment);
-        this.gl.compileShader(fragment_id);
+        this.gl_.shaderSource(fragment_id, fragment);
+        this.gl_.compileShader(fragment_id);
 
-        if(!this.gl.getShaderParameter(fragment_id, this.gl.COMPILE_STATUS)){
+        if(!this.gl_.getShaderParameter(fragment_id, this.gl_.COMPILE_STATUS)){
           this.destroy();
           console.error("An error occurred compiling the fragment shader:\n"
-                        + this.gl.getShaderInfoLog(fragment_id) + " id:" + fragment_id);
+                        + this.gl_.getShaderInfoLog(fragment_id) + " id:" + fragment_id);
           return;
         }
 
-        this.gl.attachShader(this.id, vertex_id);
-        this.gl.attachShader(this.id, fragment_id);
+        this.gl_.attachShader(this.id_, vertex_id);
+        this.gl_.attachShader(this.id_, fragment_id);
 
-        this.gl.bindAttribLocation(this.id, constants.attributes.position, 'i_position');
-        this.gl.bindAttribLocation(this.id, constants.attributes.uv, 'i_uv');
-        this.gl.bindAttribLocation(this.id, constants.attributes.normal, 'i_normal');
-        this.gl.bindAttribLocation(this.id, constants.attributes.tangent, 'i_tangent');
+        this.gl_.bindAttribLocation(this.id_, constants.attributes.position, 'i_position');
+        this.gl_.bindAttribLocation(this.id_, constants.attributes.uv, 'i_uv');
+        this.gl_.bindAttribLocation(this.id_, constants.attributes.normal, 'i_normal');
+        this.gl_.bindAttribLocation(this.id_, constants.attributes.tangent, 'i_tangent');
 
-        this.gl.linkProgram(this.id);
+        this.gl_.linkProgram(this.id_);
 
-        if(!this.gl.getProgramParameter(this.id, this.gl.LINK_STATUS)){
+        if(!this.gl_.getProgramParameter(this.id_, this.gl_.LINK_STATUS)){
           this.destroy();
           console.error("Unable to initialize the shader program: \n"
-                        + this.gl.getProgramInfoLog(this.id));
+                        + this.gl_.getProgramInfoLog(this.id_));
         }else
-          this.finished = true;
+          this.finished_ = true;
 
       }else{
         this.destroy();

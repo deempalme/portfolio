@@ -24,7 +24,13 @@ export class contact_me
   private s5_ : string | null = ' 1762';
   private s8_ : string | null = ' 103';
 
-
+  /**
+   * @brief Shows the private information to the user
+   * 
+   * This avoids that robots steal such information for spamming
+   * 
+   * @param object Id of the contact me's section
+   */
   constructor(object : string){
     this.object_ = document.getElementById(object)!;
 

@@ -18,7 +18,7 @@ router::add_path('', 'home');
 // +–––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––+
 
 // Load code view for solar system
-router::add_path('bio/code', 'code_viewer', 'dynamic');
+router::add_path('bio/code', 'code_directory', 'dynamic');
 
 // +–––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––+
 // |                        Checking the most likely path to go                        |

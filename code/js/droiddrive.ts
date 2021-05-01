@@ -13,13 +13,13 @@ import { ground_shader } from './shaders/ground_shader';
 import { lidar_shader } from './shaders/lidar_shader';
 import { model_shader } from './shaders/model_shader';
 
-
 interface model_3d {
-  model : model;
+  model  : model;
   albedo : texture;
   normal : texture;
   matrix : Float32Array;
 }
+
 
 export class droiddrive
 {
@@ -29,7 +29,7 @@ export class droiddrive
 
   // 3D models
   private models_ : Array<model_3d>;
-  private lidar_ : lidar;
+  private lidar_  : lidar;
   private ground_ : ground;
 
   // Animation management
@@ -59,6 +59,11 @@ export class droiddrive
   private pause_callback_  : any;
 
 
+  /**
+   * @brief This creates the Automonous car's simulation in WebGL
+   * 
+   * @param object Id of the canvas container
+   */
   constructor(object : string){
     this.object_ = document.getElementById(object)!;
 

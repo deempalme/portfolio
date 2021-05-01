@@ -10,7 +10,12 @@ export class model
   private finished_ : boolean = false;
   private data_size_ : number = 0;
 
-
+  /**
+   * @brief Loads a 3D models into a WebGL vertex array object
+   * 
+   * @param context Current WebGL context
+   * @param model_url 3D model's URL path where is located
+   */
   constructor(context : WebGL2RenderingContext, model_url : string){
     this.gl_ = context;
 

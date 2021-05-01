@@ -7,11 +7,11 @@ export class lidar
 {
   private gl_ : WebGL2RenderingContext;
 
-  private vao_ : WebGLVertexArrayObject | null;
-  private finished_ : boolean = false;
+  private vao_       : WebGLVertexArrayObject | null;
+  private finished_  : boolean = false;
   private data_size_ : number = 0;
 
-  private shader_ : shader;
+  private shader_    : shader;
   private u_colorize : WebGLUniformLocation | null = null;
 
   /**
