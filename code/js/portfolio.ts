@@ -5,35 +5,39 @@ import { loader } from './loader';
 
 
 interface menu_item {
-  id : string;
+  id    : string;
   video : HTMLMediaElement;
 }
 
 interface article_item {
-  id : string;
+  id     : string;
   object : HTMLElement;
-  video : HTMLMediaElement;
+  video  : HTMLMediaElement;
   secondary_video : HTMLMediaElement | null;
-  play : HTMLElement;
+  play    : HTMLElement;
   playing : boolean;
-  hide : HTMLElement;
-  hidden : boolean;
-  next : HTMLElement | null;
-  nexted : boolean;
-  close : HTMLElement;
+  hide    : HTMLElement;
+  hidden  : boolean;
+  next    : HTMLElement | null;
+  nexted  : boolean;
+  close   : HTMLElement;
 }
 
 
 export class portfolio
 {
-  private menu_ : Array<menu_item>;
+  private menu_   : Array<menu_item>;
   private articles_ : Array<article_item>;
   private active_ : boolean = false;
   private canvas_ : droiddrive;
   private last_   : number = 0;
   private paused_ : boolean = true;
 
-
+  /**
+   * @brief Handles the asynchronous loading of the heavy videos inside the portfolio's section
+   * 
+   * @param portfolio_id Id of the portfolio's section
+   */
   constructor(portfolio_id : string){
     // Getting the #portfolio HTMLElement
     let menu_items : NodeList = 
@@ -121,14 +125,19 @@ export class portfolio
    */
   public preload() : void {
     // Preloading the videos inside the portfolio'Ss menu
-    for(var i in this.menu_)
+    for(var i in this.menu_){
       this.menu_[i].video.preload = 'auto';
+      this.menu_[i].video.load();
+    }
 
     // Preloading the videos inside the portfolio's articles
     for(var i in this.articles_){
-      this.articles_[i].video.preload = 'auto;'
-      if(this.articles_[i].secondary_video !== null)
+      this.articles_[i].video.preload = 'auto';
+      this.articles_[i].video.load();
+      if(this.articles_[i].secondary_video !== null){
         this.articles_[i].secondary_video!.preload = 'auto';
+        this.articles_[i].secondary_video!.load();
+      }
     }
   }
   /**
@@ -213,12 +222,18 @@ export class portfolio
         this.paused_ = true;
         this.canvas_.deactivate();
         this.articles_[i].video.style.display = 'block';
-        this.articles_[i].video.play();
+        if(this.articles_[i].video.readyState === HTMLMediaElement.HAVE_ENOUGH_DATA)
+          this.articles_[i].video.play();
+        else
+          this.articles_[i].video.autoplay = true;
       }else{
         this.articles_[i].video.pause();
         this.articles_[i].video.currentTime = 0;
         this.articles_[i].secondary_video!.style.display = 'block';
-        this.articles_[i].secondary_video!.play();
+        if(this.articles_[i].secondary_video!.readyState === HTMLMediaElement.HAVE_ENOUGH_DATA)
+          this.articles_[i].secondary_video!.play();
+        else
+          this.articles_[i].secondary_video!.autoplay = true;
       }
     }else{
       if(is_auto){
@@ -232,7 +247,10 @@ export class portfolio
         this.articles_[i].secondary_video!.style.display = 'none';
         this.articles_[i].secondary_video!.pause();
         this.articles_[i].secondary_video!.currentTime = 0;
-        this.articles_[i].video.play();
+        if(this.articles_[i].video.readyState === HTMLMediaElement.HAVE_ENOUGH_DATA)
+          this.articles_[i].video.play();
+        else
+          this.articles_[i].video.autoplay = true;
       }
     }
   }
@@ -250,14 +268,19 @@ export class portfolio
    * @param i Array index of the portfolio's menu
    */
   private play(i : number) : void {
-    this.menu_[i].video.play();
+    if(this.menu_[i].video.readyState === HTMLMediaElement.HAVE_ENOUGH_DATA)
+      this.menu_[i].video.play();
+    else
+      this.menu_[i].video.autoplay = true;
   }
   /**
    * @brief Shows the portfolio's article
    * 
    * @param i Array index of the portfolio's articles that will be shown
    */
-  private show(i : number) : void {
+  private show(i : number, event : MouseEvent) : void {
+    if(event.button >= 2) return;
+
     this.menu_[i].video.pause();
     const id : string = this.menu_[i].id;
     $('html, body').stop(true, false).addClass('avoid_scroll');
@@ -268,8 +291,12 @@ export class portfolio
         if(id === '_autonomous'){
           this.canvas_.activate();
           this.paused_ = false;
-        }else
-          this.articles_[ix].video.play();
+        }else{
+          if(this.articles_[ix].video.readyState === HTMLMediaElement.HAVE_ENOUGH_DATA)
+            this.articles_[ix].video.play();
+          else
+            this.articles_[ix].video.autoplay = true;
+        }
         this.articles_[ix].object.style.display = 'block';
         this.last_ = ix;
       }
@@ -301,16 +328,27 @@ export class portfolio
       this.articles_[i].play.className = 'play';
       this.articles_[i].play.innerText = 'PAUSE';
       if(this.articles_[i].nexted){
-        if(is_auto)
-          this.articles_[i].video.play();
-        else
-          this.articles_[i].secondary_video!.play();
+        if(is_auto){
+          if(this.articles_[i].video.readyState === HTMLMediaElement.HAVE_ENOUGH_DATA)
+            this.articles_[i].video.play();
+          else
+            this.articles_[i].video.autoplay = true;
+        }else{
+          if(this.articles_[i].secondary_video!.readyState === HTMLMediaElement.HAVE_ENOUGH_DATA)
+            this.articles_[i].secondary_video!.play();
+          else
+            this.articles_[i].secondary_video!.autoplay = true;
+        }
       }else{
         if(is_auto){
           this.canvas_.play();
           this.paused_ = false;
-        }else
-          this.articles_[i].video.play();
+        }else{
+          if(this.articles_[i].video.readyState === HTMLMediaElement.HAVE_ENOUGH_DATA)
+            this.articles_[i].video.play();
+          else
+            this.articles_[i].video.autoplay = true;
+        }
       }
     }else{
       this.articles_[i].play!.className = 'play pause';
