@@ -3,7 +3,7 @@
 
 # Portfolio
 
-This is the source code of deempalme's curriculum webpage. Their structure is the following:
+This is the source code of deempalme's [curriculum webpage](http://ramrod.tech). Their structure is the following:
 
  - `code/js`: Main UI's code made in TypeScript.
    - `code/js/gl`: WebGL library wrappers.
