@@ -26,6 +26,8 @@ export class loader
   public static count() : boolean {
     if(++this.counter_ >= this.maximum_count_){
       this.hide();
+      this.counter_ = 0;
+      this.maximum_count_ = 0;
       this.callback_();
       return true;
     }
@@ -110,6 +112,35 @@ export class loader
       onload();
     };
     image.src = image_url;
+  }
+  /**
+   * @brief Loads JSON data asynchronously
+   * 
+   * It will call the `onload` function after the load is finished
+   * 
+   * @param json_url URL of the JSON file to load
+   * @param data Data to be sent to the server
+   * @param onload Callback function that will be executed when the load has finished
+   */
+  public static load_json(json_url : string, data : object | string | Array<any>,
+                          onload : any) : void {
+    ++this.maximum_count_;
+    if(this.hidden_) this.show();
+
+    $.ajax({
+      url: json_url,
+      data: data,
+      method: 'POST',
+      dataType: 'json',
+      beforeSend: function(xhr){ xhr.overrideMimeType( "text/plain; charset=utf-8" ); },
+      error: function(ts, ee){
+        loader.count();
+        console.warn('Json not loaded', ts.responseText, ee, json_url);
+      }
+    }).done(function(data){
+      loader.count();
+      onload(data);
+    });
   }
   /**
    * @brief Getting the number of loaded elements

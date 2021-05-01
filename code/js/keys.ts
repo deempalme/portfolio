@@ -26,7 +26,13 @@ export class keys {
   private key_up_event_ : any;
   private key_down_event_ : any;
 
-
+  /**
+   * @brief Creates the keyboard images locatec in the bottom-left corner
+   * 
+   * @param parent Container HTMLElement
+   * @param navigation Navigation class' object
+   * @param portfolio Portfolio class' object
+   */
   constructor(parent : string, navigation : navigation, portfolio : portfolio){
     this.navigation_ = navigation;
     this.portfolio_ = portfolio;

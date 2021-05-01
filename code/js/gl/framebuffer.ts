@@ -1,17 +1,25 @@
+
 import { texture } from "./texture";
 
 
 export class framebuffer
 {
-  private id : WebGLFramebuffer | null = null;
-  private render : WebGLRenderbuffer | null = null;
-  private ok : boolean = false;
+  private id_     : WebGLFramebuffer | null = null;
+  private render_ : WebGLRenderbuffer | null = null;
+  private ok_     : boolean = false;
 
-  private gl : WebGL2RenderingContext;
+  private gl_ : WebGL2RenderingContext;
 
+  /**
+   * @brief Creates a WebGL framebuffer to perform post-rendering effects
+   * 
+   * @param context Current WebGL context
+   * @param generate Indicates if it should generate the framebuffers immediatelly
+   * @param add_render_buffer Indicates if it should add a renderbuffer too
+   */
   constructor(context : WebGL2RenderingContext, generate : boolean = false,
               add_render_buffer : boolean = false){
-    this.gl = context;
+    this.gl_ = context;
     if(generate) this.generate_frame();
     if(add_render_buffer) this.generate_render();
   }
@@ -25,11 +33,11 @@ export class framebuffer
    * 
    * @return false if frame buffer was not generated
    */
-  public attach_2D(texture : texture, attachment : number = this.gl.COLOR_ATTACHMENT0, 
-                   texture_target : number = this.gl.TEXTURE_2D, level : number = 0) : boolean {
-    if(this.id === null) return false;
+  public attach_2D(texture : texture, attachment : number = this.gl_.COLOR_ATTACHMENT0, 
+                   texture_target : number = this.gl_.TEXTURE_2D, level : number = 0) : boolean {
+    if(this.id_ === null) return false;
 
-    this.gl.framebufferTexture2D(this.gl.FRAMEBUFFER, attachment, texture_target,
+    this.gl_.framebufferTexture2D(this.gl_.FRAMEBUFFER, attachment, texture_target,
                                  texture.texture_id(), level);
     return true;
   }
@@ -40,11 +48,11 @@ export class framebuffer
    * 
    * @return false if frame buffer or render buffer have not been generated
    */
-  public attach_render(render_attachment : number = this.gl.DEPTH_ATTACHMENT) : boolean {
-    if(this.id === null || this.render === null) return false;
+  public attach_render(render_attachment : number = this.gl_.DEPTH_ATTACHMENT) : boolean {
+    if(this.id_ === null || this.render_ === null) return false;
 
-    this.gl.framebufferRenderbuffer(this.gl.FRAMEBUFFER, render_attachment,
-                                    this.gl.RENDERBUFFER, this.render);
+    this.gl_.framebufferRenderbuffer(this.gl_.FRAMEBUFFER, render_attachment,
+                                     this.gl_.RENDERBUFFER, this.render_);
     return true;
   }
   /**
@@ -53,8 +61,8 @@ export class framebuffer
    * @return false if frame buffer was not generated
    */
   public bind() : boolean {
-    if(!this.ok) return false;
-    this.gl.bindFramebuffer(this.gl.FRAMEBUFFER, this.id);
+    if(!this.ok_) return false;
+    this.gl_.bindFramebuffer(this.gl_.FRAMEBUFFER, this.id_);
     return true;
   }
   /**
@@ -63,8 +71,8 @@ export class framebuffer
    * @return false if render was not generated
    */
   public bind_render() : boolean {
-    if(!this.ok) return false;
-    this.gl.bindRenderbuffer(this.gl.RENDERBUFFER, this.render);
+    if(!this.ok_) return false;
+    this.gl_.bindRenderbuffer(this.gl_.RENDERBUFFER, this.render_);
     return true;
   }
   /**
@@ -72,7 +80,7 @@ export class framebuffer
    * @returns the webgl2 rendering context
    */
   public context() : WebGL2RenderingContext {
-    return this.gl;
+    return this.gl_;
   }
   /**
    * @brief Deletes the frame buffer and render buffer (if created)
@@ -80,13 +88,13 @@ export class framebuffer
    * @return false if frame buffer does not exist
    */
   public delete() : boolean {
-    if(this.id === null) return false;
+    if(this.id_ === null) return false;
 
-    this.gl.deleteFramebuffer(this.id);
-    this.id = null;
+    this.gl_.deleteFramebuffer(this.id_);
+    this.id_ = null;
 
     this.delete_render();
-    return !(this.ok = false);
+    return !(this.ok_ = false);
   }
   /**
    * @brief Deletes the render buffer
@@ -94,10 +102,10 @@ export class framebuffer
    * @return false if render buffer does not exist
    */
   public delete_render() : boolean {
-    if(this.render === null) return false;
+    if(this.render_ === null) return false;
 
-    this.gl.deleteRenderbuffer(this.render);
-    this.render = null;
+    this.gl_.deleteRenderbuffer(this.render_);
+    this.render_ = null;
     return true;
   }
   /**
@@ -107,7 +115,7 @@ export class framebuffer
    *        into which fragment colors or data values will be written.
    */
   public draw_buffers(buffers : GLenum[]) : void {
-    this.gl.drawBuffers(buffers);
+    this.gl_.drawBuffers(buffers);
   }
   /**
    * @brief Generates a frame buffer and optionally a render buffer too
@@ -115,14 +123,14 @@ export class framebuffer
    * @return false if frame buffer was already created
    */
   public generate_frame(generate_renderbuffer : boolean = false) : boolean {
-    if(this.id !== null) return this.ok = false;
+    if(this.id_ !== null) return this.ok_ = false;
 
-    this.id = this.gl.createFramebuffer();
+    this.id_ = this.gl_.createFramebuffer();
 
     if(generate_renderbuffer)
       this.generate_render();
 
-    return this.ok = this.id !== null;
+    return this.ok_ = this.id_ !== null;
   }
   /**
    * @brief Generates a render buffer
@@ -130,9 +138,9 @@ export class framebuffer
    * @return false if render buffer was already generated
    */
   public generate_render() : boolean {
-    if(this.render !== null) return false;
-    this.render = this.gl.createRenderbuffer();
-    return this.render !== null;
+    if(this.render_ !== null) return false;
+    this.render_ = this.gl_.createRenderbuffer();
+    return this.render_ !== null;
   }
   /**
    * @brief Select a color buffer source for pixels
@@ -143,8 +151,8 @@ export class framebuffer
    *
    * @return false if frame buffer is not created yet
    */
-  public read_buffer(buffer_source : number = this.gl.COLOR_ATTACHMENT0) : void {
-    this.gl.readBuffer(buffer_source);
+  public read_buffer(buffer_source : number = this.gl_.COLOR_ATTACHMENT0) : void {
+    this.gl_.readBuffer(buffer_source);
   }
   /**
    * @brief Releases the actual frame buffer
@@ -152,7 +160,7 @@ export class framebuffer
    * @return false if frame buffer is not created yet
    */
   public release() : void {
-    this.gl.bindFramebuffer(this.gl.FRAMEBUFFER, null);
+    this.gl_.bindFramebuffer(this.gl_.FRAMEBUFFER, null);
   }
   /**
    * @brief Releases the render buffer
@@ -160,7 +168,7 @@ export class framebuffer
    * @return false if render buffer is not created yet
    */
   public release_render() : void {
-    this.gl.bindRenderbuffer(this.gl.RENDERBUFFER, null);
+    this.gl_.bindRenderbuffer(this.gl_.RENDERBUFFER, null);
   }
   /**
    * @brief Defines Render Buffer properties
@@ -172,10 +180,10 @@ export class framebuffer
    * @return false if render buffer is not created yet
    */
   public render_storage(width : number, height : number, 
-                        internal_format : number = this.gl.DEPTH_COMPONENT24) : boolean {
-    if(this.render === null) return false;
+                        internal_format : number = this.gl_.DEPTH_COMPONENT24) : boolean {
+    if(this.render_ === null) return false;
 
-    this.gl.renderbufferStorage(this.gl.RENDERBUFFER, internal_format, width, height);
+    this.gl_.renderbufferStorage(this.gl_.RENDERBUFFER, internal_format, width, height);
     return true;
   }
   /**
@@ -185,7 +193,7 @@ export class framebuffer
    *    https://khronos.org/registry/OpenGL-Refpages/gl4/html/glCheckFramebufferStatus.xhtml
    */
   public status() : number {
-    return this.gl.checkFramebufferStatus(this.gl.FRAMEBUFFER);
+    return this.gl_.checkFramebufferStatus(this.gl_.FRAMEBUFFER);
   }
   /**
    * @brief Returning the datailed explanation of the current framebuffer's status
@@ -195,21 +203,21 @@ export class framebuffer
   public status_msg() : string {
     const frame_status : number = this.status();
 
-    if(frame_status != this.gl.FRAMEBUFFER_COMPLETE){
+    if(frame_status != this.gl_.FRAMEBUFFER_COMPLETE){
       switch(frame_status){
-        case this.gl.FRAMEBUFFER_INCOMPLETE_ATTACHMENT:
+        case this.gl_.FRAMEBUFFER_INCOMPLETE_ATTACHMENT:
         return "The attachment types are mismatched or not all framebuffer attachment points are framebuffer attachment complete.";
         break;
-        case this.gl.FRAMEBUFFER_INCOMPLETE_MISSING_ATTACHMENT:
+        case this.gl_.FRAMEBUFFER_INCOMPLETE_MISSING_ATTACHMENT:
         return "There is no attachment.";
         break;
-        case this.gl.FRAMEBUFFER_INCOMPLETE_DIMENSIONS:
+        case this.gl_.FRAMEBUFFER_INCOMPLETE_DIMENSIONS:
         return "Height and width of the attachment are not the same.";
         break;
-        case this.gl.FRAMEBUFFER_UNSUPPORTED:
+        case this.gl_.FRAMEBUFFER_UNSUPPORTED:
         return "The format of the attachment is not supported or if depth and stencil attachments are not the same renderbuffer.";
         break;
-        case this.gl.FRAMEBUFFER_INCOMPLETE_MULTISAMPLE:
+        case this.gl_.FRAMEBUFFER_INCOMPLETE_MULTISAMPLE:
         return "The values of gl.RENDERBUFFER_SAMPLES are different among attached renderbuffers, or are non-zero if the attached images are a mix of renderbuffers and textures. ";
         break;
         default:

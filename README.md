@@ -1,4 +1,19 @@
+
+![Homescreen](resources/images/home.jpg)
+
 # Portfolio
+
+This is the source code of deempalme's curriculum webpage. Their structure is the following:
+
+ - `code/js`: Main UI's code made in TypeScript.
+   - `code/js/gl`: WebGL library wrappers.
+   - `code/js/math`: Linear algebra functions to transform the 3D models.
+   - `code/js/shaders`: GLSL shaders used in the WebGL context.
+ - `resources/lidar`: Point cloud data (floating) in the format `XYZI`.
+ - `resources/models`: 3D models and textures used in the WebGL contexts.
+ - `script/js`: TypeScript's compiled code.
+
+ ___
 
 ## 1 - Installation
 
@@ -188,6 +203,8 @@ npm install -g browserify
 # or sudo it, if there is a permission denied problem
 sudo npm install -g browserify
 ```
+
+___
 
 ## 2 - Building
 

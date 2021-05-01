@@ -21,14 +21,14 @@ export class open_gl
   private canvas_ : HTMLCanvasElement;
 
   private gl_ : WebGL2RenderingContext | null = null;
-  private static anisotropic_ext_ : number = 0;
+  private static anisotropic_ext_     : number = 0;
   private static max_text_anisotropy_ : number = 0;
 
   private ok_ : boolean = false;
 
   private projection_ : Float32Array = new Float32Array(0);
-  private view_ : Float32Array = new Float32Array(0);
-  private pv_ : Float32Array = new Float32Array(0);
+  private view_       : Float32Array = new Float32Array(0);
+  private pv_         : Float32Array = new Float32Array(0);
 
   private camera_ = { 
     eye : new Float32Array(0), center : new Float32Array(0), up : new Float32Array(0) 
@@ -42,13 +42,13 @@ export class open_gl
 
   private active_   : boolean = false;
   private dragging_ : boolean = false;
-  private theta_ : number = 0;
-  private phi_   : number = 0;
+  private theta_    : number = 0;
+  private phi_      : number = 0;
   private increase_w_ : number = 1;
   private increase_h_ : number = 1;
-  private moved_ : boolean = false;
+  private moved_      : boolean = false;
 
-  private parent : HTMLElement;
+  private parent_ : HTMLElement;
 
   // Function binders
   private down_binder_ : any;
@@ -72,15 +72,15 @@ export class open_gl
     this.no_prevent_ = !prevent_default;
     this.initialize(alpha);
 
-    this.parent = parent;
+    this.parent_ = parent;
     this.move_binder_ = this.mouse_move.bind(this);
-    this.parent.addEventListener('mousemove', this.move_binder_);
+    this.parent_.addEventListener('mousemove', this.move_binder_);
     this.down_binder_ = this.mouse_down.bind(this);
-    this.parent.addEventListener('mousedown', this.down_binder_);
+    this.parent_.addEventListener('mousedown', this.down_binder_);
     this.up_binder_ = this.mouse_up.bind(this);
-    this.parent.addEventListener('mouseup', this.up_binder_);
+    this.parent_.addEventListener('mouseup', this.up_binder_);
     if(!this.no_prevent_)
-      this.parent.addEventListener('mouseout', this.up_binder_);
+      this.parent_.addEventListener('mouseout', this.up_binder_);
   }
   /**
    * @brief Activating the camera's rotation
@@ -153,15 +153,16 @@ export class open_gl
    */
   public deactivate() : void {
     this.active_ = false;
+    this.dragging_ = false;
   }
   /**
    * @brief Destroying all event listeners
    */
   public destroy() : void {
-    this.parent.removeEventListener('mousemove', this.move_binder_);
-    this.parent.removeEventListener('mousedown', this.down_binder_);
-    this.parent.removeEventListener('mouseup', this.up_binder_);
-    this.parent.removeEventListener('mouseout', this.up_binder_);
+    this.parent_.removeEventListener('mousemove', this.move_binder_);
+    this.parent_.removeEventListener('mousedown', this.down_binder_);
+    this.parent_.removeEventListener('mouseup', this.up_binder_);
+    this.parent_.removeEventListener('mouseout', this.up_binder_);
   }
   /**
    * @brief Flushing OpenGL context

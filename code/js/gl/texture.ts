@@ -2,34 +2,44 @@
 import { loader } from '../loader';
 import { open_gl } from './open_gl';
 
+
 export class texture
 {
-  private id : WebGLTexture | null;
-  private texture_number : number = 0;
-  private image : HTMLImageElement | null;
+  private id_    : WebGLTexture | null;
+  private image_ : HTMLImageElement | null;
+  private texture_number_ : number = 0;
   public finished : boolean = false; 
 
-  private gl : WebGL2RenderingContext;
+  private gl_ : WebGL2RenderingContext;
 
+  /**
+   * @brief Loads and uploads a texture into a WebGL texture
+   * 
+   * @param context Current WebGL context
+   * @param image_url Image's URL path
+   * @param texture_number Indicates this texture's active number
+   * @param flip_y Indicates if the vertical axis should be fliped
+   * @param channels Indicates the number of channels for this image (1, 2, 3, 4)
+   */
   constructor(context : WebGL2RenderingContext, image_url : string | null,
               texture_number : number, flip_y : boolean = true, channels : number = 3){
-    this.gl = context;
-    this.texture_number = texture_number;
+    this.gl_ = context;
+    this.texture_number_ = texture_number;
 
-    this.id = this.gl.createTexture();
+    this.id_ = this.gl_.createTexture();
 
     if(image_url === null){
-      this.image = null;
+      this.image_ = null;
     }else{
-      this.image = new Image();
-      loader.load_image(image_url, this.image, this.initialize.bind(this, flip_y, channels));
+      this.image_ = new Image();
+      loader.load_image(image_url, this.image_, this.initialize.bind(this, flip_y, channels));
     }
   }
   /**
    * @brief Activates this texture
    */
   public activate() : void {
-    this.gl.activeTexture(this.gl.TEXTURE0 + this.texture_number);
+    this.gl_.activeTexture(this.gl_.TEXTURE0 + this.texture_number_);
   }
   /**
    * @brief Allocates texture data
@@ -58,14 +68,14 @@ export class texture
    * @returns 
    */
   public allocate(width : number, height : number, texture_data : ArrayBufferView | null = null,
-                  internal_format : number = this.gl.RGBA8, format : number = this.gl.RGBA,
-                  type : number = this.gl.UNSIGNED_BYTE, level : number = 0) : boolean {
-    if(this.image !== null || this.id === null) return false;
+                  internal_format : number = this.gl_.RGBA8, format : number = this.gl_.RGBA,
+                  type : number = this.gl_.UNSIGNED_BYTE, level : number = 0) : boolean {
+    if(this.image_ !== null || this.id_ === null) return false;
 
-    this.gl.bindTexture(this.gl.TEXTURE_2D, this.id);
+    this.gl_.bindTexture(this.gl_.TEXTURE_2D, this.id_);
     this.bind();
-    this.parameteri(this.gl.REPEAT, this.gl.REPEAT, this.gl.LINEAR, this.gl.LINEAR);
-    this.gl.texImage2D(this.gl.TEXTURE_2D, level, internal_format, width, height, 
+    this.parameteri(this.gl_.REPEAT, this.gl_.REPEAT, this.gl_.LINEAR, this.gl_.LINEAR);
+    this.gl_.texImage2D(this.gl_.TEXTURE_2D, level, internal_format, width, height, 
                        0, format, type, texture_data);
     this.finished = true;
     return false;
@@ -74,7 +84,7 @@ export class texture
    * @brief Binds the texture to the current context
    */
   public bind() : void {
-    this.gl.bindTexture(this.gl.TEXTURE_2D, this.id);
+    this.gl_.bindTexture(this.gl_.TEXTURE_2D, this.id_);
   }
   /**
    * @brief Flips the Y axis of all the image's data when is allocated
@@ -82,7 +92,7 @@ export class texture
    * @param flip `true` to flip or `false` to not
    */
   public flip_y(flip : boolean = true) : void {
-    this.gl.pixelStorei(this.gl.UNPACK_FLIP_Y_WEBGL, flip);
+    this.gl_.pixelStorei(this.gl_.UNPACK_FLIP_Y_WEBGL, flip);
   }
   /**
    * @brief Indicates if the image has finished loading and that it was loaded into OpenGL
@@ -116,19 +126,19 @@ export class texture
    */
   public parameteri(wrap_s : number, wrap_t : number, 
                     min_filter : number, mag_filter : number) : boolean {
-    if(this.id === null) return false;
+    if(this.id_ === null) return false;
 
-    this.gl.texParameteri(this.gl.TEXTURE_2D, this.gl.TEXTURE_MAG_FILTER, mag_filter);
-    this.gl.texParameteri(this.gl.TEXTURE_2D, this.gl.TEXTURE_MIN_FILTER, min_filter);
-    this.gl.texParameteri(this.gl.TEXTURE_2D, this.gl.TEXTURE_WRAP_S, wrap_s);
-    this.gl.texParameteri(this.gl.TEXTURE_2D, this.gl.TEXTURE_WRAP_T, wrap_t);
+    this.gl_.texParameteri(this.gl_.TEXTURE_2D, this.gl_.TEXTURE_MAG_FILTER, mag_filter);
+    this.gl_.texParameteri(this.gl_.TEXTURE_2D, this.gl_.TEXTURE_MIN_FILTER, min_filter);
+    this.gl_.texParameteri(this.gl_.TEXTURE_2D, this.gl_.TEXTURE_WRAP_S, wrap_s);
+    this.gl_.texParameteri(this.gl_.TEXTURE_2D, this.gl_.TEXTURE_WRAP_T, wrap_t);
     return true;
   }
   /**
    * @brief Releases the texture from the current context
    */
   public release() : void {
-    this.gl.bindTexture(this.gl.TEXTURE_2D, null);
+    this.gl_.bindTexture(this.gl_.TEXTURE_2D, null);
   }
   /**
    * @brief Getting the texture's name
@@ -136,7 +146,7 @@ export class texture
    * @returns The current texture's name or null if there was an error or not loaded yet
    */
   public texture_id() : WebGLTexture | null {
-    return this.id;
+    return this.id_;
   }
 
   // ::::::::::::::::::::::::::::::::::::: PRIVATE FUNCTIONS ::::::::::::::::::::::::::::::::::::::
@@ -149,25 +159,27 @@ export class texture
    * @returns `false` if image was not properly loaded
    */
   private initialize(flip_y : boolean, channels : number) : boolean {
-    if(this.image === null) return false;
+    if(this.image_ === null) return false;
 
     this.bind();
     this.flip_y(flip_y);
-    this.parameteri(this.gl.REPEAT, this.gl.REPEAT, this.gl.LINEAR, this.gl.LINEAR);
+    this.parameteri(this.gl_.REPEAT, this.gl_.REPEAT, this.gl_.LINEAR, this.gl_.LINEAR);
     if(channels == 4)
-      this.gl.texImage2D(this.gl.TEXTURE_2D, 0, this.gl.RGBA8, this.image.width, this.image.height, 
-                         0, this.gl.RGBA, this.gl.UNSIGNED_BYTE, this.image);
+      this.gl_.texImage2D(this.gl_.TEXTURE_2D, 0, this.gl_.RGBA8, this.image_.width,
+                          this.image_.height, 0, this.gl_.RGBA, this.gl_.UNSIGNED_BYTE,
+                          this.image_);
     else
-      this.gl.texImage2D(this.gl.TEXTURE_2D, 0, this.gl.RGB8, this.image.width, this.image.height, 
-                         0, this.gl.RGB, this.gl.UNSIGNED_BYTE, this.image);
+      this.gl_.texImage2D(this.gl_.TEXTURE_2D, 0, this.gl_.RGB8, this.image_.width,
+                          this.image_.height, 0, this.gl_.RGB, this.gl_.UNSIGNED_BYTE,
+                          this.image_);
 
     let max = open_gl.max_anisotropy();
     max = (max > 8.0) ? 8.0 : max;
-    this.gl.texParameterf(this.gl.TEXTURE_2D, open_gl.anisotropy(), max);
-    this.gl.generateMipmap(this.gl.TEXTURE_2D);
+    this.gl_.texParameterf(this.gl_.TEXTURE_2D, open_gl.anisotropy(), max);
+    this.gl_.generateMipmap(this.gl_.TEXTURE_2D);
 
     this.finished = true;
-    this.image = null;
+    this.image_ = null;
 
     return true;
   }

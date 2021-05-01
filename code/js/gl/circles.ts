@@ -6,12 +6,12 @@ import { shader } from './shader';
 
 export class circles
 {
-  private gl_ : WebGL2RenderingContext;
+  private gl_  : WebGL2RenderingContext;
   private vao_ : WebGLVertexArrayObject | null = null;
   private u_radius_ : WebGLUniformLocation | null = null;
 
   private data_size_ : number = 0;
-  private sizes_ : Array<planet_info>;
+  private sizes_     : Array<planet_info>;
 
   /**
    * @brief Creates a new circles object
