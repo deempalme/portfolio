@@ -57,6 +57,7 @@ export class lidar_shader {
 
     //"  gl_PointSize(2.5);\n"+
     "  gl_Position = u_pv * vec4(vec3(-i_position.y, i_position.x, i_position.z - 0.2), 1.0);\n"+
+    "  gl_PointSize = 3.0;\n"+
     "}\n";
 
   public static fragment : string | null = 
