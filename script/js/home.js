@@ -82,7 +82,7 @@ class code_view {
         let pre = document.createElement('pre');
         this.code_ = document.createElement('code');
         this.code_.className = 'typescript';
-        this.code_.style.fontFamily = "'source code pro', 'ubuntu mono', 'Courier New', Courier, monospace";
+        this.code_.style.fontFamily = "'source_code_pro', 'ubuntu mono', 'Courier New', Courier, monospace";
         this.code_.style.fontSize = '1rem';
         pre.append(this.code_);
         this.main_object_.append(pre);
@@ -2805,6 +2805,7 @@ class ground_shader {
 }
 exports.ground_shader = ground_shader;
 ground_shader.vertex = "#version 300 es\n" +
+    "// Ground shader\n" +
     "precision mediump float;\n" +
     "layout (location = 0) in vec2 i_position;\n" +
     "out vec3 f_position;\n" +
@@ -2843,6 +2844,7 @@ class lidar_shader {
 }
 exports.lidar_shader = lidar_shader;
 lidar_shader.vertex = "#version 300 es\n" +
+    "// lidar shader\n" +
     "precision mediump float;\n" +
     "layout (location = 0) in vec4 i_position;\n" +
     "out vec4 f_color;\n" +
@@ -2895,6 +2897,7 @@ class lines_shader {
 }
 exports.lines_shader = lines_shader;
 lines_shader.vertex = "#version 300 es\n" +
+    "// lines shader\n" +
     "precision mediump float;\n" +
     "layout (location = 0) in vec2 i_position;\n" +
     "uniform mat4 u_pv;\n" +
@@ -2918,6 +2921,7 @@ class model_shader {
 }
 exports.model_shader = model_shader;
 model_shader.vertex = "#version 300 es\n" +
+    "// 3D model shader\n" +
     "precision mediump float;\n" +
     "layout (location = 0) in vec3 i_position;\n" +
     "layout (location = 1) in vec2 i_uv;\n" +
@@ -2977,6 +2981,7 @@ class planets_shader {
 }
 exports.planets_shader = planets_shader;
 planets_shader.vertex = "#version 300 es\n" +
+    "// planet shader\n" +
     "precision mediump float;\n" +
     "layout (location = 0) in vec3 i_position;\n" +
     "layout (location = 1) in vec2 i_uv;\n" +

@@ -165,7 +165,7 @@ main {
   border-radius: 0.5rem;
   padding: 0.6rem 1.2rem;
   font-weight: bold;
-  font-family: 'Source Code Pro', 'Courier New', Courier, monospace;
+  font-family: 'source_code_pro', 'Courier New', Courier, monospace;
   transition: background 0.2s, box-shadow 0.2s, top 0.2s, color 0.2s;
   -webkit-transition: background 0.2s, box-shadow 0.2s, top 0.2s, color 0.2s;
   background: -webkit-linear-gradient(140deg, #00bdd6, #008ce3, #798ae2);
@@ -1327,7 +1327,7 @@ footer > aside {
   height: 100vh;
   background-color: #000;
   z-index: 1005;
-  font-family: 'source code pro', 'ubuntu mono', 'Courier New', Courier, monospace;
+  font-family: 'source_code_pro', 'ubuntu mono', 'Courier New', Courier, monospace;
 }
 
 #code_view > aside {

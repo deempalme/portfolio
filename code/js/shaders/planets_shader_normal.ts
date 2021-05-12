@@ -2,6 +2,7 @@
 export class planets_shader {
   public static vertex : string | null = 
     "#version 300 es\n"+
+    "// planet shader\n"+
 
     "precision mediump float;\n"+
 

@@ -78,3 +78,21 @@
   font-weight: bold;
   font-style: normal;
 }
+
+@font-face {
+  font-family: 'source_code_pro';
+  src: local('Source Code Pro'), local('SourceCodePro-Regular'),
+  url('../fonts/sourcecodepro-regular-webfont.woff') format('woff'),
+  url('../fonts/sourcecodepro-regular-webfont.woff2') format('woff2');
+  font-weight: normal;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: 'source_code_pro';
+  src: local('Source Code Pro'), local('SourceCodePro-Regular'),
+  url('../fonts/sourcecodepro-regular-webfont.woff') format('woff'),
+  url('../fonts/sourcecodepro-regular-webfont.woff2') format('woff2');
+  font-weight: bold;
+  font-style: normal;
+}
