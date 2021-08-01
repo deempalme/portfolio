@@ -1,31 +1,48 @@
 <?php
 namespace code\controller;
 
+require_once 'code/app/analytics.php';
 require_once 'code/app/error_handler.php';
-require_once 'code/app/router.php';
+require_once 'code/security/CSRF_tokenizer.php';
+require_once 'code/security/encryptor.php';
 
+use code\app\analytics;
 use code\app\error_handler;
-use code\app\router;
+use code\security\CSRF_tokenizer;
 
 class home
 {
-  private $content = array();
-
-  private $error = false;
+  private $token_ = null;
 
   public function __construct(){
-    $url = router::get_url_sections();
-    // Checking if url is correct
-    if(!empty($url[1]) && $url[1] == 'page')
-      if(!empty($url[2]) && \is_numeric($url[2]) && $url[2] >= 0)
-        $this->current_page = $url[2];
+    $token = CSRF_tokenizer::write_token();
+    analytics::registry($token);
+
+    $divider = 6;
+    $parts = \strlen(analytics::id())/$divider;
+
+    for($i = 0; $i < $parts; ++$i){
+      $this->token_ .= \substr(analytics::id(), $i * $divider, $divider);
+      $this->token_ .= \substr($token, 0, $divider);
+      $token = \substr($token, $divider);
+    }
+    $this->token_ .= $token.$parts;
   }
   /**
    * @brief Getting the page's title 
+   * 
    * @return string page's title
    */
   public function page_title(){
     return 'Portfolio';
+  }
+  /**
+   * @brief Obtaining the token
+   * 
+   * @return string Token ID
+   */
+  public function token(){
+    return $this->token_;
   }
 }
 
