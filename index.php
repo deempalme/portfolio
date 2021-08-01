@@ -20,6 +20,9 @@ router::add_path('', 'home');
 // Load code view for solar system
 router::add_path('bio/code', 'code_directory', 'dynamic');
 
+// Load web analytics
+router::add_path('analytics', 'analytics', 'dynamic');
+
 // +–––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––+
 // |                        Checking the most likely path to go                        |
 // +–––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––+

@@ -10,7 +10,7 @@ namespace code\security;
  */
 
 class encryptor_data{
-  public $result     = null;
+  public $text       = null;
   public $key        = null;
   public $ini_vector = null;
   public $error      = false;
@@ -22,13 +22,13 @@ class encryptor
   private static $key_length = 32;
   private static $encrypted  = false;
 
-  public static $result      = null;
+  public static $text        = null;
   public static $key         = null;
   public static $ini_vector  = null;
   public static $error       = false;
 
-  /*
-   * Encrypts the data contained in $text using the $key and $initialization_vector
+  /**
+   * @brief Encrypts the data contained in $text using the $key and $initialization_vector
    * 
    * @param string $text Input text to encrypt
    * @param string $key  Encryption key
@@ -38,7 +38,6 @@ class encryptor
    * 
    * @error return->error would be true if $key or $initialization_vector have not the
    *        appropiated length
-   * 
    */
   public static function encrypt($text, string $key = null,
                                  string $initialization_vector = null){
@@ -89,15 +88,15 @@ class encryptor
       $result->key = self::$key = openssl_random_pseudo_bytes(self::$key_length);
     
     // Encrypting:
-    $result->result = self::$result = openssl_encrypt($text, self::$cipher, self::$key,
-                                                      0, self::$ini_vector);
+    $result->text = self::$text = openssl_encrypt($text, self::$cipher, self::$key,
+                                                  0, self::$ini_vector);
 
     self::$encrypted = true;
     return $result;
   }
 
-  /*
-   * Decrypts the data contained in $text using the $key and $initialization_vector
+  /**
+   * @brief Decrypts the data contained in $text using the $key and $initialization_vector
    * 
    * @param string $text Encrypted $text to decrypt
    * @param string $key  Encryption key used to encrypt
@@ -107,7 +106,6 @@ class encryptor
    * 
    * @error return->error would be true if $key or $initialization_vector have not the
    *        appropiated length
-   * 
    */
   public static function decrypt($encrypted_text, string $key,
                                  string $initialization_vector){
@@ -138,17 +136,16 @@ class encryptor
     // Copying the key value:
     $result->key = self::$key = $key;
     // Encrypting:
-    $result->result = self::$result = openssl_decrypt($encrypted_text, self::$cipher,
-                                                      $key, 0, self::$ini_vector);
+    $result->text = self::$text = openssl_decrypt($encrypted_text, self::$cipher,
+                                                  $key, 0, self::$ini_vector);
     self::$encrypted = false;
     return $result;
   }
 
-  /*
-   * Generates a random encrypted binary string
+  /**
+   * @brief Generates a random encrypted binary string
    * 
    * @return binary string : Random encrypted text
-   * 
    */
   public static function random(){
     // Calculating the initialization vector length:
@@ -164,33 +161,30 @@ class encryptor
     return openssl_encrypt($random, self::$cipher, $key, 0, $ini_vector);
   }
 
-  /*
-   * Generates a random encrypted string
+  /**
+   * @brief Generates a random encrypted string
    * 
    * @return string : Random encrypted text
-   * 
    */
   public static function random_string(){
     // Encrypting:
     return bin2hex(self::random());
   }
 
-  /*
-   * Generates a random encrypted binary string
+  /**
+   * @brief Generates a random encrypted binary string
    * 
    * @return binary string Random encrypted text (you must convert it to string)
-   * 
    */
   public static function random_key(int $length){
     // Generating random base64 encoded string of length = $length:
     return openssl_random_pseudo_bytes($length);
   }
 
-  /*
-   * Generates a random encrypted string
+  /**
+   * @brief Generates a random encrypted string
    * 
    * @return string Random encrypted text
-   * 
    */
   public static function random_string_key(int $length){
     // Generating random base64 encoded string of length = $length:
@@ -207,8 +201,8 @@ class encryptor
     echo '<b>Key:</b> '.bin2hex(self::$key).' <b> - bytes:</b> '
           .strlen(self::$key).'<br/>';
     echo '<b>Result:</b> ';
-    if(self::$encrypted) echo bin2hex(self::$result); else echo self::$result;
-    echo ' <b> - bytes:</b> '.strlen(self::$result).'<br/>';
+    if(self::$encrypted) echo bin2hex(self::$text); else echo self::$text;
+    echo ' <b> - bytes:</b> '.strlen(self::$text).'<br/>';
     echo ' <b>Key\'s or Initialization vector\'s length does not correspont:</b> ';
     echo (self::$error ? 'true' : 'false').'<br/>';
   }
