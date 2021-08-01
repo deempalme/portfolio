@@ -8,14 +8,9 @@
 <link href="/resources/css/fonts3.0.css" rel="stylesheet" />
 <link href="/resources/css/home.css" rel="stylesheet" />
 <link href="/resources/highlight/vs2015.css" rel="stylesheet">
-<!-- Global site tag (gtag.js) - Google Analytics -->
-<script async src="https://www.googletagmanager.com/gtag/js?id=G-J8JY9552LT"></script>
-<script>
-  window.dataLayer = window.dataLayer || [];
-  function gtag(){dataLayer.push(arguments);}
-  gtag('js', new Date());
-
-  gtag('config', 'G-J8JY9552LT');
+<script language="javascript" type="text/javascript">
+  const user_id = '<?= \code\app\analytics::id(); ?>';
+  const t45_husz = '<?= $controller->token(); ?>';
 </script>
 </head>
 
@@ -650,11 +645,11 @@
             <li>ROS (Robot Operating System)</li>
             <li>OpenGL</li>
             <li>Matlab C++</li>
-            <li>Network programming & serial communications</li>
+            <li>Network programming TCP & UDP</li>
+            <li>Serial communications (ASIO)</li>
             <li>SQL</li>
             <li>Php</li>
-            <li>Typescript</li>
-            <li>Javascript</li>
+            <li>Typescript / Javascript</li>
             <li>CSS 2</li>
             <li>XML</li>
             <li>HTML 5</li>
@@ -666,6 +661,9 @@
             </ol>
             <li>Experience in:</li>
             <ol>
+              <li>User interfaces</li>
+              <li>Physically Based Rendering (PBR)</li>
+              <li>FFmpeg video en/decoding</li>
               <li>Git</li>
               <li>CMake</li>
               <li>Qt Framework</li>
