@@ -1,0 +1,16 @@
+#config.ini
+[info]
+server   = localhost
+database = ramrod_analytics
+
+[guest]
+username_guest = ramrod_guest
+password_guest = "your password"
+
+[normal]
+username_normal = ramrod_normal
+password_normal = "your password"
+
+[encryption key]
+enc_key = "8358551c7fe64507beacfe45ea3f157b89458eaa69978bb1714132074ac87cc5"
+enc_vector = "155369b47afd2e74735874d63d5072a7"

@@ -188,7 +188,7 @@ class encryptor
    */
   public static function random_string_key(int $length){
     // Generating random base64 encoded string of length = $length:
-    return bin2hex(openssl_random_pseudo_bytes($length/2));
+    return bin2hex(openssl_random_pseudo_bytes($length));
   }
 
   /*

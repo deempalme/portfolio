@@ -170,7 +170,87 @@ and finally reseting apache server:
 sudo systemctl restart apache2
 ```
 
-### 1.5 - Typescript
+### 1.5 - Creating the database for web analytics
+
+You must create a new database called `ramrod_analytics` with **2 new users** that should have restricted permissions:
+
+```sql
+CREATE DATABASE ramrod_analytics CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
+
+-- Creating the users (don't forget to change their passwords):
+-- Without DELETE permission
+CREATE USER 'ramrod_guest'@'localhost' IDENTIFIED WITH caching_sha2_password BY 'your_password';
+-- Only global usage permission
+GRANT USAGE ON *.* TO 'ramrod_guest'@'localhost';
+ALTER USER 'ramrod_guest'@'localhost' REQUIRE NONE WITH MAX_QUERIES_PER_HOUR 0 MAX_CONNECTIONS_PER_HOUR 0 MAX_UPDATES_PER_HOUR 0 MAX_USER_CONNECTIONS 0;
+-- Few permissions for the ramrod_analytics database
+GRANT SELECT, INSERT, UPDATE ON `ramrod\_analytics`.* TO 'ramrod_guest'@'localhost'; 
+
+-- With DELETE permission
+CREATE USER 'ramrod_normal'@'localhost' IDENTIFIED WITH caching_sha2_password BY 'your_password';
+-- Only global usage permission
+GRANT USAGE ON *.* TO 'ramrod_normal'@'localhost';
+ALTER USER 'ramrod_normal'@'localhost' REQUIRE NONE WITH MAX_QUERIES_PER_HOUR 0 MAX_CONNECTIONS_PER_HOUR 0 MAX_UPDATES_PER_HOUR 0 MAX_USER_CONNECTIONS 0;
+-- Few permissions for the ramrod_analytics database
+GRANT SELECT, INSERT, UPDATE, DELETE ON `ramrod\_analytics`.* TO 'ramrod_normal'@'localhost'; 
+```
+
+Open the database in phpMyAdmin or use the following SQL statement to open it:
+
+```sql
+USE ramrod_analytics;
+```
+
+And finally **import** the `code/app/analytics.sql` file or *copy* its contents and execute it as a SQL statement.
+
+### 1.6 - Modifying the php_config.ini file
+
+It is also necessary to create a `php_config.ini` file, you could use the available `php_config.ini_example` file and change its extension name from `ini_example` into `ini`. There are a few details that you must change:
+
+```ini
+#config.ini
+[info]
+server   = localhost
+database = ramrod_analytics
+
+[guest]
+username_guest = ramrod_guest
+# Change this password to match the one used with the same user in MySQL
+password_guest = "your_password"
+
+[normal]
+username_normal = ramrod_normal
+# Change also this password
+password_normal = "your_password"
+
+[encryption key]
+# These are examples of encryption keys:
+enc_key = "8358551c7fe64507beacfe45ea3f157b89458eaa69978bb1714132074ac87cc5"
+enc_vector = "155369b47afd2e74735874d63d5072a7"
+```
+
+You could leave the encryption keys as they are or change them (_recommended_) using:
+
+```php
+<?php
+require_once 'code/security/encryptor.php';
+
+use code\security\encryptor;
+
+// For enc_key you will need a 64 character length key
+echo encryptor::random_string_key(64);
+
+// Printing a new line
+echo PHP_EOL;
+
+// For enc_vector you will need a 32 character length key
+echo encryptor::random_string_key(32);
+?>
+```
+
+From the **encryptor** class in `code/security/encryptor.php` file.
+
+### 1.7 - Typescript
 
 ```sh
 sudo apt-get install nodejs
@@ -186,7 +266,7 @@ npm init
 tsc --init
 ```
 
-### 1.6 - jQuery
+### 1.8 - jQuery
 
 Execute this commmand in the project's folder to install **jQuery**.
 ```sh
@@ -194,7 +274,7 @@ npm install --save-dev @types/jquery
 npm install jquery --save
 ```
 
-### 1.7 - Browserify
+### 1.9 - Browserify
 
 When typescript is compiled standalone the keyword `require()` is not standarized by all browsers and it will create an error indicating that _such word does not exist_ to fix this problem, it is necessary to install **browserify**:
 

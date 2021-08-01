@@ -9,7 +9,6 @@
 <link href="/resources/css/home.css" rel="stylesheet" />
 <link href="/resources/highlight/vs2015.css" rel="stylesheet">
 <script language="javascript" type="text/javascript">
-  const user_id = '<?= \code\app\analytics::id(); ?>';
   const t45_husz = '<?= $controller->token(); ?>';
 </script>
 </head>

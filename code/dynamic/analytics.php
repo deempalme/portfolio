@@ -30,8 +30,6 @@ class analytics
 
     if(!$this->get_ip()) self::error('No ip found');
 
-    $this->ip_ = '189.248.165.70';
-
     // Inserting new user
     if(isset($_POST['new_user'])){
       $this->user_new();
