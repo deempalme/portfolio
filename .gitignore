@@ -107,3 +107,7 @@ portfolio2.css
 portfolio2a.css
 theme.css
 themeA.css
+
+# Tokens
+storage/tokens/*
+!storage/tokens/.htaccess
