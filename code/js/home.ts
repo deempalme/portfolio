@@ -1,4 +1,5 @@
 
+import { analytics } from './analytics';
 import { about_me } from './about_me';
 import { code_view } from './code_view';
 import { contact_me } from './contact_me';
@@ -20,6 +21,7 @@ class home
   private font_size_     : number = 16;
   private resize_factor_ : number = 1;
 
+  private analytics_ : analytics;
   // Main navigation objects
   private nav_ : navigation;
   // Navigation keyboard
@@ -43,6 +45,8 @@ class home
    */
   constructor(){
     this.html_ = document.documentElement;
+
+    this.analytics_ = new analytics();
 
     // Add temporary box to wrapper
     let scrollbox = document.createElement('div');
