@@ -58,7 +58,152 @@ class about_me {
 exports.about_me = about_me;
 ;
 
-},{"./loader":15}],2:[function(require,module,exports){
+},{"./loader":16}],2:[function(require,module,exports){
+"use strict";
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.analytics = void 0;
+const jquery_1 = __importDefault(require("jquery"));
+class analytics {
+    constructor() {
+        this.id_ = '';
+        this.token_ = '';
+        this.color_depth_ = 0;
+        this.inner_height_ = 0;
+        this.inner_width_ = 0;
+        this.height_ = 0;
+        this.width_ = 0;
+        this.resize_timer_ = 0;
+        this.update_timer_ = 0;
+        if (!this.verify_token())
+            return;
+        this.resize();
+        this.new_user();
+        this.geolocation_check();
+        this.update_binder_ = this.update_user.bind(this);
+        this.update_timer_ = setInterval(this.update_binder_, 2000);
+        this.unload_event_ = this.destroy.bind(this);
+        window.addEventListener('unload', this.unload_event_);
+        this.resize_event_ = this.resize.bind(this);
+        this.resize_binder_ = this.resize_call.bind(this);
+        window.addEventListener('resize', this.resize_binder_);
+    }
+    destroy() {
+        this.update_user();
+        clearInterval(this.update_timer_);
+        window.removeEventListener('resize', this.resize_event_);
+        window.removeEventListener('unload', this.unload_event_);
+    }
+    resize() {
+        this.color_depth_ = window.screen.colorDepth;
+        this.inner_height_ = window.innerHeight;
+        this.inner_width_ = window.innerWidth;
+        this.height_ = window.screen.height;
+        this.width_ = window.screen.width;
+        jquery_1.default.post('/analytics', {
+            update_screen: true,
+            user_id: this.id_,
+            token: this.token_,
+            height: this.height_,
+            width: this.width_,
+            inner_height: this.inner_height_,
+            inner_width: this.inner_width_,
+            color_depth: this.color_depth_
+        }, null, 'text')
+            .fail(error => console.log('error', error));
+    }
+    geolocate(found, ip) {
+        if (found)
+            return;
+        jquery_1.default.get('https://api.geoapify.com/v1/ipinfo?&ip=' + ip
+            + '&apiKey=4775308688d944d2b7893bb9e9be14cf', {}, null, 'json')
+            .done(result => this.geolocation_save(result))
+            .fail(error => console.log('error', error));
+    }
+    geolocation_check() {
+        jquery_1.default.post('/analytics', {
+            check_geolocation: true,
+            user_id: this.id_,
+            token: this.token_
+        }, null, 'json')
+            .done(data => this.geolocate(data.result.found, data.result.ip))
+            .fail(error => console.log('error', error));
+    }
+    geolocation_save(data) {
+        const country = data.country.name;
+        const state = data.state.name;
+        const city = data.city.name;
+        const postcode = data.postcode;
+        const continent = data.continent.name;
+        const latitude = data.location.latitude;
+        const longitude = data.location.longitude;
+        jquery_1.default.post('/analytics', {
+            new_geolocation: true,
+            user_id: this.id_,
+            token: this.token_,
+            country: country,
+            state: state,
+            city: city,
+            postcode: postcode,
+            continent: continent,
+            latitude: latitude,
+            longitude: longitude
+        }, null, 'json')
+            .fail(error => console.log('error', error));
+    }
+    new_user() {
+        const time = Date.now();
+        const language = navigator.language;
+        const timezone = Intl.DateTimeFormat().resolvedOptions().timeZone;
+        jquery_1.default.post('/analytics', {
+            new_user: true,
+            user_id: this.id_,
+            token: this.token_,
+            time_in: time,
+            timezone: timezone,
+            language: language
+        }, null, 'text')
+            .fail(error => console.log('error', error));
+    }
+    update_user() {
+        jquery_1.default.post('/analytics', {
+            update_user: true,
+            user_id: this.id_,
+            token: this.token_,
+            time_out: Date.now()
+        }, null, 'text')
+            .fail(error => console.log('error', error));
+    }
+    verify_token() {
+        var token = t45_husz;
+        const divider = 6;
+        const parts = parseInt(t45_husz.substr(-1, 1));
+        for (var i = 0; i < parts; ++i) {
+            this.id_ += token.substr(0, divider);
+            this.token_ += token.substr(divider, divider);
+            token = token.substr(divider * 2);
+        }
+        this.token_ += token.substr(0, token.length - 1);
+        return true;
+    }
+    resize_call() {
+        if (this.inner_width_ === window.innerWidth
+            && this.inner_height_ === window.innerHeight)
+            return;
+        clearTimeout(this.resize_timer_);
+        this.resize_timer_ = setTimeout(this.resize_event_, 500);
+    }
+}
+exports.analytics = analytics;
+;
+var analytics_object = null;
+window.onload = function () {
+    analytics_object = new analytics;
+};
+
+},{"jquery":31}],3:[function(require,module,exports){
 "use strict";
 var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
@@ -82,7 +227,7 @@ class code_view {
         let pre = document.createElement('pre');
         this.code_ = document.createElement('code');
         this.code_.className = 'typescript';
-        this.code_.style.fontFamily = "'source code pro', 'ubuntu mono', 'Courier New', Courier, monospace";
+        this.code_.style.fontFamily = "'source_code_pro', 'ubuntu mono', 'Courier New', Courier, monospace";
         this.code_.style.fontSize = '1rem';
         pre.append(this.code_);
         this.main_object_.append(pre);
@@ -154,7 +299,7 @@ class code_view {
 }
 exports.code_view = code_view;
 
-},{"./loader":15,"highlight.js/lib/core":28,"highlight.js/lib/languages/typescript":29,"jquery":30}],3:[function(require,module,exports){
+},{"./loader":16,"highlight.js/lib/core":29,"highlight.js/lib/languages/typescript":30,"jquery":31}],4:[function(require,module,exports){
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.contact_me = void 0;
@@ -196,7 +341,7 @@ class contact_me {
 }
 exports.contact_me = contact_me;
 
-},{"./loader":15}],4:[function(require,module,exports){
+},{"./loader":16}],5:[function(require,module,exports){
 "use strict";
 var __createBinding = (this && this.__createBinding) || (Object.create ? (function(o, m, k, k2) {
     if (k2 === undefined) k2 = k;
@@ -414,7 +559,7 @@ class droiddrive {
 }
 exports.droiddrive = droiddrive;
 
-},{"./gl/constants":6,"./gl/ground":7,"./gl/lidar":8,"./gl/model":9,"./gl/open_gl":10,"./gl/shader":11,"./gl/texture":12,"./math/m4":16,"./math/v3":17,"./shaders/ground_shader":22,"./shaders/lidar_shader":23,"./shaders/model_shader":25,"jquery":30}],5:[function(require,module,exports){
+},{"./gl/constants":7,"./gl/ground":8,"./gl/lidar":9,"./gl/model":10,"./gl/open_gl":11,"./gl/shader":12,"./gl/texture":13,"./math/m4":17,"./math/v3":18,"./shaders/ground_shader":23,"./shaders/lidar_shader":24,"./shaders/model_shader":26,"jquery":31}],6:[function(require,module,exports){
 "use strict";
 var __createBinding = (this && this.__createBinding) || (Object.create ? (function(o, m, k, k2) {
     if (k2 === undefined) k2 = k;
@@ -475,7 +620,7 @@ class circles {
 }
 exports.circles = circles;
 
-},{"./constants":6}],6:[function(require,module,exports){
+},{"./constants":7}],7:[function(require,module,exports){
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.background_height = exports.target_angle = exports.frame_time = exports.framebuffer = exports.texture_unit = exports.attributes = exports.to_degree = exports.to_radian = exports.degree_360 = exports.degree_270 = exports.degree_225 = exports.degree_180 = exports.degree_90 = exports.degree_70 = exports.degree_45 = void 0;
@@ -506,7 +651,7 @@ exports.frame_time = 40;
 exports.target_angle = 3.1432;
 exports.background_height = 2048;
 
-},{}],7:[function(require,module,exports){
+},{}],8:[function(require,module,exports){
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.ground = void 0;
@@ -550,7 +695,7 @@ class ground {
 }
 exports.ground = ground;
 
-},{}],8:[function(require,module,exports){
+},{}],9:[function(require,module,exports){
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.lidar = void 0;
@@ -611,7 +756,7 @@ class lidar {
 }
 exports.lidar = lidar;
 
-},{"../loader":15}],9:[function(require,module,exports){
+},{"../loader":16}],10:[function(require,module,exports){
 "use strict";
 var __createBinding = (this && this.__createBinding) || (Object.create ? (function(o, m, k, k2) {
     if (k2 === undefined) k2 = k;
@@ -793,7 +938,7 @@ class model {
 }
 exports.model = model;
 
-},{"../loader":15,"./constants":6}],10:[function(require,module,exports){
+},{"../loader":16,"./constants":7}],11:[function(require,module,exports){
 "use strict";
 var __createBinding = (this && this.__createBinding) || (Object.create ? (function(o, m, k, k2) {
     if (k2 === undefined) k2 = k;
@@ -1123,7 +1268,7 @@ exports.open_gl = open_gl;
 open_gl.anisotropic_ext_ = 0;
 open_gl.max_text_anisotropy_ = 0;
 
-},{"../math/m4":16,"../math/v3":17,"./constants":6}],11:[function(require,module,exports){
+},{"../math/m4":17,"../math/v3":18,"./constants":7}],12:[function(require,module,exports){
 "use strict";
 var __createBinding = (this && this.__createBinding) || (Object.create ? (function(o, m, k, k2) {
     if (k2 === undefined) k2 = k;
@@ -1250,7 +1395,7 @@ class shader {
 }
 exports.shader = shader;
 
-},{"./constants":6}],12:[function(require,module,exports){
+},{"./constants":7}],13:[function(require,module,exports){
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.texture = void 0;
@@ -1329,9 +1474,10 @@ class texture {
 }
 exports.texture = texture;
 
-},{"../loader":15,"./open_gl":10}],13:[function(require,module,exports){
+},{"../loader":16,"./open_gl":11}],14:[function(require,module,exports){
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
+const analytics_1 = require("./analytics");
 const about_me_1 = require("./about_me");
 const code_view_1 = require("./code_view");
 const contact_me_1 = require("./contact_me");
@@ -1350,6 +1496,7 @@ class home {
         this.resize_factor_ = 1;
         this.resize_timer_ = 0;
         this.html_ = document.documentElement;
+        this.analytics_ = new analytics_1.analytics();
         let scrollbox = document.createElement('div');
         scrollbox.style.overflow = 'scroll';
         document.body.appendChild(scrollbox);
@@ -1430,7 +1577,7 @@ window.onload = function () {
     home_object = new home;
 };
 
-},{"./about_me":1,"./code_view":2,"./contact_me":3,"./keys":14,"./loader":15,"./navigation":18,"./portfolio":20,"./section":21,"./universe":27}],14:[function(require,module,exports){
+},{"./about_me":1,"./analytics":2,"./code_view":3,"./contact_me":4,"./keys":15,"./loader":16,"./navigation":19,"./portfolio":21,"./section":22,"./universe":28}],15:[function(require,module,exports){
 "use strict";
 var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
@@ -1595,7 +1742,7 @@ class keys {
 exports.keys = keys;
 ;
 
-},{"jquery":30}],15:[function(require,module,exports){
+},{"jquery":31}],16:[function(require,module,exports){
 "use strict";
 var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
@@ -1740,7 +1887,7 @@ loader.loader_ = null;
 loader.loader_text_ = null;
 loader.callback_ = null;
 
-},{"jquery":30}],16:[function(require,module,exports){
+},{"jquery":31}],17:[function(require,module,exports){
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.m4 = void 0;
@@ -2129,7 +2276,7 @@ exports.m4 = m4;
 m4.EPSILON = 0.000001;
 ;
 
-},{}],17:[function(require,module,exports){
+},{}],18:[function(require,module,exports){
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.v3 = void 0;
@@ -2234,7 +2381,7 @@ class v3 {
 }
 exports.v3 = v3;
 
-},{}],18:[function(require,module,exports){
+},{}],19:[function(require,module,exports){
 "use strict";
 var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
@@ -2312,7 +2459,7 @@ class navigation {
 }
 exports.navigation = navigation;
 
-},{"./section":21,"jquery":30}],19:[function(require,module,exports){
+},{"./section":22,"jquery":31}],20:[function(require,module,exports){
 "use strict";
 var __createBinding = (this && this.__createBinding) || (Object.create ? (function(o, m, k, k2) {
     if (k2 === undefined) k2 = k;
@@ -2412,7 +2559,7 @@ exports.planet = planet;
 planet.movement_speed_ = 1.0;
 ;
 
-},{"./gl/constants":6,"./math/m4":16,"./math/v3":17}],20:[function(require,module,exports){
+},{"./gl/constants":7,"./math/m4":17,"./math/v3":18}],21:[function(require,module,exports){
 "use strict";
 var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
@@ -2699,7 +2846,7 @@ class portfolio {
 }
 exports.portfolio = portfolio;
 
-},{"./droiddrive":4,"./loader":15,"jquery":30}],21:[function(require,module,exports){
+},{"./droiddrive":5,"./loader":16,"jquery":31}],22:[function(require,module,exports){
 "use strict";
 var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
@@ -2797,7 +2944,7 @@ class section {
 exports.section = section;
 section.keys_ = null;
 
-},{"jquery":30}],22:[function(require,module,exports){
+},{"jquery":31}],23:[function(require,module,exports){
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.ground_shader = void 0;
@@ -2805,6 +2952,7 @@ class ground_shader {
 }
 exports.ground_shader = ground_shader;
 ground_shader.vertex = "#version 300 es\n" +
+    "// Ground shader\n" +
     "precision mediump float;\n" +
     "layout (location = 0) in vec2 i_position;\n" +
     "out vec3 f_position;\n" +
@@ -2835,7 +2983,7 @@ ground_shader.fragment = "#version 300 es\n" +
     "}\n";
 ;
 
-},{}],23:[function(require,module,exports){
+},{}],24:[function(require,module,exports){
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.lidar_shader = void 0;
@@ -2843,6 +2991,7 @@ class lidar_shader {
 }
 exports.lidar_shader = lidar_shader;
 lidar_shader.vertex = "#version 300 es\n" +
+    "// lidar shader\n" +
     "precision mediump float;\n" +
     "layout (location = 0) in vec4 i_position;\n" +
     "out vec4 f_color;\n" +
@@ -2888,7 +3037,7 @@ lidar_shader.fragment = "#version 300 es\n" +
     "}\n";
 ;
 
-},{}],24:[function(require,module,exports){
+},{}],25:[function(require,module,exports){
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.lines_shader = void 0;
@@ -2896,6 +3045,7 @@ class lines_shader {
 }
 exports.lines_shader = lines_shader;
 lines_shader.vertex = "#version 300 es\n" +
+    "// lines shader\n" +
     "precision mediump float;\n" +
     "layout (location = 0) in vec2 i_position;\n" +
     "uniform mat4 u_pv;\n" +
@@ -2911,7 +3061,7 @@ lines_shader.fragment = "#version 300 es\n" +
     "}\n";
 ;
 
-},{}],25:[function(require,module,exports){
+},{}],26:[function(require,module,exports){
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.model_shader = void 0;
@@ -2919,6 +3069,7 @@ class model_shader {
 }
 exports.model_shader = model_shader;
 model_shader.vertex = "#version 300 es\n" +
+    "// 3D model shader\n" +
     "precision mediump float;\n" +
     "layout (location = 0) in vec3 i_position;\n" +
     "layout (location = 1) in vec2 i_uv;\n" +
@@ -2970,7 +3121,7 @@ model_shader.fragment = "#version 300 es\n" +
     "}";
 ;
 
-},{}],26:[function(require,module,exports){
+},{}],27:[function(require,module,exports){
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.planets_shader = void 0;
@@ -2978,6 +3129,7 @@ class planets_shader {
 }
 exports.planets_shader = planets_shader;
 planets_shader.vertex = "#version 300 es\n" +
+    "// planet shader\n" +
     "precision mediump float;\n" +
     "layout (location = 0) in vec3 i_position;\n" +
     "layout (location = 1) in vec2 i_uv;\n" +
@@ -3046,7 +3198,7 @@ planets_shader.fragment = "#version 300 es\n" +
     "}";
 ;
 
-},{}],27:[function(require,module,exports){
+},{}],28:[function(require,module,exports){
 "use strict";
 var __createBinding = (this && this.__createBinding) || (Object.create ? (function(o, m, k, k2) {
     if (k2 === undefined) k2 = k;
@@ -3360,7 +3512,7 @@ class universe {
 exports.universe = universe;
 ;
 
-},{"./gl/circles":5,"./gl/constants":6,"./gl/model":9,"./gl/open_gl":10,"./gl/shader":11,"./gl/texture":12,"./loader":15,"./math/v3":17,"./planet":19,"./shaders/lines_shader":24,"./shaders/planets_shader_normal":26,"jquery":30}],28:[function(require,module,exports){
+},{"./gl/circles":6,"./gl/constants":7,"./gl/model":10,"./gl/open_gl":11,"./gl/shader":12,"./gl/texture":13,"./loader":16,"./math/v3":18,"./planet":20,"./shaders/lines_shader":25,"./shaders/planets_shader_normal":27,"jquery":31}],29:[function(require,module,exports){
 function deepFreeze(obj) {
     if (obj instanceof Map) {
         obj.clear = obj.delete = obj.set = function () {
@@ -5879,7 +6031,7 @@ var highlight = HLJS({});
 
 module.exports = highlight;
 
-},{}],29:[function(require,module,exports){
+},{}],30:[function(require,module,exports){
 const IDENT_RE = '[A-Za-z$_][0-9A-Za-z$_]*';
 const KEYWORDS = [
   "as", // for exports
@@ -6578,7 +6730,7 @@ function typescript(hljs) {
 
 module.exports = typescript;
 
-},{}],30:[function(require,module,exports){
+},{}],31:[function(require,module,exports){
 /*!
  * jQuery JavaScript Library v3.6.0
  * https://jquery.com/
@@ -17461,4 +17613,4 @@ if ( typeof noGlobal === "undefined" ) {
 return jQuery;
 } );
 
-},{}]},{},[13]);
+},{}]},{},[14]);

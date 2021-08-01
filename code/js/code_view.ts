@@ -38,7 +38,7 @@ export class code_view
     let pre : HTMLElement = document.createElement('pre');
     this.code_ = document.createElement('code');
     this.code_.className = 'typescript';
-    this.code_.style.fontFamily = "'source code pro', 'ubuntu mono', 'Courier New', Courier, monospace";
+    this.code_.style.fontFamily = "'source_code_pro', 'ubuntu mono', 'Courier New', Courier, monospace";
     this.code_.style.fontSize = '1rem';
     pre.append(this.code_);
     this.main_object_.append(pre);

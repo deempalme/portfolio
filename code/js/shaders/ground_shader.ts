@@ -2,6 +2,7 @@
 export class ground_shader {
   public static vertex : string | null = 
     "#version 300 es\n"+
+    "// Ground shader\n"+
 
     "precision mediump float;\n"+
 

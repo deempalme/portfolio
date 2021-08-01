@@ -8,6 +8,9 @@
 <link href="/resources/css/fonts3.0.css" rel="stylesheet" />
 <link href="/resources/css/home.css" rel="stylesheet" />
 <link href="/resources/highlight/vs2015.css" rel="stylesheet">
+<script language="javascript" type="text/javascript">
+  const t45_husz = '<?= $controller->token(); ?>';
+</script>
 </head>
 
 <body>
@@ -582,7 +585,7 @@
       <section>
         <h1><img src="/resources/theme3.0/about_me.svg" alt="ABOUT ME"></h1>
         <article>
-          <p><i>H</i>ello, I am a Meechatronic engineer with experience in programming, CAD &amp; CAM design and manufacturing, electronics, PLCs, pneumatics and hydraulics, and an expert in OpenGL, Computer Graphics, and Parallel programming; I make things go faster using the powerful capabilities of GPUs and convert complex and slow algorithms into real-time processing programs.</p>
+          <p><i>H</i>ello, I am a Meechatronic engineer with international experience in the field of autonomous driving vehicles and focused in visualization. I am an expert in programming C++, OpenGL, Computer Graphics, and Parallel programming; I make things go faster using the powerful capabilities of GPUs and convert complex and slow algorithms into real-time processing programs. Experienced with GUI programming using SDL2 and QT framework, CAD &amp; CAM design and manufacturing, electronics, PLCs, pneumatics and hydraulics. </p>
           <p>With degrees from Mexican and top German Universities that gave me the opportunity to work for several years in German companies and Reseach institutions developing pioneer techniques for Autonomous driving vehicles, and innovative approaches to improve the design of manufacturing processes such as, virtual reality and programming to automate the calculation of factories' layouts.</p>
           <p>I am passionate of programming, deeply creative, brimful of ideas and a big enthusiast for electronics and robotics. I care about every tiny detail; perfectionism is my custom.</p>
           <p>Plentiful hobbies suchlike building arduino and microcontroller projects, graphic design, web programming, 3D modeling (like the images displayed in this page), carpentry, sports such mountain biking, badminton, among others.</p>
@@ -641,11 +644,11 @@
             <li>ROS (Robot Operating System)</li>
             <li>OpenGL</li>
             <li>Matlab C++</li>
-            <li>Network programming & serial communications</li>
+            <li>Network programming TCP & UDP</li>
+            <li>Serial communications (ASIO)</li>
             <li>SQL</li>
             <li>Php</li>
-            <li>Typescript</li>
-            <li>Javascript</li>
+            <li>Typescript / Javascript</li>
             <li>CSS 2</li>
             <li>XML</li>
             <li>HTML 5</li>
@@ -655,13 +658,17 @@
               <li>CPU's multi-thread programming</li>
               <li>CUDA (Compute Unified Device Architecture)</li>
             </ol>
-          </ol>
-          <li><b>Electronics:</b></li>
-          <ol>
-            <li>Digital electronics</li>
-            <li>Power electronics</li>
-            <li>Electronic circuits' design & construction</li>
-            <li>Microcontrollers</li>
+            <li>Experience in:</li>
+            <ol>
+              <li>User interfaces</li>
+              <li>Physically Based Rendering (PBR)</li>
+              <li>FFmpeg video en/decoding</li>
+              <li>Git</li>
+              <li>CMake</li>
+              <li>Qt Framework</li>
+              <li>Linux</li>
+              <li>C++17, STL, Boost, Eigen, OpenSSL</li>
+            </ol>
           </ol>
         </ol>
         <ol>
@@ -682,6 +689,13 @@
             <li>Trajectory calculation</li>
             <li>Virtual reality & game engines</li>
             <li>Real-time rendering</li>
+          </ol>
+          <li><b>Electronics:</b></li>
+          <ol>
+            <li>Digital electronics</li>
+            <li>Power electronics</li>
+            <li>Electronic circuits' design & construction</li>
+            <li>Microcontrollers</li>
           </ol>
         </ol>
       </article>

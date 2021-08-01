@@ -2,6 +2,7 @@
 export class model_shader {
   public static vertex : string | null = 
     "#version 300 es\n"+
+    "// 3D model shader\n"+
 
     "precision mediump float;\n"+
 

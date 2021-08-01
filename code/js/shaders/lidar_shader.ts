@@ -2,6 +2,7 @@
 export class lidar_shader {
   public static vertex : string | null = 
     "#version 300 es\n"+
+    "// lidar shader\n"+
 
     "precision mediump float;\n"+
 

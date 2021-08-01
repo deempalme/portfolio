@@ -352,12 +352,16 @@ class strings
       return htmlentities(strip_tags($text), ENT_QUOTES | ENT_HTML5, "UTF-8");
   }
 
+  public static function sanitize_string(string $text){
+    return \filter_var($text, FILTER_SANITIZE_STRING);
+  }
+
   public static function clean_email(string $email) : string {
     return filter_var($email, FILTER_SANITIZE_EMAIL);
   }
 
   public static function clean_float($float) : float {
-    return filter_var($float, FILTER_SANITIZE_NUMBER_FLOAT);
+    return filter_var($float, FILTER_SANITIZE_NUMBER_FLOAT, FILTER_FLAG_ALLOW_FRACTION);
   }
 
   public static function clean_integer($integer) : int {
